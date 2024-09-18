@@ -7,6 +7,7 @@
 #include <petscdm.h>
 #include <petscvec.h>
 #include <array>
+#include <vector>
 #include <petscvec.h>
 
 
@@ -41,8 +42,8 @@
 
 // Define the Params structure
 struct Params {
-    std::array<PetscScalar, 4> n_discr;
-    std::array<PetscScalar, 4> dofs;
+    std::array<PetscInt, 4> n_discr;
+    std::array<PetscInt, 4> dofs;
     std::array<std::array<PetscScalar, 2>, 3> intervals;
     const PetscInt stencilWidth = 1;
 };
@@ -54,14 +55,17 @@ template <typename GridType>
 class Grid {
 protected:
     DM dmGrid;
-    Vec vecLocal;
+    Vec globalVec;
     Params input;
+    PetscInt gridSize = input.n_discr[0] * input.n_discr[1] * input.n_discr[2];
+    std::vector<std::array<double, 3>> coordinates;
 
 public:
     // Constructor
     Grid(Params given_input) : input(given_input) {
         static_cast<GridType*>(this)->setDofs(input); // Call the derived class method to set dofs
         CreateGrid(&dmGrid, input);
+        DMCreateGlobalVector(dmGrid, &globalVec);
     }
 
     // Create grid 
@@ -81,6 +85,9 @@ public:
         PetscFunctionReturn(0);
     };
 
+    void get_coordinates() {
+        static_cast<GridType*>(this)->get_coordinates(input);
+    }
 
     void print_input() {
         std::cout << input.dofs[0] << " " << input.dofs[1] << " " << input.dofs[2] << " " << input.dofs[3] << std::endl;
@@ -100,8 +107,73 @@ public:
         input.dofs = {0, 0, 1, 0}; // Set staggered grid dofs
     }
 
+    void get_coordinates() {
+
+        PetscInt icux_right[3], icux_left[3], icux_up[3], icux_down[3], icux_back[3], icux_front[3];
+        PetscInt startx, starty, startz, N[3], ex, ey, ez, d;
+        DM dmCoord;
+        Vec coord, coordLocal, vec_stag_local;
+        PetscReal ****arrCoord, ****arrVecStag;   
+
+        DMStagGetCorners(dmGrid, &startx, &starty, &startz, &input.n_discr[0], &input.n_discr[1], &input.n_discr[2], NULL, NULL, NULL);
+        DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+        DMGetCoordinateDM(dmGrid, &dmCoord);
+
+        DMGetCoordinates(dmGrid, &coord);
+        DMGetLocalVector(dmCoord, &coordLocal);
+        DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+
+        for (d = 0; d < 3; ++d) {
+            DMStagGetLocationSlot(dmCoord, RIGHT, d, &icux_right[d]);
+            DMStagGetLocationSlot(dmCoord, LEFT, d, &icux_left[d]);
+            DMStagGetLocationSlot(dmCoord, UP, d, &icux_up[d]);
+            DMStagGetLocationSlot(dmCoord, DOWN, d, &icux_down[d]);
+            DMStagGetLocationSlot(dmCoord, BACK, d, &icux_back[d]);
+            DMStagGetLocationSlot(dmCoord, FRONT, d, &icux_front[d]);
+        }  
+
+        DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+        DMCreateLocalVector(dmGrid, &vec_stag_local);
+        DMGlobalToLocalBegin(dmGrid, globalVec, INSERT_VALUES, vec_stag_local);
+        DMGlobalToLocalEnd(dmGrid, globalVec, INSERT_VALUES, vec_stag_local);
+        DMStagVecGetArray(dmGrid, vec_stag_local, &arrVecStag);
+
+        //LEFT, DOWN, BACK se sono alla fine anche destra sopra e davanti 
+
+        std::vector<std::vector<PetscInt>> icux;
+        icux.push_back({icux_right[0], icux_right[1], icux_right[2]});
+        icux.push_back({icux_left[0], icux_left[1], icux_left[2]});
+        icux.push_back({icux_up[0], icux_up[1], icux_up[2]});
+        icux.push_back({icux_down[0], icux_down[1], icux_down[2]});
+        icux.push_back({icux_back[0], icux_back[1], icux_back[2]});
+        icux.push_back({icux_front[0], icux_front[1], icux_front[2]});
+
+        for (ez = startz; ez < startz + input.n_discr[2]; ++ez) {
+            for (ey = starty; ey < starty + input.n_discr[1]; ++ey) {
+                for (ex = startx; ex < startx + input.n_discr[0]; ++ex) {
+                    for(auto i : icux) {
+                        coordinates.push_back({arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]});
+                        std::cout << arrCoord[ez][ey][ex][i[0]] << " " << arrCoord[ez][ey][ex][i[1]] << " " << arrCoord[ez][ey][ex][i[2]] << std::endl;
+                        }
+                    }
+
+                }
+            }
+
+
+        DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+        DMRestoreLocalVector(dmCoord, &coordLocal);
+        DMStagVecRestoreArray(dmGrid, vec_stag_local, &arrVecStag);
+        DMLocalToGlobal(dmGrid, vec_stag_local, INSERT_VALUES, globalVec);
+        DMRestoreLocalVector(dmGrid, &vec_stag_local);
+
+    }
+
     ~StaggeredGrid() {};
+
 };
+
 
 class CenteredGrid : public Grid<CenteredGrid> {
 public:
@@ -109,8 +181,55 @@ public:
 
     // Method to set dofs for centered grid
     void setDofs(Params& input) {
-        input.dofs = {0, 0, 1, 1}; // Set centered grid dofs
+        input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
     }
+
+    void get_coordinates() {
+
+        PetscInt icux_element[3];
+        PetscInt startx, starty, startz, N[3], ex, ey, ez, d;
+        DM dmCoord;
+        Vec coord, coordLocal, vecLocal;
+        PetscReal ****arrCoord, ****arrVec;   
+
+        DMStagGetCorners(dmGrid, &startx, &starty, &startz, &input.n_discr[0], &input.n_discr[1], &input.n_discr[2], NULL, NULL, NULL);
+        DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+        DMGetCoordinateDM(dmGrid, &dmCoord);
+
+        DMGetCoordinates(dmGrid, &coord);
+        DMGetLocalVector(dmCoord, &coordLocal);
+        DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+
+        for (d = 0; d < 3; ++d) {
+            DMStagGetLocationSlot(dmCoord, ELEMENT, d, &icux_element[d]);
+        }  
+
+        DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+        DMCreateLocalVector(dmGrid, &vecLocal);
+        DMGlobalToLocalBegin(dmGrid, globalVec, INSERT_VALUES, vecLocal);
+        DMGlobalToLocalEnd(dmGrid, globalVec, INSERT_VALUES, vecLocal);
+        DMStagVecGetArray(dmGrid, vecLocal, &arrVec);
+
+  
+        for (ez = startz; ez < startz + input.n_discr[2]; ++ez) {
+            for (ey = starty; ey < starty + input.n_discr[1]; ++ey) {
+                for (ex = startx; ex < startx + input.n_discr[0]; ++ex) {
+                        coordinates.push_back({arrCoord[ez][ey][ex][icux_element[0]], arrCoord[ez][ey][ex][icux_element[1]], arrCoord[ez][ey][ex][icux_element[2]]});
+                        std::cout << arrCoord[ez][ey][ex][icux_element[0]] << " " << arrCoord[ez][ey][ex][icux_element[1]] << " " << arrCoord[ez][ey][ex][icux_element[2]] << std::endl;
+                        }
+                    }
+                }
+
+
+        DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+        DMRestoreLocalVector(dmCoord, &coordLocal);
+        DMStagVecRestoreArray(dmGrid, vecLocal, &arrVec);
+        DMLocalToGlobal(dmGrid, vecLocal, INSERT_VALUES, globalVec);
+        DMRestoreLocalVector(dmGrid, &vecLocal);
+
+
+};
 
     ~CenteredGrid() {};
 };
@@ -121,7 +240,7 @@ public:
 
     // Method to set dofs for shifted grid
     void setDofs(Params& input) {
-        input.dofs = {0, 1, 1, 0}; // Set shifted grid dofs
+        input.dofs = {0, 1, 1, 0}; // Set shifted grid dofs lati e facce per termini misti del non lineare
     }
 
     ~ShiftedGrid() {};
