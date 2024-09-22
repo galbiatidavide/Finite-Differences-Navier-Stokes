@@ -6,6 +6,7 @@
 #include "parabolic.hpp"
 #include "stokes.hpp"
 #include "euler.hpp"
+#include "petscvec.h" 
 
 PetscErrorCode CreateAnalyticalU(DM const & dmGrid, Vec & vec, PetscReal const & theta)
 {
@@ -228,6 +229,7 @@ PetscErrorCode FirstShiftU_y(DM const & dmGrid, Vec & UShifted, Vec const & solR
 
                     inter = uxRef(arrCoord[ez][ey][ex][icux_down_left[0]], arrCoord[ez][ey][ex][icux_down_left[1]],
                                   arrCoord[ez][ey][ex][icux_down_left[2]], theta);
+
                     DMStagVecSetValuesStencil(dmGrid, UShifted, 1, &row, &inter, INSERT_VALUES);
                 }
 
@@ -4022,7 +4024,7 @@ PetscErrorCode Derive_z(DM const & dmGrid, Vec & W2_z, Vec const & vec, PetscRea
 }
 
 // Assembling advection term
-PetscErrorCode ManageAdvection_x(PetscReal const & dt, Vec & U_int, Vec const & U_n, Vec const & V_n, Vec const & W_n, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
+PetscErrorCode ManageAdvection_x(PetscReal const & dt, Vec & U_int, Vec const & U_0, Vec const & V_0, Vec const & W_0, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
 {
     // Create necessary grids
     DM dmGrid_Shifted, dmGrid_Centered, dmGrid_Staggered;
@@ -4033,6 +4035,14 @@ PetscErrorCode ManageAdvection_x(PetscReal const & dt, Vec & U_int, Vec const & 
         CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
 
     }
+
+    Vec U_n, V_n, W_n;
+    DMCreateGlobalVector(dmGrid_Staggered, &U_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &V_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &W_n);
+    VecCopy(U_0, U_n);
+    VecCopy(V_0, V_n);
+    VecCopy(W_0, W_n);
 
     Vec U_shift;
     DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
@@ -4090,28 +4100,6 @@ PetscErrorCode ManageAdvection_x(PetscReal const & dt, Vec & U_int, Vec const & 
     DMCreateGlobalVector(dmGrid_Centered, &U_c);
     CenterU(dmGrid_Centered, U_c, U_center, theta);
 
-    /*Vec benchmark;
-    DMCreateGlobalVector(dmGrid_prova, &benchmark);
-    CreateReferenceSolutionTry(dmGrid_prova, benchmark, 0);
-    Vec center;
-    DMCreateGlobalVector(dmGrid_prova, &center);
-    DMStagMigrateVec(dmGrid_Centered, U_c, dmGrid_prova, center);
-    CheckSolution(center, benchmark);*/
-
-                /*PetscViewer viewer_u;
-            DM DM_u;
-            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_x, 0, 0, 1, 0, &DM_u);
-            Vec u;
-            DMStagVecSplitToDMDA(dmGrid_Staggered, homoFirst, LEFT, 0, &DM_u, &u);
-            PetscObjectSetName((PetscObject)u, "ciao");
-            char filename_u[50]; 
-            sprintf(filename_u, "results/ciao.vtr");
-            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered), filename_u, FILE_MODE_WRITE, &viewer_u);
-            VecView(u, viewer_u);
-            VecDestroy(&u);
-            DMDestroy(&DM_u);
-            PetscViewerDestroy(&viewer_u); */
-
     Vec U2_x;
     DMCreateGlobalVector(dmGrid_Centered, &U2_x);
     Derive_x(dmGrid_Centered, U2_x, U_c, theta);
@@ -4132,11 +4120,14 @@ PetscErrorCode ManageAdvection_x(PetscReal const & dt, Vec & U_int, Vec const & 
     DMDestroy(&dmGrid_Shifted);
     DMDestroy(&dmGrid_Centered);
     DMDestroy(&dmGrid_Staggered);
+    VecDestroy(&U_n);
+    VecDestroy(&V_n);
+    VecDestroy(&W_n);
 
     PetscFunctionReturn(0);
 }
 
-PetscErrorCode ManageAdvection_y(PetscReal const & dt, Vec & V_int, Vec const & U_n, Vec const & V_n, Vec const & W_n, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
+PetscErrorCode ManageAdvection_y(PetscReal const & dt, Vec & V_int, Vec const & U_0, Vec const & V_0, Vec const & W_0, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
 {
     // Create necessary grids
     DM dmGrid_Shifted, dmGrid_Centered, dmGrid_Staggered;
@@ -4146,6 +4137,14 @@ PetscErrorCode ManageAdvection_y(PetscReal const & dt, Vec & V_int, Vec const & 
         CreateGrid(&dmGrid_Centered, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
         CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
     }
+
+    Vec U_n, V_n, W_n;
+    DMCreateGlobalVector(dmGrid_Staggered, &U_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &V_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &W_n);
+    VecCopy(U_0, U_n);
+    VecCopy(V_0, V_n);
+    VecCopy(W_0, W_n);
 
     Vec U_shift;
     DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
@@ -4237,11 +4236,14 @@ PetscErrorCode ManageAdvection_y(PetscReal const & dt, Vec & V_int, Vec const & 
     DMDestroy(&dmGrid_Shifted);
     DMDestroy(&dmGrid_Centered);
     DMDestroy(&dmGrid_Staggered);
+    VecDestroy(&U_n);
+    VecDestroy(&V_n);
+    VecDestroy(&W_n);
     
     PetscFunctionReturn(0);
 }
 
-PetscErrorCode ManageAdvection_z(PetscReal const & dt, Vec & W_int, Vec const & U_n, Vec const & V_n, Vec const & W_n, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
+PetscErrorCode ManageAdvection_z(PetscReal const & dt, Vec & W_int, Vec const & U_0, Vec const & V_0, Vec const & W_0, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz, PetscReal const & theta)
 {
     // Create necessary grids
     DM dmGrid_Shifted, dmGrid_Centered, dmGrid_Staggered;
@@ -4251,6 +4253,14 @@ PetscErrorCode ManageAdvection_z(PetscReal const & dt, Vec & W_int, Vec const & 
         CreateGrid(&dmGrid_Centered, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
         CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
     }
+
+    Vec U_n, V_n, W_n;
+    DMCreateGlobalVector(dmGrid_Staggered, &U_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &V_n);
+    DMCreateGlobalVector(dmGrid_Staggered, &W_n);
+    VecCopy(U_0, U_n);
+    VecCopy(V_0, V_n);
+    VecCopy(W_0, W_n);
 
     Vec U_shift;
     DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
@@ -4321,11 +4331,6 @@ PetscErrorCode ManageAdvection_z(PetscReal const & dt, Vec & W_int, Vec const & 
     VecAXPBYPCZ(W_n, -dt, -dt, 1.0, homoThird, mixedThird);
     VecCopy(W_n, W_int);
 
-    Vec benchmark;
-    DMCreateGlobalVector(dmGrid_Staggered, &benchmark);
-    CreateReferenceSolutionTry(dmGrid_Staggered, benchmark, 0);
-    CheckSolution(W_n, benchmark);
-
     VecDestroy(&WU_x);
     VecDestroy(&WV_y);
     VecDestroy(&mixedThird);
@@ -4336,6 +4341,9 @@ PetscErrorCode ManageAdvection_z(PetscReal const & dt, Vec & W_int, Vec const & 
     DMDestroy(&dmGrid_Shifted);
     DMDestroy(&dmGrid_Centered);
     DMDestroy(&dmGrid_Staggered);
+    VecDestroy(&U_n);
+    VecDestroy(&V_n);
+    VecDestroy(&W_n);
 
     PetscFunctionReturn(0);
 }
@@ -5739,6 +5747,1407 @@ PetscErrorCode Assemble_z(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & sol
     PetscFunctionReturn(0); 
 }
 
+
+// Second step: viscosity members to solve implicit laplacian
+PetscErrorCode Assemble_x_crank(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & vec, PetscReal const & dt, PetscReal const & Re, PetscReal const & theta) {
+
+    PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
+    PetscInt icux[3], icux_right[3];
+    PetscReal const Ret = 2*Re/dt;
+    Vec coordLocal;
+    DM dmCoord;
+    PetscReal ****arrCoord;
+
+    PetscFunctionBegin;
+
+    DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
+    DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    PetscReal const hx = 1.0 / N[0];
+    PetscReal const hy = 1.0 / N[1];
+    PetscReal const hz = 1.0 / N[2];
+
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+    DMGetCoordinatesLocal(dmGrid, &coordLocal);
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    for (d = 0; d < 3; ++d) {
+        DMStagGetLocationSlot(dmCoord, LEFT, d, &icux[d]);
+        DMStagGetLocationSlot(dmCoord, RIGHT, d, &icux_right[d]);
+    }
+
+    Vec local;
+    DMCreateLocalVector(dmGrid, &local);
+    DMGlobalToLocalBegin(dmGrid, vec, INSERT_VALUES, local);
+    DMGlobalToLocalEnd(dmGrid, vec, INSERT_VALUES, local);
+
+    for (ez = startz; ez < startz + nz; ++ez) {
+        for (ey = starty; ey < starty + ny; ++ey) {
+            for (ex = startx; ex < startx + nx; ++ex) {
+                /* Right Boundary velocity Dirichlet */
+                if (ex == N[0] - 1) {
+                    DMStagStencil row;
+                    PetscReal valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i = ex;
+                    row.j = ey;
+                    row.k = ez;
+                    row.loc = RIGHT;
+                    row.c = 0;
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uxRef(arrCoord[ez][ey][ex][icux_right[0]], arrCoord[ez][ey][ex][icux_right[1]], arrCoord[ez][ey][ex][icux_right[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                }      
+                /* Equation on left face of this element */
+                if (ex == 0) {
+                    /* Left velocity Dirichlet */
+                    DMStagStencil row;
+                    PetscReal valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i = ex;
+                    row.j = ey;
+                    row.k = ez;
+                    row.loc = LEFT;
+                    row.c = 0;
+
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                } else {
+                    /* X-momentum interior equation : (u_xx + u_yy + u_zz) - p_x = f^x */
+                    DMStagStencil row, col[7];
+                    PetscReal valA[7], valRhs;
+                    PetscInt nEntries;
+                    row.i = ex;
+                    row.j = ey;
+                    row.k = ez;
+                    row.loc = LEFT;
+                    row.c = 0;
+                    if (ey == 0) {
+                        if (ez == 0) {
+                            nEntries = 5;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey + 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez + 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]]-hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]-hz, theta);
+                            valRhs = -Ret*valRhs - bc_1/(hy*hy) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                              
+                        } else if (ez == N[2] - 1) {
+                            nEntries = 5;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey + 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez - 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]] - hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]+hz, theta);
+                            valRhs = -Ret*valRhs - bc_1/(hy*hy) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        } else {
+                            nEntries = 6;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey + 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez - 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            col[5].i = ex;
+                            col[5].j = ey;
+                            col[5].k = ez + 1;
+                            col[5].loc = LEFT;
+                            col[5].c = 0;
+                            valA[5] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_2;
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]] - hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy);                           
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                            
+                        }
+                    } else if (ey == N[1] - 1) {
+                        if (ez == 0) {
+                            nEntries = 5;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey - 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez + 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]]+hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]-hz, theta);
+                            valRhs = -Ret*valRhs -bc_1/(hy*hy) - bc_2/(hz*hz);                         
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                          
+                        } else if (ez == N[2] - 1) {
+                            nEntries = 5;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey - 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez - 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]] + hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]] + hz, theta);                            
+                            valRhs = -Ret*valRhs -bc_1/(hy*hy) - bc_2/(hz*hz);       
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        } else {
+                            nEntries = 6;
+                            col[0].i = ex;
+                            col[0].j = ey;
+                            col[0].k = ez;
+                            col[0].loc = LEFT;
+                            col[0].c = 0;
+                            valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i = ex;
+                            col[1].j = ey - 1;
+                            col[1].k = ez;
+                            col[1].loc = LEFT;
+                            col[1].c = 0;
+                            valA[1] = 1.0 / (hy * hy);
+                            col[2].i = ex - 1;
+                            col[2].j = ey;
+                            col[2].k = ez;
+                            col[2].loc = LEFT;
+                            col[2].c = 0;
+                            valA[2] = 1.0 / (hx * hx);
+                            col[3].i = ex + 1;
+                            col[3].j = ey;
+                            col[3].k = ez;
+                            col[3].loc = LEFT;
+                            col[3].c = 0;
+                            valA[3] = 1.0 / (hx * hx);
+                            col[4].i = ex;
+                            col[4].j = ey;
+                            col[4].k = ez - 1;
+                            col[4].loc = LEFT;
+                            col[4].c = 0;
+                            valA[4] = 1.0 / (hz * hz);
+                            col[5].i = ex;
+                            col[5].j = ey;
+                            col[5].k = ez + 1;
+                            col[5].loc = LEFT;
+                            col[5].c = 0;
+                            valA[5] = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_2;
+                            bc_2 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]]+hy, arrCoord[ez][ey][ex][icux[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                            
+                        }
+                    } else if (ez == 0) {
+                        nEntries = 6;
+                        col[0].i = ex;
+                        col[0].j = ey;
+                        col[0].k = ez;
+                        col[0].loc = LEFT;
+                        col[0].c = 0;
+                        valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i = ex;
+                        col[1].j = ey - 1;
+                        col[1].k = ez;
+                        col[1].loc = LEFT;
+                        col[1].c = 0;
+                        valA[1] = 1.0 / (hy * hy);
+                        col[2].i = ex;
+                        col[2].j = ey + 1;
+                        col[2].k = ez;
+                        col[2].loc = LEFT;
+                        col[2].c = 0;
+                        valA[2] = 1.0 / (hy * hy);
+                        col[3].i = ex - 1;
+                        col[3].j = ey;
+                        col[3].k = ez;
+                        col[3].loc = LEFT;
+                        col[3].c = 0;
+                        valA[3] = 1.0 / (hx * hx);
+                        col[4].i = ex + 1;
+                        col[4].j = ey;
+                        col[4].k = ez;
+                        col[4].loc = LEFT;
+                        col[4].c = 0;
+                        valA[4] = 1.0 / (hx * hx);
+                        col[5].i = ex;
+                        col[5].j = ey;
+                        col[5].k = ez + 1;
+                        col[5].loc = LEFT;
+                        col[5].c = 0;
+                        valA[5] = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        PetscReal bc_1;
+                        bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]-hz, theta);
+                        valRhs = -Ret*valRhs - bc_1/(hz*hz);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                        
+                    } else if (ez == N[2] - 1) {
+                        nEntries = 6;
+                        col[0].i = ex;
+                        col[0].j = ey;
+                        col[0].k = ez;
+                        col[0].loc = LEFT;
+                        col[0].c = 0;
+                        valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i = ex;
+                        col[1].j = ey - 1;
+                        col[1].k = ez;
+                        col[1].loc = LEFT;
+                        col[1].c = 0;
+                        valA[1] = 1.0 / (hy * hy);
+                        col[2].i = ex;
+                        col[2].j = ey + 1;
+                        col[2].k = ez;
+                        col[2].loc = LEFT;
+                        col[2].c = 0;
+                        valA[2] = 1.0 / (hy * hy);
+                        col[3].i = ex - 1;
+                        col[3].j = ey;
+                        col[3].k = ez;
+                        col[3].loc = LEFT;
+                        col[3].c = 0;
+                        valA[3] = 1.0 / (hx * hx);
+                        col[4].i = ex + 1;
+                        col[4].j = ey;
+                        col[4].k = ez;
+                        col[4].loc = LEFT;
+                        col[4].c = 0;
+                        valA[4] = 1.0 / (hx * hx);
+                        col[5].i = ex;
+                        col[5].j = ey;
+                        col[5].k = ez - 1;
+                        col[5].loc = LEFT;
+                        col[5].c = 0;
+                        valA[5] = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        PetscReal bc_1;
+                        bc_1 = uxRef(arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]+hz, theta);
+                        valRhs = -Ret*valRhs - bc_1/(hz*hz);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                        
+                    } else {
+                        nEntries = 7;
+                        col[0].i = ex;
+                        col[0].j = ey;
+                        col[0].k = ez;
+                        col[0].loc = LEFT;
+                        col[0].c = 0;
+                        valA[0] = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i = ex;
+                        col[1].j = ey - 1;
+                        col[1].k = ez;
+                        col[1].loc = LEFT;
+                        col[1].c = 0;
+                        valA[1] = 1.0 / (hy * hy);
+                        col[2].i = ex;
+                        col[2].j = ey + 1;
+                        col[2].k = ez;
+                        col[2].loc = LEFT;
+                        col[2].c = 0;
+                        valA[2] = 1.0 / (hy * hy);
+                        col[3].i = ex - 1;
+                        col[3].j = ey;
+                        col[3].k = ez;
+                        col[3].loc = LEFT;
+                        col[3].c = 0;
+                        valA[3] = 1.0 / (hx * hx);
+                        col[4].i = ex + 1;
+                        col[4].j = ey;
+                        col[4].k = ez;
+                        col[4].loc = LEFT;
+                        col[4].c = 0;
+                        valA[4] = 1.0 / (hx * hx);
+                        col[5].i = ex;
+                        col[5].j = ey;
+                        col[5].k = ez - 1;
+                        col[5].loc = LEFT;
+                        col[5].c = 0;
+                        valA[5] = 1.0 / (hz * hz);
+                        col[6].i = ex;
+                        col[6].j = ey;
+                        col[6].k = ez + 1;
+                        col[6].loc = LEFT;
+                        col[6].c = 0;
+                        valA[6] = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        valRhs = -Ret*valRhs;
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                    }
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, nEntries, col, valA, INSERT_VALUES);
+                }
+                
+            }
+        }
+    }
+    VecDestroy(&local);
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    MatAssemblyBegin(A, MAT_FINAL_ASSEMBLY);
+    MatAssemblyEnd(A, MAT_FINAL_ASSEMBLY);
+    VecAssemblyBegin(rhs);
+    VecAssemblyEnd(rhs);
+
+    PetscFunctionReturn(0); 
+}
+
+PetscErrorCode Assemble_y_crank(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & solRef, PetscReal const & dt, PetscReal const & Re, PetscReal const & theta) {
+
+    PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
+    PetscInt icuy[3], icuy_up[3];
+    PetscReal const Ret = Re/dt;
+    Vec coordLocal;
+    DM dmCoord;
+    PetscReal ****arrCoord;
+
+    PetscFunctionBegin;
+
+    DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
+    DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    PetscReal const hx = 1.0 / N[0];
+    PetscReal const hy = 1.0 / N[1];
+    PetscReal const hz = 1.0 / N[2];
+
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+    DMGetCoordinatesLocal(dmGrid, &coordLocal);
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    for (d = 0; d < 3; ++d) {
+        DMStagGetLocationSlot(dmCoord, DOWN, d, &icuy[d]);
+        DMStagGetLocationSlot(dmCoord, UP, d, &icuy_up[d]);        
+    }
+
+    Vec local;
+    DMCreateLocalVector(dmGrid,&local);
+    DMGlobalToLocalBegin(dmGrid,solRef,INSERT_VALUES,local);
+    DMGlobalToLocalEnd(dmGrid,solRef,INSERT_VALUES,local);
+
+    for (ez = startz; ez < startz + nz; ++ez) {
+        for (ey = starty; ey < starty + ny; ++ey) {
+            for (ex = startx; ex < startx + nx; ++ex) {  
+                if (ey == N[1] - 1) {
+                    /* Top boundary velocity Dirichlet */
+                    DMStagStencil     row;
+                    PetscReal       valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i                  = ex;
+                    row.j                  = ey;
+                    row.k                  = ez;
+                    row.loc                = UP;
+                    row.c                  = 0;
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uyRef(arrCoord[ez][ey][ex][icuy_up[0]], arrCoord[ez][ey][ex][icuy_up[1]], arrCoord[ez][ey][ex][icuy_up[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                }                
+                /* Equation on bottom face of this element */
+                if (ey == 0) {
+                    /* Bottom boundary velocity Dirichlet */
+                    DMStagStencil     row;
+                    PetscReal       valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i                  = ex;
+                    row.j                  = ey;
+                    row.k                  = ez;
+                    row.loc                = DOWN;
+                    row.c                  = 0;
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                } else {
+                    /* Y-momentum equation, (v_xx + v_yy + v_zz) - p_y = f^y */
+                    DMStagStencil row, col[7];
+                    PetscReal   valA[7], valRhs;
+                    PetscInt      nEntries;
+                    row.i   = ex;
+                    row.j   = ey;
+                    row.k   = ez;
+                    row.loc = DOWN;
+                    row.c   = 0;
+                    if (ex == 0) {
+                        if (ez == 0) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex + 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            PetscReal bc_1, bc_2;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]-hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            bc_2 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]-hz, theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        } else if (ez == N[2] - 1) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex + 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            PetscReal bc_1, bc_2;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]-hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            bc_2 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]+hz, theta);
+                            valRhs = -Ret*valRhs -bc_1/(hx*hx) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        } else {
+                            nEntries   = 6;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex + 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            col[5].i   = ex;
+                            col[5].j   = ey;
+                            col[5].k   = ez + 1;
+                            col[5].loc = DOWN;
+                            col[5].c   = 0;
+                            valA[5]    = 1.0 / (hz * hz);
+                            PetscReal bc_1;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]-hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        }
+                    } else if (ex == N[0] - 1) {
+                        if (ez == 0) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex - 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            PetscReal bc_1, bc_2;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]+hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            bc_2 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]-hz, theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                         
+                        } else if (ez == N[2] - 1) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex - 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            PetscReal bc_1, bc_2;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]+hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            bc_2 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]+hz, theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx) - bc_2/(hz*hz);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        } else {
+                            nEntries   = 6;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = DOWN;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = DOWN;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = DOWN;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex - 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = DOWN;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = DOWN;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            col[5].i   = ex;
+                            col[5].j   = ey;
+                            col[5].k   = ez + 1;
+                            col[5].loc = DOWN;
+                            col[5].c   = 0;
+                            valA[5]    = 1.0 / (hz * hz);
+                            PetscReal bc_1;
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]]+hx, arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                        }
+                    } else if (ez == 0) {
+                        nEntries   = 6;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = DOWN;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey - 1;
+                        col[1].k   = ez;
+                        col[1].loc = DOWN;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex;
+                        col[2].j   = ey + 1;
+                        col[2].k   = ez;
+                        col[2].loc = DOWN;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hy * hy);
+                        col[3].i   = ex - 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = DOWN;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex + 1;
+                        col[4].j   = ey;
+                        col[4].k   = ez;
+                        col[4].loc = DOWN;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hx * hx);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez + 1;
+                        col[5].loc = DOWN;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        PetscReal bc_2;
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);                        
+                        bc_2 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]-hz, theta);
+                        valRhs = -Ret*valRhs - bc_2/(hz*hz);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+
+                    } else if (ez == N[2] - 1) {
+                        nEntries   = 6;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = DOWN;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey - 1;
+                        col[1].k   = ez;
+                        col[1].loc = DOWN;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex;
+                        col[2].j   = ey + 1;
+                        col[2].k   = ez;
+                        col[2].loc = DOWN;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hy * hy);
+                        col[3].i   = ex - 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = DOWN;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex + 1;
+                        col[4].j   = ey;
+                        col[4].k   = ez;
+                        col[4].loc = DOWN;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hx * hx);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez - 1;
+                        col[5].loc = DOWN;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        PetscReal bc_1;
+                        bc_1 = uyRef(arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]]+hz, theta);
+                        valRhs = -Ret*valRhs - bc_1/(hz*hz);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                    
+                    } else {
+                        nEntries   = 7;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = DOWN;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey - 1;
+                        col[1].k   = ez;
+                        col[1].loc = DOWN;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex;
+                        col[2].j   = ey + 1;
+                        col[2].k   = ez;
+                        col[2].loc = DOWN;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hy * hy);
+                        col[3].i   = ex - 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = DOWN;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex + 1;
+                        col[4].j   = ey;
+                        col[4].k   = ez;
+                        col[4].loc = DOWN;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hx * hx);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez - 1;
+                        col[5].loc = DOWN;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        col[6].i   = ex;
+                        col[6].j   = ey;
+                        col[6].k   = ez + 1;
+                        col[6].loc = DOWN;
+                        col[6].c   = 0;
+                        valA[6]    = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        valRhs = -Ret*valRhs;
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                        
+                    }
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, nEntries, col, valA, INSERT_VALUES);
+                }
+                
+            }
+        }
+    }
+
+    VecDestroy(&local);
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    MatAssemblyBegin(A, MAT_FINAL_ASSEMBLY);
+    MatAssemblyEnd(A, MAT_FINAL_ASSEMBLY);
+    VecAssemblyBegin(rhs);
+    VecAssemblyEnd(rhs);
+
+    PetscFunctionReturn(0);  
+
+}
+
+PetscErrorCode Assemble_z_crank(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & solRef, PetscReal const & dt, PetscReal const & Re, PetscReal const & theta) {
+    PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
+    PetscInt icuz[3], icuz_front[3];
+    PetscReal const Ret = Re/dt;
+    Vec coordLocal;
+    DM dmCoord;
+    PetscReal ****arrCoord;
+
+    PetscFunctionBegin;
+
+
+    DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
+    DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    PetscReal hx = 1.0 / N[0];
+    PetscReal hy = 1.0 / N[1];
+    PetscReal hz = 1.0 / N[2];
+
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+    DMGetCoordinatesLocal(dmGrid, &coordLocal);
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    for (d = 0; d < 3; ++d) {
+        DMStagGetLocationSlot(dmCoord, BACK, d, &icuz[d]);
+        DMStagGetLocationSlot(dmCoord, FRONT, d, &icuz_front[d]);
+    }
+
+    Vec local;
+    DMCreateLocalVector(dmGrid,&local);
+    DMGlobalToLocalBegin(dmGrid,solRef,INSERT_VALUES,local);
+    DMGlobalToLocalEnd(dmGrid,solRef,INSERT_VALUES,local);
+
+    for (ez = startz; ez < startz + nz; ++ez) {
+        for (ey = starty; ey < starty + ny; ++ey) {
+            for (ex = startx; ex < startx + nx; ++ex) {              
+                if (ez == N[2] - 1) {
+                    /* Front boundary velocity Dirichlet */
+                    DMStagStencil     row;
+                    PetscReal       valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i                  = ex;
+                    row.j                  = ey;
+                    row.k                  = ez;
+                    row.loc                = FRONT;
+                    row.c                  = 0;
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uzRef(arrCoord[ez][ey][ex][icuz_front[0]], arrCoord[ez][ey][ex][icuz_front[1]], arrCoord[ez][ey][ex][icuz_front[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                }                
+                /* Equation on back face of this element */
+                if (ez == 0) {
+                    /* Back boundary velocity Dirichlet */
+                    DMStagStencil     row;
+                    PetscReal       valRhs;
+                    const PetscReal valA = 1.0;
+                    row.i                  = ex;
+                    row.j                  = ey;
+                    row.k                  = ez;
+                    row.loc                = BACK;
+                    row.c                  = 0;
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    valRhs = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                    DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);
+                } else {
+                    /* Z-momentum equation, (w_xx + w_yy + w_zz) - p_z = f^z */
+                    DMStagStencil row, col[7];
+                    PetscReal   valA[7], valRhs;
+                    PetscInt      nEntries;
+                    row.i   = ex;
+                    row.j   = ey;
+                    row.k   = ez;
+                    row.loc = BACK;
+                    row.c   = 0;
+                    if (ex == 0) {
+                        if (ey == 0) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) - 2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey + 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex + 1;
+                            col[2].j   = ey;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hx * hx);
+                            col[3].i   = ex;
+                            col[3].j   = ey;
+                            col[3].k   = ez - 1;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hz * hz);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] - hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] - hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy) - bc_1/(hx*hx);                            
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                        } else if (ey == N[1] - 1) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex + 1;
+                            col[2].j   = ey;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hx * hx);
+                            col[3].i   = ex;
+                            col[3].j   = ey;
+                            col[3].k   = ez - 1;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hz * hz);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] - hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] + hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy) - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                             
+                        } else {
+                            nEntries   = 6;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex + 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            col[5].i   = ex;
+                            col[5].j   = ey;
+                            col[5].k   = ez + 1;
+                            col[5].loc = BACK;
+                            col[5].c   = 0;
+                            valA[5]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] - hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                        }
+                    } else if (ex == N[0] - 1) {
+                        if (ey == 0) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey + 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex - 1;
+                            col[2].j   = ey;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hx * hx);
+                            col[3].i   = ex;
+                            col[3].j   = ey;
+                            col[3].k   = ez - 1;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hz * hz);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] + hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] - hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy) - bc_1/(hx*hx);       
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                        } else if (ey == N[1] - 1) {
+                            nEntries   = 5;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex - 1;
+                            col[2].j   = ey;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hx * hx);
+                            col[3].i   = ex;
+                            col[3].j   = ey;
+                            col[3].k   = ez - 1;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hz * hz);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez + 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1, bc_2;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] + hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] + hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_2/(hy*hy) - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                        } else {
+                            nEntries   = 6;
+                            col[0].i   = ex;
+                            col[0].j   = ey;
+                            col[0].k   = ez;
+                            col[0].loc = BACK;
+                            col[0].c   = 0;
+                            valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                            col[1].i   = ex;
+                            col[1].j   = ey - 1;
+                            col[1].k   = ez;
+                            col[1].loc = BACK;
+                            col[1].c   = 0;
+                            valA[1]    = 1.0 / (hy * hy);
+                            col[2].i   = ex;
+                            col[2].j   = ey + 1;
+                            col[2].k   = ez;
+                            col[2].loc = BACK;
+                            col[2].c   = 0;
+                            valA[2]    = 1.0 / (hy * hy);
+                            col[3].i   = ex - 1;
+                            col[3].j   = ey;
+                            col[3].k   = ez;
+                            col[3].loc = BACK;
+                            col[3].c   = 0;
+                            valA[3]    = 1.0 / (hx * hx);
+                            col[4].i   = ex;
+                            col[4].j   = ey;
+                            col[4].k   = ez - 1;
+                            col[4].loc = BACK;
+                            col[4].c   = 0;
+                            valA[4]    = 1.0 / (hz * hz);
+                            col[5].i   = ex;
+                            col[5].j   = ey;
+                            col[5].k   = ez + 1;
+                            col[5].loc = BACK;
+                            col[5].c   = 0;
+                            valA[5]    = 1.0 / (hz * hz);
+                            DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                            PetscReal bc_1;
+                            bc_1 = uzRef(arrCoord[ez][ey][ex][icuz[0]] + hx, arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+                            valRhs = -Ret*valRhs - bc_1/(hx*hx);
+                            DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                        }
+                    } else if (ey == 0) {
+                        nEntries   = 6;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = BACK;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey + 1;
+                        col[1].k   = ez;
+                        col[1].loc = BACK;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex - 1;
+                        col[2].j   = ey;
+                        col[2].k   = ez;
+                        col[2].loc = BACK;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hx * hx);
+                        col[3].i   = ex + 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = BACK;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex;
+                        col[4].j   = ey;
+                        col[4].k   = ez - 1;
+                        col[4].loc = BACK;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hz * hz);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez + 1;
+                        col[5].loc = BACK;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        PetscReal bc_2;
+                        bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] - hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                        valRhs = -Ret*valRhs - bc_2/(hy*hy);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                         
+                    } else if (ey == N[1] - 1) {
+                        nEntries   = 6;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = BACK;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) - 2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey - 1;
+                        col[1].k   = ez;
+                        col[1].loc = BACK;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex - 1;
+                        col[2].j   = ey;
+                        col[2].k   = ez;
+                        col[2].loc = BACK;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hx * hx);
+                        col[3].i   = ex + 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = BACK;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex;
+                        col[4].j   = ey;
+                        col[4].k   = ez - 1;
+                        col[4].loc = BACK;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hz * hz);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez + 1;
+                        col[5].loc = BACK;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        PetscReal bc_2;
+                        bc_2 = uzRef(arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]] + hy, arrCoord[ez][ey][ex][icuz[2]], theta);
+                        valRhs = -Ret*valRhs - bc_2/(hy*hy);
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES); 
+                    } else {
+                        nEntries   = 7;
+                        col[0].i   = ex;
+                        col[0].j   = ey;
+                        col[0].k   = ez;
+                        col[0].loc = BACK;
+                        col[0].c   = 0;
+                        valA[0]    = -2.0 / (hx * hx) + -2.0 / (hy * hy) - 2.0 / (hz * hz) - Ret;
+                        col[1].i   = ex;
+                        col[1].j   = ey - 1;
+                        col[1].k   = ez;
+                        col[1].loc = BACK;
+                        col[1].c   = 0;
+                        valA[1]    = 1.0 / (hy * hy);
+                        col[2].i   = ex;
+                        col[2].j   = ey + 1;
+                        col[2].k   = ez;
+                        col[2].loc = BACK;
+                        col[2].c   = 0;
+                        valA[2]    = 1.0 / (hy * hy);
+                        col[3].i   = ex - 1;
+                        col[3].j   = ey;
+                        col[3].k   = ez;
+                        col[3].loc = BACK;
+                        col[3].c   = 0;
+                        valA[3]    = 1.0 / (hx * hx);
+                        col[4].i   = ex + 1;
+                        col[4].j   = ey;
+                        col[4].k   = ez;
+                        col[4].loc = BACK;
+                        col[4].c   = 0;
+                        valA[4]    = 1.0 / (hx * hx);
+                        col[5].i   = ex;
+                        col[5].j   = ey;
+                        col[5].k   = ez - 1;
+                        col[5].loc = BACK;
+                        col[5].c   = 0;
+                        valA[5]    = 1.0 / (hz * hz);
+                        col[6].i   = ex;
+                        col[6].j   = ey;
+                        col[6].k   = ez + 1;
+                        col[6].loc = BACK;
+                        col[6].c   = 0;
+                        valA[6]    = 1.0 / (hz * hz);
+
+                        DMStagVecGetValuesStencil(dmGrid, local, 1, &row, &valRhs);
+                        valRhs = -Ret*valRhs;
+                        DMStagVecSetValuesStencil(dmGrid, rhs, 1, &row, &valRhs, INSERT_VALUES);                         
+                    }
+                    DMStagMatSetValuesStencil(dmGrid, A, 1, &row, nEntries, col, valA, INSERT_VALUES);
+                }
+            }
+        }
+    }
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    VecDestroy(&local);
+    MatAssemblyBegin(A, MAT_FINAL_ASSEMBLY);
+    MatAssemblyEnd(A, MAT_FINAL_ASSEMBLY);
+    VecAssemblyBegin(rhs);
+    VecAssemblyEnd(rhs);
+
+    PetscFunctionReturn(0); 
+}
+
+
 // Assembling Viscosity term
 PetscErrorCode ManageViscosity(DM const & dmGrid_x, DM const & dmGrid_y, DM const & dmGrid_z, PetscReal const & dt, PetscReal const & Re, Vec & U_pre, Vec & V_pre, Vec & W_pre, Vec const & U_int, Vec const & V_int, Vec const & W_int, PetscReal const & theta){
 
@@ -5820,6 +7229,98 @@ PetscErrorCode ManageViscosity(DM const & dmGrid_x, DM const & dmGrid_y, DM cons
     PetscFunctionReturn(0);
 }
 
+// Assembling Viscosity term
+PetscErrorCode ManageViscosity_crank(DM const & dmGrid_x, DM const & dmGrid_y, DM const & dmGrid_z, PetscReal const & dt, PetscReal const & Re, Vec & U_pre, Vec & V_pre, Vec & W_pre, Vec const & U_int, Vec const & V_int, Vec const & W_int, PetscReal const & theta){
+
+    Mat A_x, A_y, A_z;
+    Vec rhs_x, rhs_y, rhs_z;
+    KSP       ksp_x, ksp_y, ksp_z;
+    PC        pc_x, pc_y, pc_z;
+
+    PetscFunctionBegin;
+    
+    DMCreateGlobalVector(dmGrid_x, &rhs_x);
+    DMCreateGlobalVector(dmGrid_y, &rhs_y);
+    DMCreateGlobalVector(dmGrid_z, &rhs_z);
+    DMCreateMatrix(dmGrid_x, &A_x);
+    DMCreateMatrix(dmGrid_y, &A_y);
+    DMCreateMatrix(dmGrid_z, &A_z);
+
+    Vec laplacian_x, laplacian_y, laplacian_z;
+    DMCreateGlobalVector(dmGrid_x, &laplacian_x);
+    DMCreateGlobalVector(dmGrid_y, &laplacian_y);
+    DMCreateGlobalVector(dmGrid_z, &laplacian_z);
+    laplacian_x_explicit(dmGrid_x, laplacian_x, laplacian_x, U_int);
+    laplacian_y_explicit(dmGrid_y, laplacian_y, laplacian_y, V_int);
+    laplacian_z_explicit(dmGrid_z, laplacian_z, laplacian_z, W_int);
+    VecAXPBY(U_int,-1.0,-2*Re/dt,laplacian_x);
+    VecAXPBY(V_int,-1.0,-2*Re/dt,laplacian_y);
+    VecAXPBY(W_int,-1.0,-2*Re/dt,laplacian_z);
+    
+
+    {
+    Assemble_x_crank(dmGrid_x, A_x, rhs_x, U_int, dt, Re, theta);
+
+    KSPCreate(PETSC_COMM_WORLD, &ksp_x);
+    KSPSetType(ksp_x, KSPCG);
+    KSPSetOperators(ksp_x, A_x, A_x);
+    KSPGetPC(ksp_x, &pc_x);
+    PCSetType(pc_x, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc_x, PETSC_TRUE);
+    //PCSetType(pc_x, PCJACOBI);
+    KSPSetFromOptions(ksp_x);
+    KSPSolve(ksp_x, rhs_x, U_pre);
+
+    KSPDestroy(&ksp_x);
+    MatDestroy(&A_x);
+    VecDestroy(&rhs_x);
+    }
+
+
+    {
+    Assemble_y_crank(dmGrid_y, A_y, rhs_y, V_int, dt, Re, theta);
+
+    KSPCreate(PETSC_COMM_WORLD, &ksp_y);
+    KSPSetType(ksp_y, KSPCG);
+    KSPSetOperators(ksp_y, A_y, A_y);
+    KSPGetPC(ksp_y, &pc_y);
+
+
+
+    PCSetType(pc_y, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc_y, PETSC_TRUE);
+    //PCSetType(pc_x, PCJACOBI);
+
+    KSPSetFromOptions(ksp_y);
+    KSPSolve(ksp_y, rhs_y, V_pre);
+
+    KSPDestroy(&ksp_y);
+    MatDestroy(&A_y);
+    VecDestroy(&rhs_y);
+    }
+
+
+    {
+    Assemble_z_crank(dmGrid_z, A_z, rhs_z, W_int, dt, Re, theta);
+
+    KSPCreate(PETSC_COMM_WORLD, &ksp_z);
+    KSPSetType(ksp_z, KSPCG);
+    KSPSetOperators(ksp_z, A_z, A_z);
+    KSPGetPC(ksp_z, &pc_z);
+    PCSetType(pc_z, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc_z, PETSC_TRUE);
+    //PCSetType(pc_x, PCJACOBI);
+    KSPSetFromOptions(ksp_z);
+    KSPSolve(ksp_z, rhs_z, W_pre);
+
+    KSPDestroy(&ksp_z);
+    MatDestroy(&A_z);
+    VecDestroy(&rhs_z);
+    }
+
+    PetscFunctionReturn(0);
+}
+
 
 PetscErrorCode AttachNullspace(DM const & dmGrid, Mat & A)
 {
@@ -5852,7 +7353,7 @@ PetscErrorCode Assemble_P(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & sou
     DMGlobalToLocalBegin(dmGrid,source,INSERT_VALUES,local);
     DMGlobalToLocalEnd(dmGrid,source,INSERT_VALUES,local);
 
-    for (ez = startz; ez < startz + nz; ++ez) { /* With DMStag, always iterate x fastest, y second fastest, z slowest */
+    for (ez = startz; ez < startz + nz; ++ez) { 
         for (ey = starty; ey < starty + ny; ++ey) {
             for (ex = startx; ex < startx + nx; ++ex) {
                 if (ex == N[0] - 1) {
@@ -6465,7 +7966,6 @@ PetscErrorCode Assemble_P(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & sou
                     }
                     DMStagMatSetValuesStencil(dmGrid, A, 1, &row, nEntries, col, valA, INSERT_VALUES);                              
                 } else {
-                    /* X-momentum interior equation : (u_xx + u_yy + u_zz) - p_x = f^x */
                     DMStagStencil row, col[7];
                     PetscReal valA[7], valRhs;
                     PetscInt nEntries;
@@ -6633,7 +8133,6 @@ PetscErrorCode Assemble_P(DM const & dmGrid, Mat & A, Vec & rhs, Vec const & sou
                             col[1].loc = ELEMENT;
                             col[1].c = 0;
                             valA[1] = 1.0 / (hy * hy);
-                            /* Missing up term */
                             col[2].i = ex - 1;
                             col[2].j = ey;
                             col[2].k = ez;
@@ -6986,10 +8485,20 @@ PetscErrorCode Derive_x_P(DM const & dmGrid, Vec & P_x, Vec const & vec)
                     arrOut[ez][ey][ex][iux_left] = inter;                  
                 }
                 if(ex == 0) {
-                    arrOut[ez][ey][ex][iux_left] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iux_element];
+                    second = arrVec[ez][ey][ex + 1][iux_element];
+                    third = arrVec[ez][ey][ex + 2][iux_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hx);
+                    arrOut[ez][ey][ex][iux_left] = inter;;
                 }        
                 if(ex == N[0] - 1){
-                    arrOut[ez][ey][ex][iux_right] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iux_element];
+                    second = arrVec[ez][ey][ex - 1][iux_element];
+                    third = arrVec[ez][ey][ex - 2][iux_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hx);
+                    arrOut[ez][ey][ex][iux_right] = inter;
                 }
             }
         }
@@ -7051,10 +8560,20 @@ PetscErrorCode Derive_y_P(DM const & dmGrid, Vec & P_y, Vec const & vec)
                     arrOut[ez][ey][ex][iuy_down] = inter;
                 }
                 if(ey == 0) {
-                    arrOut[ez][ey][ex][iuy_down] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iuy_element];
+                    second = arrVec[ez][ey + 1][ex][iuy_element];
+                    third = arrVec[ez][ey + 2][ex][iuy_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hy);
+                    arrOut[ez][ey][ex][iuy_down] = inter;
                 }
                 if(ey == N[1] - 1){
-                    arrOut[ez][ey][ex][iuy_up] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iuy_element];
+                    second = arrVec[ez][ey - 1][ex][iuy_element];
+                    third = arrVec[ez][ey - 2][ex][iuy_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hy);
+                    arrOut[ez][ey][ex][iuy_up] = inter;
                 }
             }
         }
@@ -7115,11 +8634,22 @@ PetscErrorCode Derive_z_P(DM const & dmGrid, Vec & P_z, Vec const & vec)
                     arrOut[ez][ey][ex][iuz_back] = inter;
                 }
                 if(ez == 0) {
-                    arrOut[ez][ey][ex][iuz_back] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iuz_element];
+                    second = arrVec[ez + 1][ey][ex][iuz_element];
+                    third = arrVec[ez + 2][ey][ex][iuz_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hz);
+                    arrOut[ez][ey][ex][iuz_back] = inter;
                 }
                 if(ez == N[2] - 1){
-                    arrOut[ez][ey][ex][iuz_front] = 0.0;
+                    PetscReal first, second, third, inter;
+                    first = arrVec[ez][ey][ex][iuz_element];
+                    second = arrVec[ez - 1][ey][ex][iuz_element];
+                    third = arrVec[ez - 2][ey][ex][iuz_element];
+                    inter = (-2.0 * first + 3.0 * second - third) / (hz);
+                    arrOut[ez][ey][ex][iuz_front] = inter;
                 }
+                
             }
         }
     }
@@ -7135,51 +8665,6 @@ PetscErrorCode Derive_z_P(DM const & dmGrid, Vec & P_z, Vec const & vec)
     PetscFunctionReturn(0); 
 }
 
-//capire se preconditioner va bene ref articolo islamico
-PetscErrorCode ManagePressure(DM const & dmGrid_centered, DM const & dmGrid_shifted, DM const & dmGrid_staggered, PetscReal const & dt, Vec & P, Vec const & U_n, Vec const & V_n, Vec const & W_n)
-{
-    Mat A;
-    Vec rhs;
-    KSP ksp;
-    PC  pc;
-
-    PetscFunctionBegin;
-
-    DMCreateGlobalVector(dmGrid_centered, &rhs);
-    DMCreateMatrix(dmGrid_centered, &A);
-
-    Vec div;
-    DMCreateGlobalVector(dmGrid_centered, &div);
-    ComputeDivergence(dmGrid_centered, dmGrid_shifted, dmGrid_staggered, div, U_n, V_n, W_n, dt); 
-
-    Assemble_P(dmGrid_centered, A, rhs, div);
-    VecDestroy(&div);
-
-    AttachNullspace(dmGrid_centered, A);
-
-    /*//questo sistema non e' precondizionato: il preconditioner e' nullo. Bisogna farlo ed e' importante: punto piu' lento del codice
-    KSPCreate(PETSC_COMM_WORLD, &ksp);
-    KSPSetType(ksp, KSPGMRES);
-    KSPSetOperators(ksp, A, A);
-    //KSPGetPC(ksp, &pc);
-    KSPSetFromOptions(ksp);
-    KSPSolve(ksp, rhs, P);*/
-
-    KSPCreate(PETSC_COMM_WORLD, &ksp);
-    KSPSetType(ksp, KSPGMRES);
-    KSPSetOperators(ksp, A, A);
-    KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCHYPRE);
-    PCHYPRESetType(pc, "pilut");
-    KSPSetFromOptions(ksp);
-    KSPSolve(ksp, rhs, P);
-
-    MatDestroy(&A);
-    VecDestroy(&rhs);
-    KSPDestroy(&ksp);
-       
-    PetscFunctionReturn(0); 
-}
 
 //sistemare il create compatible dmstag (evito di passare tutti quei parametri) ma non so perche non riesco a farlo
 PetscErrorCode ManagePressure_x(DM const & dmGrid_staggered, DM const & dmGrid_centered, DM const & dmGrid_shifted, Vec & P_x, Vec const & P)
@@ -7241,6 +8726,89 @@ PetscErrorCode ManagePressure_z(DM const & dmGrid_staggered, DM const & dmGrid_c
     PetscFunctionReturn(0); 
 }
 
+
+//capire se preconditioner va bene ref articolo islamico
+PetscErrorCode ManagePressure(DM const & dmGrid_centered, DM const & dmGrid_shifted, DM const & dmGrid_staggered, PetscReal const & dt, Vec & P, Vec const & U_pre, Vec const & V_pre, Vec const & W_pre)
+{
+    Mat A;
+    Vec rhs;
+    KSP ksp;
+    PC  pc;
+
+    PetscFunctionBegin;
+
+    Vec U_n, V_n, W_n;
+    DMCreateGlobalVector(dmGrid_staggered, &U_n);
+    DMCreateGlobalVector(dmGrid_staggered, &V_n);
+    DMCreateGlobalVector(dmGrid_staggered, &W_n);
+    VecCopy(U_pre, U_n);
+    VecCopy(V_pre, V_n);
+    VecCopy(W_pre, W_n);
+
+    DMCreateGlobalVector(dmGrid_centered, &rhs);
+    DMCreateMatrix(dmGrid_centered, &A);
+
+    Vec div;
+    DMCreateGlobalVector(dmGrid_centered, &div);
+    ComputeDivergence(dmGrid_centered, dmGrid_shifted, dmGrid_staggered, div, U_n, V_n, W_n, dt); 
+
+    
+
+    /*Vec force;
+    DMCreateGlobalVector(dmGrid_centered, &force);
+    CreateReferenceSolutionTryForce(dmGrid_centered, force, 0);
+
+    CheckSolution(div, force);*/
+
+
+    Assemble_P(dmGrid_centered, A, rhs, div);
+    PetscReal mean;
+    PetscInt size;
+    VecSum(rhs, &mean);
+    VecGetSize(rhs, &size);
+    mean = mean / size;
+    VecShift(rhs, -mean);
+    VecDestroy(&div);
+
+    //AttachNullspace(dmGrid_centered, A);
+
+    //questo sistema non e' precondizionato: il preconditioner e' nullo. Bisogna farlo ed e' importante: punto piu' lento del codice
+    /*KSPCreate(PETSC_COMM_WORLD, &ksp);
+    KSPSetType(ksp, KSPGMRES);
+    KSPSetOperators(ksp, A, A);
+    //KSPGetPC(ksp, &pc);
+    KSPSetFromOptions(ksp);
+    KSPSolve(ksp, rhs, P);*/
+
+    /*KSPCreate(PETSC_COMM_WORLD, &ksp);
+    KSPSetType(ksp, KSPGMRES);
+    KSPSetOperators(ksp, A, A);
+    KSPGetPC(ksp, &pc);
+    PCSetType(pc, PCHYPRE);
+    PCHYPRESetType(pc, "pilut");
+    KSPSetFromOptions(ksp);
+    KSPSolve(ksp, rhs, P);*/
+
+    KSPCreate(PETSC_COMM_WORLD, &ksp);
+    KSPSetType(ksp, KSPGMRES);
+    KSPSetOperators(ksp, A, A);
+    KSPGetPC(ksp, &pc);
+
+    // Set the preconditioner type to 'none' to disable it
+    PCSetType(pc, PCNONE);
+
+    KSPSetFromOptions(ksp);
+    KSPSolve(ksp, rhs, P);
+
+    MatDestroy(&A);
+    VecDestroy(&rhs);
+    KSPDestroy(&ksp);
+    VecDestroy(&U_n);
+    VecDestroy(&V_n);
+    VecDestroy(&W_n);
+       
+    PetscFunctionReturn(0); 
+}
 
 PetscErrorCode UpdatebcU(DM const & dmGrid, Vec & U_up, PetscReal const & theta)
 {
@@ -7434,9 +9002,9 @@ PetscErrorCode UpdateVelocity(DM const & dmGrid_staggered_x, DM const & dmGrid_s
     VecCopy(V_pre, V_up);
     VecCopy(W_pre, W_up);
 
-    UpdatebcU(dmGrid_staggered_x, U_up, theta);
+    /*UpdatebcU(dmGrid_staggered_x, U_up, theta);
     UpdatebcV(dmGrid_staggered_y, V_up, theta);
-    UpdatebcW(dmGrid_staggered_z, W_up, theta);
+    UpdatebcW(dmGrid_staggered_z, W_up, theta);*/
 
 
     PetscFunctionReturn(0);
@@ -10802,8 +12370,44 @@ int main(int argc, char **argv)
     Vec Magnitude;
     DMCreateGlobalVector(dmGrid_Centered, &Magnitude);
 
+    /*ManagePressure(dmGrid_Centered, dmGrid_Shifted, dmGrid_Staggered, dt, P, U_0, V_0, W_0);
+
+    ManagePressure_x(dmGrid_Staggered_x, dmGrid_Centered, dmGrid_Shifted, P_x, P);
+
+    Vec prova;
+    DMCreateGlobalVector(dmGrid_Staggered_x, &prova);
+    CreateReferenceSolutionTry(dmGrid_Staggered_x, prova, 0);
+    CheckSolution(P_x, prova);*/
+
+    /*Vec force;
+    DMCreateGlobalVector(dmGrid_Centered, &force);
+    CreateReferenceSolutionTryForce(dmGrid_Centered, force, 0);*/
+
+
+
+
+    /*PetscViewer viewer_p;
+    DM DM_p;
+    //DMStagCreateCompatibleDMStag(dmGrid_Centered, 0, 0, 0, 1, &DM_p);
+    Vec p;
+    DMStagVecSplitToDMDA(dmGrid_centered, P, ELEMENT, 0, &DM_p, &p);
+    PetscObjectSetName((PetscObject)p, "shalom");
+    char filename_p[50];
+    sprintf(filename_p, "results/shalom.vtr");
+    PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_centered), filename_p, FILE_MODE_WRITE, &viewer_p);
+    VecView(p, viewer_p);
+    VecDestroy(&p);
+    DMDestroy(&DM_p);
+    PetscViewerDestroy(&viewer_p);*/
+
+
+
+
+
+    /*ManageAdvection_x(dt, U_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+    ManageAdvection_y(dt, V_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
     ManageAdvection_z(dt, W_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
-    /*Vec laplacian;
+    Vec laplacian;
     DMCreateGlobalVector(dmGrid_Staggered_x, &laplacian);
     laplacian_x_explicit(dmGrid_Staggered_x, laplacian, U_0);
     Vec bench;
@@ -10832,13 +12436,13 @@ int main(int argc, char **argv)
 
     parabolic_z.solve();
 
-    parabolic_z.~parabolic_problem_z();*/
+    parabolic_z.~parabolic_problem_z();
 
     stokes_problem stokes(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dmGrid_Staggered, dmGrid_Centered, dmGrid_Shifted, U_0, V_0, W_0);
 
-    //stokes.solve();
+    stokes.solve();
 
-    stokes.~stokes_problem();
+    stokes.~stokes_problem();*/
 
     /*euler_problem euler(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dmGrid_Staggered, dmGrid_Centered, dmGrid_Shifted, U_0, V_0, W_0);
 
@@ -10849,28 +12453,14 @@ int main(int argc, char **argv)
 
     /*for(size_t i = 0; i < iter; ++i){
         if (i == 0){
-
-            Vec U_0_second, V_0_second, W_0_second;
-            Vec U_0_third, V_0_third, W_0_third;
-            DMCreateGlobalVector(dmGrid_Staggered_x, &U_0_second);
-            DMCreateGlobalVector(dmGrid_Staggered_y, &V_0_second);
-            DMCreateGlobalVector(dmGrid_Staggered_z, &W_0_second);
-            DMCreateGlobalVector(dmGrid_Staggered_x, &U_0_third);
-            DMCreateGlobalVector(dmGrid_Staggered_y, &V_0_third);
-            DMCreateGlobalVector(dmGrid_Staggered_z, &W_0_third);
-            VecCopy(U_0, U_0_second);
-            VecCopy(V_0, V_0_second);
-            VecCopy(W_0, W_0_second);
-            VecCopy(U_0, U_0_third);
-            VecCopy(V_0, V_0_third);
-            VecCopy(W_0, W_0_third);
             
             //theta = d*d*(i)*dt;
-            theta = (vRef/Re)*k*k*dt*(i);
+            theta = 3*(vRef*A/Re)*k*k*dt*(i);
 
             ManageAdvection_x(dt, U_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
-            ManageAdvection_y(dt, V_int, U_0_second, V_0_second, W_0_second, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
-            ManageAdvection_z(dt, W_int, U_0_third, V_0_third, W_0_third, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_y(dt, V_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_z(dt, W_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+
 
             //theta = d*d*(i+1)*dt;
 
@@ -10883,7 +12473,7 @@ int main(int argc, char **argv)
             ManagePressure_z(dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, P_z, P);
             
             //std::cout << "Spirit of Oklahoma completed:   pressure done." << std::endl;
-            theta = (vRef/Re)*k*k*dt*(i+1);
+            theta = 3*(vRef*A/Re)*k*k*dt*(i+1);
             //theta = d*d*(i+1)*dt;
 
             UpdateVelocity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, U_up, V_up, W_up, P_x, P_y, P_z, U_pre, V_pre, W_pre, theta);
@@ -10968,36 +12558,18 @@ int main(int argc, char **argv)
             PetscViewerDestroy(&viewer_p);
             std::cout << "---------------------------------------------------------" << std::endl;
 
-            VecDestroy(&U_0_second);
-            VecDestroy(&V_0_second);
-            VecDestroy(&W_0_second);
-            VecDestroy(&U_0_third);
-            VecDestroy(&V_0_third);
-            VecDestroy(&W_0_third);
 
         } else {
-
-            Vec U_up_second, V_up_second, W_up_second;
-            Vec U_up_third, V_up_third, W_up_third;
-            DMCreateGlobalVector(dmGrid_Staggered_x, &U_up_second);
-            DMCreateGlobalVector(dmGrid_Staggered_y, &V_up_second);
-            DMCreateGlobalVector(dmGrid_Staggered_z, &W_up_second);
-            DMCreateGlobalVector(dmGrid_Staggered_x, &U_up_third);
-            DMCreateGlobalVector(dmGrid_Staggered_y, &V_up_third);
-            DMCreateGlobalVector(dmGrid_Staggered_z, &W_up_third);
-            VecCopy(U_up, U_up_second);
-            VecCopy(V_up, V_up_second);
-            VecCopy(W_up, W_up_second);
-            VecCopy(U_up, U_up_third);
-            VecCopy(V_up, V_up_third);
-            VecCopy(W_up, W_up_third);                    
+                 
 
             //theta = d*d*(i)*dt;
-            theta = (vRef/Re)*k*k*dt*(i);
+            theta = 3*(vRef*A/Re)*k*k*dt*(i);
 
             ManageAdvection_x(dt, U_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
-            ManageAdvection_y(dt, V_int, U_up_second, V_up_second, W_up_second, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
-            ManageAdvection_z(dt, W_int, U_up_third, V_up_third, W_up_third, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_y(dt, V_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_z(dt, W_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+
+
             //std::cout << "Spirit of Kitty Hawk completed: advection done." << std::endl;
 
             //theta = d*d*(i+1)*dt;
@@ -11009,7 +12581,7 @@ int main(int argc, char **argv)
             ManagePressure_y(dmGrid_Staggered_y, dmGrid_Centered, dmGrid_Shifted, P_y, P);
             ManagePressure_z(dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, P_z, P);
             //std::cout << "Spirit of Oklahoma completed:   pressure done." << std::endl;
-            theta = (vRef/Re)*k*k*dt*(i+1);
+            theta = 3*(vRef*A/Re)*k*k*dt*(i+1);
             //theta = d*d*(i+1)*dt;
             UpdateVelocity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, U_up, V_up, W_up, P_x, P_y, P_z, U_pre, V_pre, W_pre, theta);
             //std::cout << "Spirit of California completed: iteration " << i << " done" << std::endl;
@@ -11093,16 +12665,257 @@ int main(int argc, char **argv)
             PetscViewerDestroy(&viewer_p);
             std::cout << "Iteration " << i << " completed." << std::endl;     
             std::cout << "---------------------------------------------------------" << std::endl;
-
-            VecDestroy(&U_up_second);
-            VecDestroy(&V_up_second);
-            VecDestroy(&W_up_second);
-            VecDestroy(&U_up_third);
-            VecDestroy(&V_up_third);
-            VecDestroy(&W_up_third);                
+              
    
         }
     }*/
+
+    Vec U_previous, V_previous, W_previous;
+    DMCreateGlobalVector(dmGrid_Staggered_x, &U_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_y, &V_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_z, &W_previous);
+    Vec U_int_previous, V_int_previous, W_int_previous;
+    DMCreateGlobalVector(dmGrid_Staggered_x, &U_int_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_y, &V_int_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_z, &W_int_previous);
+    Vec U_pre_previous, V_pre_previous, W_pre_previous;
+    DMCreateGlobalVector(dmGrid_Staggered_x, &U_pre_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_y, &V_pre_previous);
+    DMCreateGlobalVector(dmGrid_Staggered_z, &W_pre_previous);
+    Vec P_previous;
+    DMCreateGlobalVector(dmGrid_Centered, &P_previous);
+
+    for(size_t i = 0; i < iter; ++i){
+        if (i == 0){
+
+            VecCopy(U_0, U_previous);
+            VecCopy(V_0, V_previous);
+            VecCopy(W_0, W_previous);
+
+            
+            //theta = d*d*(i)*dt;
+            theta = 3*(vRef*A/Re)*k*k*dt*(i);
+
+            ManageAdvection_x(dt, U_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_y(dt, V_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_z(dt, W_int, U_0, V_0, W_0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+
+
+            //theta = d*d*(i+1)*dt;
+
+            ManageViscosity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, Re, U_pre, V_pre, W_pre, U_int, V_int, W_int, theta);
+
+            //std::cout << "Spirit of Nebraska completed:   diffusion done." << std::endl;
+            ManagePressure(dmGrid_Centered, dmGrid_Shifted, dmGrid_Staggered, dt, P, U_pre, V_pre, W_pre);
+            ManagePressure_x(dmGrid_Staggered_x, dmGrid_Centered, dmGrid_Shifted, P_x, P);
+            ManagePressure_y(dmGrid_Staggered_y, dmGrid_Centered, dmGrid_Shifted, P_y, P);
+            ManagePressure_z(dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, P_z, P);
+            
+            //std::cout << "Spirit of Oklahoma completed:   pressure done." << std::endl;
+            theta = 3*(vRef*A/Re)*k*k*dt*(i+1);
+            //theta = d*d*(i+1)*dt;
+
+            UpdateVelocity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, U_up, V_up, W_up, P_x, P_y, P_z, U_pre, V_pre, W_pre, theta);
+            std::cout << "Spirit of California comdmGrid_centpleted: iteration " << i << " done" << std::endl;
+
+            Vec bench;
+            DMCreateGlobalVector(dmGrid_Staggered_x, &bench);
+            CreateReferenceSolutionTry(dmGrid_Staggered_x, bench, theta);
+            CheckSolution(U_up, bench);
+            VecDestroy(&bench);
+
+            ComputeMagnitude(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, Magnitude, U_up, V_up, W_up);
+
+            PetscViewer viewer_magnitude;
+            DM DM_magnitude;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_x, 0, 0, 1, 0, &DM_u);
+            Vec magnitude;
+            DMStagVecSplitToDMDA(dmGrid_Centered, Magnitude, ELEMENT, 0, &DM_magnitude, &magnitude);
+            PetscObjectSetName((PetscObject)magnitude, "magnitude");
+            char filename_magnitude[50]; 
+            sprintf(filename_magnitude, "results/magnitude%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Centered), filename_magnitude, FILE_MODE_WRITE, &viewer_magnitude);
+            VecView(magnitude, viewer_magnitude);
+            VecDestroy(&magnitude);
+            DMDestroy(&DM_magnitude);
+            PetscViewerDestroy(&viewer_magnitude);
+
+            PetscViewer viewer_u;
+            DM DM_u;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_x, 0, 0, 1, 0, &DM_u);
+            Vec u;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_x, U_up, LEFT, 0, &DM_u, &u);
+            PetscObjectSetName((PetscObject)u, "x_component");
+            char filename_u[50]; 
+            sprintf(filename_u, "results/x_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_x), filename_u, FILE_MODE_WRITE, &viewer_u);
+            VecView(u, viewer_u);
+            VecDestroy(&u);
+            DMDestroy(&DM_u);
+            PetscViewerDestroy(&viewer_u); 
+
+            PetscViewer viewer_v;
+            DM DM_v;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_y, 0, 0, 1, 0, &DM_v);
+            Vec v;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_y, V_up, DOWN, 0, &DM_v, &v);
+            PetscObjectSetName((PetscObject)v, "y_component");
+            char filename_v[50];
+            sprintf(filename_v, "results/y_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_y), filename_v, FILE_MODE_WRITE, &viewer_v);
+            VecView(v, viewer_v);
+            VecDestroy(&v);
+            DMDestroy(&DM_v);
+            PetscViewerDestroy(&viewer_v);
+
+            PetscViewer viewer_w;
+            DM DM_w;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_z, 0, 0, 1, 0, &DM_w);
+            Vec w;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_z, W_up, BACK, 0, &DM_w, &w);
+            PetscObjectSetName((PetscObject)w, "z_component");
+            char filename_w[50];
+            sprintf(filename_w, "results/z_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_z), filename_w, FILE_MODE_WRITE, &viewer_w);
+            VecView(w, viewer_w);
+            VecDestroy(&w);
+            DMDestroy(&DM_w);
+            PetscViewerDestroy(&viewer_w);
+
+            PetscViewer viewer_p;
+            DM DM_p;
+            //DMStagCreateCompatibleDMStag(dmGrid_Centered, 0, 0, 0, 1, &DM_p);
+            Vec p;
+            DMStagVecSplitToDMDA(dmGrid_Centered, P, ELEMENT, 0, &DM_p, &p);
+            PetscObjectSetName((PetscObject)p, "p");
+            char filename_p[50];
+            sprintf(filename_p, "results/p%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Centered), filename_p, FILE_MODE_WRITE, &viewer_p);
+            VecView(p, viewer_p);
+            VecDestroy(&p);
+            DMDestroy(&DM_p);
+            PetscViewerDestroy(&viewer_p);
+            std::cout << "---------------------------------------------------------" << std::endl;
+
+
+        } else {                 
+
+            //theta = d*d*(i)*dt;
+            theta = 3*(vRef*A/Re)*k*k*dt*(i);
+            theta_old = 3*(vRef*A/Re)*k*k*dt*(i-1);
+
+
+            ManageAdvection_x(dt, U_int_previous, U_previous, V_previous, W_previous, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta_old);
+            ManageAdvection_y(dt, V_int_previous, U_previous, V_previous, W_previous, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta_old);
+            ManageAdvection_z(dt, W_int_previous, U_previous, V_previous, W_previous, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta_old);
+
+            ManageAdvection_x(dt, U_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_y(dt, V_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+            ManageAdvection_z(dt, W_int, U_up, V_up, W_up, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz, theta);
+
+            VecAXPBY(U_int, 1.5, -0.5, U_previous);
+            VecAXPBY(V_int, 1.5, -0.5, V_previous);
+            VecAXPBY(W_int, 1.5, -0.5, W_previous);         
+
+            //std::cout << "Spirit of Kitty Hawk completed: advection done." << std::endl;
+
+            //theta = d*d*(i+1)*dt;
+            ManageViscosity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, Re, U_pre, V_pre, W_pre, U_int, V_int, W_int, theta);
+
+            //std::cout << "Spirit of Nebraska completed:   diffusion done." << std::endl;
+            ManagePressure(dmGrid_Centered, dmGrid_Shifted, dmGrid_Staggered, dt, P, U_pre, V_pre, W_pre);
+            ManagePressure_x(dmGrid_Staggered_x, dmGrid_Centered, dmGrid_Shifted, P_x, P);
+            ManagePressure_y(dmGrid_Staggered_y, dmGrid_Centered, dmGrid_Shifted, P_y, P);
+            ManagePressure_z(dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, P_z, P);
+            //std::cout << "Spirit of Oklahoma completed:   pressure done." << std::endl;
+            theta = 3*(vRef*A/Re)*k*k*dt*(i+1);
+            //theta = d*d*(i+1)*dt;
+            UpdateVelocity(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dt, U_up, V_up, W_up, P_x, P_y, P_z, U_pre, V_pre, W_pre, theta);
+            //std::cout << "Spirit of California completed: iteration " << i << " done" << std::endl;
+            Vec bench;
+            DMCreateGlobalVector(dmGrid_Staggered_x, &bench);
+            CreateReferenceSolutionTry(dmGrid_Staggered_x, bench, theta);
+            CheckSolution(U_up, bench);
+            VecDestroy(&bench);
+
+
+            ComputeMagnitude(dmGrid_Staggered_x, dmGrid_Staggered_y, dmGrid_Staggered_z, dmGrid_Centered, dmGrid_Shifted, Magnitude, U_up, V_up, W_up);
+
+            PetscViewer viewer_magnitude;
+            DM DM_magnitude;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_x, 0, 0, 1, 0, &DM_u);
+            Vec magnitude;
+            DMStagVecSplitToDMDA(dmGrid_Centered, Magnitude, ELEMENT, 0, &DM_magnitude, &magnitude);
+            PetscObjectSetName((PetscObject)magnitude, "magnitude");
+            char filename_magnitude[50]; 
+            sprintf(filename_magnitude, "results/magnitude%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Centered), filename_magnitude, FILE_MODE_WRITE, &viewer_magnitude);
+            VecView(magnitude, viewer_magnitude);
+            VecDestroy(&magnitude);
+            DMDestroy(&DM_magnitude);
+            PetscViewerDestroy(&viewer_magnitude);
+
+            PetscViewer viewer_u;
+            DM DM_u;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_x, 0, 0, 1, 0, &DM_u);
+            Vec u;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_x, U_up, LEFT, 0, &DM_u, &u);
+            PetscObjectSetName((PetscObject)u, "x_component");
+            char filename_u[50]; 
+            sprintf(filename_u, "results/x_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_x), filename_u, FILE_MODE_WRITE, &viewer_u);
+            VecView(u, viewer_u);
+            VecDestroy(&u);
+            DMDestroy(&DM_u);
+            PetscViewerDestroy(&viewer_u); 
+
+            PetscViewer viewer_v;
+            DM DM_v;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_y, 0, 0, 1, 0, &DM_v);
+            Vec v;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_y, V_up, DOWN, 0, &DM_v, &v);
+            PetscObjectSetName((PetscObject)v, "y_component");
+            char filename_v[50];
+            sprintf(filename_v, "results/y_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_y), filename_v, FILE_MODE_WRITE, &viewer_v);
+            VecView(v, viewer_v);
+            VecDestroy(&v);
+            DMDestroy(&DM_v);
+            PetscViewerDestroy(&viewer_v);
+
+            PetscViewer viewer_w;
+            DM DM_w;
+            //DMStagCreateCompatibleDMStag(dmGrid_Staggered_z, 0, 0, 1, 0, &DM_w);
+            Vec w;
+            DMStagVecSplitToDMDA(dmGrid_Staggered_z, W_up, BACK, 0, &DM_w, &w);
+            PetscObjectSetName((PetscObject)w, "z_component");
+            char filename_w[50];
+            sprintf(filename_w, "results/z_component%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Staggered_z), filename_w, FILE_MODE_WRITE, &viewer_w);
+            VecView(w, viewer_w);
+            VecDestroy(&w);
+            DMDestroy(&DM_w);
+            PetscViewerDestroy(&viewer_w);
+
+            PetscViewer viewer_p;
+            DM DM_p;
+            //DMStagCreateCompatibleDMStag(dmGrid_Centered, 0, 0, 0, 1, &DM_p);
+            Vec p;
+            DMStagVecSplitToDMDA(dmGrid_Centered, P, ELEMENT, 0, &DM_p, &p);
+            PetscObjectSetName((PetscObject)p, "p");
+            char filename_p[50];
+            sprintf(filename_p, "results/p%03zu.vtr", i);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid_Centered), filename_p, FILE_MODE_WRITE, &viewer_p);
+            VecView(p, viewer_p);
+            VecDestroy(&p);
+            DMDestroy(&DM_p);
+            PetscViewerDestroy(&viewer_p);
+            std::cout << "Iteration " << i << " completed." << std::endl;     
+            std::cout << "---------------------------------------------------------" << std::endl;
+              
+   
+        }
+    }
 
 
     VecDestroy(&U_0);
@@ -11121,6 +12934,16 @@ int main(int argc, char **argv)
     VecDestroy(&U_up);
     VecDestroy(&V_up);
     VecDestroy(&W_up);
+    VecDestroy(&U_previous);
+    VecDestroy(&V_previous);
+    VecDestroy(&W_previous);
+    VecDestroy(&U_int_previous);
+    VecDestroy(&V_int_previous);
+    VecDestroy(&W_int_previous);
+    VecDestroy(&U_pre_previous);
+    VecDestroy(&V_pre_previous);
+    VecDestroy(&W_pre_previous);
+    VecDestroy(&P_previous);
     VecDestroy(&Magnitude); 
     PetscObjectDestroy((PetscObject*)&dmGrid_Staggered_x);
     PetscObjectDestroy((PetscObject*)&dmGrid_Staggered_y);
