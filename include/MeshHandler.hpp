@@ -112,9 +112,7 @@ public:
     };
 
 
-    bool isPointInsideMesh(const std::array<double, 3>& point,
-                       const std::vector<std::array<double, 3>>& vertices,
-                       const std::vector<std::array<int, 3>>& faces) {
+bool isPointInsideMesh(const std::array<double, 3>& point) {
     // Define a ray direction. We'll use the positive x-direction.
     std::array<double, 3> rayDirection = {1.0, 0.0, 0.0};
 
@@ -131,9 +129,11 @@ public:
         }
     }
 
-    };
+    // If the intersection count is odd, the point is inside; otherwise, it's outside.
+    return (intersectionCount % 2 == 1);
+}
 
-    bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin,
+bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin,
                            const std::array<double, 3>& rayVector,
                            const std::array<double, 3>& v0,
                            const std::array<double, 3>& v1,
@@ -183,8 +183,104 @@ public:
     if (t > EPSILON) // ray intersection
         return true;
 
-    return false; 
+    return false; // No intersection
+}
+
+
+
+PetscErrorCode give_penalty(){
+ 
+        static_cast<GridType*>(this)->setTypes();
+        std::vector<PetscInt[3]> icux(this->boundaryTypes.size()); 
+        std::vector<PetscInt> rightBoundary(this->boundaryTypes.size());
+        
+        PetscInt startx, starty, startz, N[3], ex, ey, ez, d;
+        DM dmCoord;
+        Vec coord, coordLocal, vecLocal;
+        PetscReal ****arrCoord, ****arrVec;   
+
+        PetscFunctionBegin;
+
+        DMStagGetCorners(this->dmGrid, &startx, &starty, &startz, &(this->input.n_discr[0]), &(this->input.n_discr[1]), &(this->input.n_discr[2]), NULL, NULL, NULL);
+        DMStagGetGlobalSizes(this->dmGrid, &N[0], &N[1], &N[2]);
+        DMGetCoordinateDM(this->dmGrid, &dmCoord);
+
+        DMGetCoordinates(this->dmGrid, &coord);
+        DMGetLocalVector(dmCoord, &coordLocal);
+        DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+
+        for (auto b : this->boundaryTypes) {
+            for (auto ic : icux){
+                for (d = 0; d < 3; ++d) {
+                    DMStagGetLocationSlot(dmCoord, b, d, &ic[d]);
+                }
+            }
+        }
+
+        DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+        PetscInt k = 0;
+        for (auto b : this->boundaryTypes){
+            DMStagGetLocationSlot(this -> dmGrid, b, 0, &rightBoundary[k]);
+            k++;
+        }
+
+
+        DMCreateLocalVector(this->dmGrid, &vecLocal);
+        DMGlobalToLocalBegin(this->dmGrid, this->globalVec, INSERT_VALUES, vecLocal);
+        DMGlobalToLocalEnd(this->dmGrid, this->globalVec, INSERT_VALUES, vecLocal);
+        DMStagVecGetArray(this->dmGrid, vecLocal, &arrVec);  
+
+
+        for (ez = startz; ez < startz + this->input.n_discr[2]; ++ez) {
+            for (ey = starty; ey < starty + this->input.n_discr[1]; ++ey) {
+                for (ex = startx; ex < startx + this->input.n_discr[0]; ++ex) {
+                    for(auto i : icux) {
+                        for(auto j : rightBoundary){
+                            std::array<double, 3> point {arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]};
+                            if (isPointInsideMesh(point)){
+                                arrVec[ez][ey][ex][j] = 20000.0;
+                            }
+                            else{
+                               arrVec[ez][ey][ex][j] = 0.0;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        }
+        
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMStagVecRestoreArray(this->dmGrid, vecLocal, &arrVec);
+    DMLocalToGlobal(this->dmGrid, vecLocal, INSERT_VALUES, this->globalVec);
+    DMRestoreLocalVector(this->dmGrid, &vecLocal);
+
+    PetscFunctionReturn(0);
+
+
 };
+
+
+PetscErrorCode save_penalty(){
+    PetscFunctionBegin
+    PetscViewer viewer_stag;
+    Vec rd;
+    DMStagVecSplitToDMDA(this -> dmGrid, this -> globalVec, this->boundaryTypes[0], 0, &(this->dmGrid), &rd);
+    PetscObjectSetName((PetscObject)rd, "r_values_down");
+    char filename_rd[50];
+    sprintf(filename_rd, "r_values_down%03zu.vtr");
+    PetscViewerVTKOpen(PetscObjectComm((PetscObject)this->dmGrid), filename_rd, FILE_MODE_WRITE, &viewer_stag);
+    VecView(rd, viewer_stag);
+    VecDestroy(&rd);
+    DMDestroy(&(this->dmGrid));
+    PetscViewerDestroy(&viewer_stag);
+    PetscFunctionReturn(0);
+}
 
 
 

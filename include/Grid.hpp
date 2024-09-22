@@ -126,7 +126,6 @@ public:
                 for (ex = startx; ex < startx + input.n_discr[0]; ++ex) {
                     for(auto i : icux) {
                     coordinates.push_back({arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]});
-                    coordFile << arrCoord[ez][ey][ex][i[0]] << " " << arrCoord[ez][ey][ex][i[1]] << " " << arrCoord[ez][ey][ex][i[2]] << std::endl;
                     }
                 }
 
