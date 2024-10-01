@@ -10,6 +10,7 @@
 #include <array>
 #include <vector>
 #include <petscvec.h>
+#include "BoundaryConditions.hpp"
 
 
 #define BACK_DOWN_LEFT   DMSTAG_BACK_DOWN_LEFT
@@ -43,11 +44,11 @@
 
 // Define the Params structure
 struct Params {
-    std::array<PetscInt, 4> n_discr;
+    std::array<PetscInt, 3> n_discr;
     std::array<PetscInt, 4> dofs;
     std::array<std::array<PetscScalar, 2>, 3> intervals;
     const PetscInt stencilWidth = 1;
-};
+    };
 
 
 
@@ -57,16 +58,20 @@ class Grid {
 protected:
     DM dmGrid;
     Vec globalVec;
+    std::vector<Component> components;
     Params input;
     PetscInt gridSize = input.n_discr[0] * input.n_discr[1] * input.n_discr[2];
     std::vector<std::array<double, 3>> coordinates;
     std::vector<DMStagStencilLocation> boundaryTypes;
+    BoundaryConditions bc;
 
 public:
     // Constructor
     Grid(Params given_input) : input(given_input) {
         static_cast<GridType*>(this)->setDofs(input); // Call the derived class method to set dofs
         CreateGrid(&dmGrid, input);
+        static_cast<GridType*>(this)->setTypes();
+        static_cast<GridType*>(this)->setComponents();
         DMCreateGlobalVector(dmGrid, &globalVec);
     }
 
@@ -88,8 +93,10 @@ public:
     };
 
 
-    void get_coordinates(){
-        static_cast<GridType*>(this)->setTypes();
+    PetscErrorCode get_coordinates(){
+
+        PetscFunctionBegin;
+
         std::vector<PetscInt[3]> icux(boundaryTypes.size()); 
         
         PetscInt startx, starty, startz, N[3], ex, ey, ez, d;
@@ -137,12 +144,39 @@ public:
         DMStagVecRestoreArray(dmGrid, vecLocal, &arrVec);
         DMLocalToGlobal(dmGrid, vecLocal, INSERT_VALUES, globalVec);
         DMRestoreLocalVector(dmGrid, &vecLocal);
-    
+
+        PetscFunctionReturn(0);
+
     }
 
-    void print_input() {
-        std::cout << input.dofs[0] << " " << input.dofs[1] << " " << input.dofs[2] << " " << input.dofs[3] << std::endl;
+
+    void bc_setUp(std::string time){
+    if (time == "evolutionary"){
+        bc.set_IC(dmGrid, components);
+    } else
+    bc.set_BC(dmGrid, components, input.n_discr, globalVec);
     }
+
+    PetscErrorCode save_grid(){
+
+        PetscFunctionBegin
+        for(unsigned int i = 0; i < components.size(); i++){
+            PetscViewer viewer;
+            Vec r;
+            DM pda;
+            DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[1],  DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
+            char filename_r[50];
+            sprintf(filename_r, "%s.vtr", components.at(i).name.c_str());
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
+            VecView(r, viewer);
+            VecDestroy(&r);
+            PetscViewerDestroy(&viewer);
+        }
+
+        PetscFunctionReturn(0);
+    }
+
 
     // Destructor
     virtual ~Grid() {};
@@ -162,42 +196,78 @@ public:
         boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT};
     }
 
+    void setComponents(){
+        Vec U, V, W;
+        DMCreateGlobalVector(dmGrid, &U);
+        DMCreateGlobalVector(dmGrid, &V);
+        DMCreateGlobalVector(dmGrid, &W);
+        components.resize(3);
+        components[0] = {U, {LEFT, RIGHT}, "x_component"};
+        components[1] = {V, {DOWN, UP}, "y_component"};
+        components[2] = {W, {BACK, FRONT}, "z_component"};
+    }
+
+
     ~StaggeredGrid() {};
 
 };
 
 
-class CenteredGrid : public Grid<CenteredGrid> {
-public:
-    CenteredGrid(Params given_input) : Grid(given_input) {}
+// class CenteredGrid : public Grid<CenteredGrid> {
+// public:
+//     CenteredGrid(Params given_input) : Grid(given_input) {}
 
-    // Method to set dofs for centered grid
-    void setDofs(Params& input) {
-        input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
-    }
+//     // Method to set dofs for centered grid
+//     void setDofs(Params& input) {
+//         input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
+//     }
 
-    void setTypes() {
-        boundaryTypes = {ELEMENT};
-    }
+//     void setTypes() {
+//         boundaryTypes = {ELEMENT};
+//     }
 
-    ~CenteredGrid() {};
-};
+//     void setComponents(){
+//         Vec P;
+//         DMCreateGlobalVector(dmGrid, &P);
+//         components.resize(1);
+//         components[0] = {P, ELEMENT, "pressure"};
+//     }
 
-class ShiftedGrid : public Grid<ShiftedGrid> {
-public:
-    ShiftedGrid(Params given_input) : Grid(given_input) {}
+//     ~CenteredGrid() {};
+// };
 
-    // Method to set dofs for shifted grid
-    void setDofs(Params& input) {
-        input.dofs = {0, 1, 1, 0}; // Set shifted grid dofs lati e facce per termini misti del non lineare
-    }
+// class ShiftedGrid : public Grid<ShiftedGrid> {
 
-    void setTypes() {
-        boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT};
-    }
 
-    ~ShiftedGrid() {};
-};
+// public:
+//     ShiftedGrid(Params given_input) : Grid(given_input) {}
+
+//     // Method to set dofs for shifted grid
+//     void setDofs(Params& input) {
+//         input.dofs = {0, 1, 1, 0}; // Set shifted grid dofs lati e facce per termini misti del non lineare
+//     }
+
+//     void setTypes() {
+//         boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT, 
+//                         BACK_DOWN, BACK_UP, FRONT_DOWN, FRONT_UP, 
+//                         DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT,
+//                         BACK_LEFT, BACK_RIGHT, FRONT_LEFT, FRONT_RIGHT};
+//     }
+
+//     void setComponents(){
+//         Vec U, V, W;
+//         DMCreateGlobalVector(dmGrid, &U);
+//         DMCreateGlobalVector(dmGrid, &V);
+//         DMCreateGlobalVector(dmGrid, &W);
+//         components.resize(3);
+//         components[0] = {U, LEFT, "x_component"};
+//         components[1] = {V, DOWN, "y_component"};
+//         components[2] = {W, BACK, "z_component"};
+//     }
+
+
+//     ~ShiftedGrid() {};
+// };
 
 
 
