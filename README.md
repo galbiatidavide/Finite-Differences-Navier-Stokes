@@ -1,4 +1,4 @@
 # Finite-Differences-Navier-Stokes
 
-![CFD Simulation](/home/dave/Desktop/simulazione/output.gif)
+![CFD Simulation](output.gif)
 
