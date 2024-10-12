@@ -154,6 +154,7 @@ public:
     if (time == "evolutionary"){
         bc.set_IC(dmGrid, components);
     } else
+    if (components.size() > 1)
     bc.set_BC(dmGrid, components, input.n_discr, globalVec);
     }
 
@@ -164,13 +165,14 @@ public:
             PetscViewer viewer;
             Vec r;
             DM pda;
-            DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[1],  DM_BOUNDARY_NONE, &pda, &r);
+            DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
             PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
             char filename_r[50];
             sprintf(filename_r, "%s.vtr", components.at(i).name.c_str());
             PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
             VecView(r, viewer);
             VecDestroy(&r);
+            DMDestroy(&pda);
             PetscViewerDestroy(&viewer);
         }
 
@@ -213,28 +215,28 @@ public:
 };
 
 
-// class CenteredGrid : public Grid<CenteredGrid> {
-// public:
-//     CenteredGrid(Params given_input) : Grid(given_input) {}
+class CenteredGrid : public Grid<CenteredGrid> {
+public:
+    CenteredGrid(Params given_input) : Grid(given_input) {}
 
-//     // Method to set dofs for centered grid
-//     void setDofs(Params& input) {
-//         input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
-//     }
+    // Method to set dofs for centered grid
+    void setDofs(Params& input) {
+        input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
+    }
 
-//     void setTypes() {
-//         boundaryTypes = {ELEMENT};
-//     }
+    void setTypes() {
+        boundaryTypes = {ELEMENT};
+    }
 
-//     void setComponents(){
-//         Vec P;
-//         DMCreateGlobalVector(dmGrid, &P);
-//         components.resize(1);
-//         components[0] = {P, ELEMENT, "pressure"};
-//     }
+    void setComponents(){
+        Vec P;
+        DMCreateGlobalVector(dmGrid, &P);
+        components.resize(1);
+        components[0] = {P, {ELEMENT}, "pressure"};
+    }
 
-//     ~CenteredGrid() {};
-// };
+    ~CenteredGrid() {};
+};
 
 // class ShiftedGrid : public Grid<ShiftedGrid> {
 

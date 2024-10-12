@@ -91,7 +91,7 @@ class BoundaryConditions {
 
             DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
             DMStagVecRestoreArray(dmGrid, vecLocal, &arrVec);
-            DMLocalToGlobal(dmGrid, vecLocal, INSERT_VALUES, component[i].variable);
+            DMLocalToGlobal(dmGrid, vecLocal, ADD_VALUES, component[i].variable);
             DMRestoreLocalVector(dmCoord, &coordLocal);
             DMRestoreLocalVector(dmGrid, &vecLocal);
         }
@@ -99,7 +99,7 @@ class BoundaryConditions {
         PetscFunctionReturn(0);
     }
 
- PetscErrorCode set_BC(DM const & dmGrid, std::vector<Component> components, std::array<PetscInt, 3> n_discr, Vec &globalVec){
+ PetscErrorCode set_BC(DM const & dmGrid, std::vector<Component> & components, std::array<PetscInt, 3> n_discr, Vec &globalVec){
 
     PetscFunctionBegin;
     

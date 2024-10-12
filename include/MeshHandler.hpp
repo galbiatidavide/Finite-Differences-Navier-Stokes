@@ -23,7 +23,7 @@ class MeshHandler : public GridType {
 protected:
 std::string fileName;
 std::vector<std::array<double, 3>> vertices;
-std::vector<std::array<int, 3>> faces;
+std::vector<std::array<long int, 3>> faces;
 
 public:
     MeshHandler(Params given_input, std::string file) : GridType(given_input), fileName(file) {};
@@ -92,7 +92,7 @@ public:
         std::cout << vertices.size() << std::endl;
         std::ofstream file;
         file.open("vertices.txt");
-        for (int i = 0; i < vertices.size(); i++) {
+        for (unsigned i = 0; i < vertices.size(); i++) {
             file << vertices[i][0] << " " << vertices[i][1] << " " << vertices[i][2] << std::endl;
         }
         file.close();
@@ -189,19 +189,18 @@ bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin,
 
 
 PetscErrorCode give_penalty(){
- 
-        static_cast<GridType*>(this)->setTypes();
-        std::vector<PetscInt[3]> icux(this->boundaryTypes.size()); 
-        std::vector<PetscInt> rightBoundary(this->boundaryTypes.size());
         
-        PetscInt startx, starty, startz, N[3], ex, ey, ez, d;
+        PetscInt startx, starty, startz, N[3], n[3], ex, ey, ez, d, icux[3], iux;
         DM dmCoord;
         Vec coord, coordLocal, vecLocal;
         PetscReal ****arrCoord, ****arrVec;   
 
         PetscFunctionBegin;
 
-        DMStagGetCorners(this->dmGrid, &startx, &starty, &startz, &(this->input.n_discr[0]), &(this->input.n_discr[1]), &(this->input.n_discr[2]), NULL, NULL, NULL);
+
+    for (unsigned int i = 0; i < this->components.size(); i++) {
+
+        DMStagGetCorners(this->dmGrid, &startx, &starty, &startz, &n[0], &n[1], &n[2], NULL, NULL, NULL);
         DMStagGetGlobalSizes(this->dmGrid, &N[0], &N[1], &N[2]);
         DMGetCoordinateDM(this->dmGrid, &dmCoord);
 
@@ -210,55 +209,38 @@ PetscErrorCode give_penalty(){
         DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
 
 
-        for (auto b : this->boundaryTypes) {
-            for (auto ic : icux){
-                for (d = 0; d < 3; ++d) {
-                    DMStagGetLocationSlot(dmCoord, b, d, &ic[d]);
+        for (d = 0; d < 3; ++d) {
+                    DMStagGetLocationSlot(dmCoord, this->components[i].location[0], d, &icux[d]);
                 }
-            }
-        }
 
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
 
-        PetscInt k = 0;
-        for (auto b : this->boundaryTypes){
-            DMStagGetLocationSlot(this -> dmGrid, b, 0, &rightBoundary[k]);
-            k++;
-        }
+        DMStagGetLocationSlot(this->dmGrid, this->components[i].location[0], 0, &iux);
 
 
         DMCreateLocalVector(this->dmGrid, &vecLocal);
-        DMGlobalToLocalBegin(this->dmGrid, this->globalVec, INSERT_VALUES, vecLocal);
-        DMGlobalToLocalEnd(this->dmGrid, this->globalVec, INSERT_VALUES, vecLocal);
+        DMGlobalToLocalBegin(this->dmGrid, this->components[i].variable, INSERT_VALUES, vecLocal);
+        DMGlobalToLocalEnd(this->dmGrid, this->components[i].variable, INSERT_VALUES, vecLocal);
         DMStagVecGetArray(this->dmGrid, vecLocal, &arrVec);  
 
 
-        for (ez = startz; ez < startz + this->input.n_discr[2]; ++ez) {
-            for (ey = starty; ey < starty + this->input.n_discr[1]; ++ey) {
-                for (ex = startx; ex < startx + this->input.n_discr[0]; ++ex) {
-                    for(auto i : icux) {
-                        for(auto j : rightBoundary){
-                            std::array<double, 3> point {arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]};
-                            if (isPointInsideMesh(point)){
-                                arrVec[ez][ey][ex][j] = 20000.0;
-                            }
-                            else{
-                               arrVec[ez][ey][ex][j] = 0.0;
-                            }
+        for (ez = startz; ez < startz + n[2]; ++ez) {
+            for (ey = starty; ey < starty + n[1]; ++ey) {
+                for (ex = startx; ex < startx + n[0]; ++ex) {
+                            std::array<double, 3> point {arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]]};
+                            if (isPointInsideMesh(point))
+                                arrVec[ez][ey][ex][iux] = 2.0;
                         }
-
                     }
                 }
-
-            }
-        }
         
 
     DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
     DMRestoreLocalVector(dmCoord, &coordLocal);
     DMStagVecRestoreArray(this->dmGrid, vecLocal, &arrVec);
-    DMLocalToGlobal(this->dmGrid, vecLocal, INSERT_VALUES, this->globalVec);
+    DMLocalToGlobal(this->dmGrid, vecLocal, INSERT_VALUES, this->components[i].variable);
     DMRestoreLocalVector(this->dmGrid, &vecLocal);
+}
 
     PetscFunctionReturn(0);
 
@@ -270,14 +252,15 @@ PetscErrorCode save_penalty(){
     PetscFunctionBegin
     PetscViewer viewer_stag;
     Vec rd;
-    DMStagVecSplitToDMDA(this -> dmGrid, this -> globalVec, this->boundaryTypes[0], 0, &(this->dmGrid), &rd);
+    DM pda;
+    DMStagVecSplitToDMDA(this -> dmGrid, this -> globalVec, this->boundaryTypes[0], 0, &pda, &rd);
     PetscObjectSetName((PetscObject)rd, "r_values_down");
     char filename_rd[50];
     sprintf(filename_rd, "r_values_down%03zu.vtr");
-    PetscViewerVTKOpen(PetscObjectComm((PetscObject)this->dmGrid), filename_rd, FILE_MODE_WRITE, &viewer_stag);
+    PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_rd, FILE_MODE_WRITE, &viewer_stag);
     VecView(rd, viewer_stag);
     VecDestroy(&rd);
-    DMDestroy(&(this->dmGrid));
+    DMDestroy(&pda);
     PetscViewerDestroy(&viewer_stag);
     PetscFunctionReturn(0);
 }
