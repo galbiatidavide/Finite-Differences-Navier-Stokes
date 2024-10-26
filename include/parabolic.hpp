@@ -7,6 +7,7 @@
 // TO DO:
 // 1. Parsare BC
 // 2. Parsare Exact Solution 
+// 3. Setter per Reynolds
 
 
 class Parabolic {
@@ -17,7 +18,8 @@ private:
     PetscReal time; //Current Time
     std::vector<Mat> lhs_comp;
     std::vector<Vec> rhs_comp;
-    std::function<double(double, double, double, double)>  exactSolution[3];
+    std::function<double(double, double, double, double)>*  exactSolution[3];
+    std::vector<Component> n_components; 
 
     //parameters 
     PetscReal Re = 1.0;
@@ -27,17 +29,14 @@ private:
 public:
 
     // Costruttore e distruttore
-    Parabolic(std::string problem_type, Params input): dt(input.dt), T(input.T), 
-                            hx(1.0/input.n_discr[0]), hy(1.0/input.n_discr[1]), hz(1.0/input.n_discr[2]) {
+    Parabolic(Params input): dt(input.dt), T(input.T), 
+                            hx((input.intervals[0][1]-input.intervals[0][0])/input.n_discr[0]), 
+                            hy((input.intervals[1][1]-input.intervals[1][0])/input.n_discr[1]), 
+                            hz((input.intervals[2][1]-input.intervals[2][0])/input.n_discr[2]) {
         
-        // Dynamically allocate the grid based on the problem type
-        if (problem_type == "velocity") {
-            grid = std::make_unique<StaggeredGrid>(input);
-            grid->bc_setUp("parabolic");
-        } else if (problem_type == "pressure") {
-            grid = std::make_unique<CenteredGrid>(input);
-            grid->bc_setUp("stationary");
-        }
+
+        grid = std::make_unique<StaggeredGrid>(input);
+        grid->bc_setUp("parabolic");
 
         lhs_comp.resize(grid->components.size());
         rhs_comp.resize(grid->components.size());
@@ -46,9 +45,17 @@ public:
             DMCreateMatrix(grid->dmGrid, &lhs);
         }
 
-        for(auto rhs : rhs_comp){
+        for(auto &rhs : rhs_comp){
             DMCreateGlobalVector(grid->dmGrid, &rhs);
         }
+
+         for (int i = 0; i < 3; ++i) {
+            exactSolution[i] = &grid->bc.bcFunctions[i];
+        }
+
+        
+
+
     };
 
     // Solve the problem.
@@ -68,7 +75,9 @@ public:
     void SaveSolution(){
         grid->save_grid();
     };
-    PetscErrorCode assemble_matrices(); //da mettere protected
+
+    PetscErrorCode assemble_matrices();
+
 
 
 PetscErrorCode saveMatrices(const std::string& filename_prefix);
@@ -77,10 +86,11 @@ PetscErrorCode saveMatrices(const std::string& filename_prefix);
 protected:
 
     // Assemble the mass and stiffness matrices.
-    //PetscErrorCode assemble_matrices();
+    
 
     // Assemble the right-hand side of the problem.
-    void assemble_rhs(const double &time){};
+    PetscErrorCode assemble_rhs(const double &time);
+
 
     // Solve the problem for one time step.
     void solve_time_step(){};
