@@ -48,32 +48,39 @@ struct Params {
     std::array<PetscInt, 4> dofs;
     std::array<std::array<PetscScalar, 2>, 3> intervals;
     const PetscInt stencilWidth = 1;
+    const PetscScalar T = 1.0;
+    const PetscScalar dt = 0.125;
     };
 
 
 
 // Template class for Grid
-template <typename GridType>
 class Grid {
-protected:
+public:
     DM dmGrid;
     Vec globalVec;
-    std::vector<Component> components;
     Params input;
     PetscInt gridSize = input.n_discr[0] * input.n_discr[1] * input.n_discr[2];
     std::vector<std::array<double, 3>> coordinates;
     std::vector<DMStagStencilLocation> boundaryTypes;
     BoundaryConditions bc;
+    std::vector<Component> components;
 
-public:
+    
     // Constructor
     Grid(Params given_input) : input(given_input) {
-        static_cast<GridType*>(this)->setDofs(input); // Call the derived class method to set dofs
-        CreateGrid(&dmGrid, input);
-        static_cast<GridType*>(this)->setTypes();
-        static_cast<GridType*>(this)->setComponents();
-        DMCreateGlobalVector(dmGrid, &globalVec);
+        // static_cast<GridType*>(this)->setDofs(input); // Call the derived class method to set dofs
+        // CreateGrid(&dmGrid, input);
+        // static_cast<GridType*>(this)->setTypes();
+        // static_cast<GridType*>(this)->setComponents();
+        // DMCreateGlobalVector(dmGrid, &globalVec);
     }
+
+    virtual void setDofs(Params& input) = 0;
+    virtual void setTypes() = 0;
+    virtual void setComponents() = 0;
+
+
 
     // Create grid 
     PetscErrorCode CreateGrid(DM* dmGrid, Params input){
@@ -150,13 +157,18 @@ public:
     }
 
 
-    void bc_setUp(std::string time){
-    if (time == "evolutionary"){
-        bc.set_IC(dmGrid, components);
-    } else
-    if (components.size() > 1)
-    bc.set_BC(dmGrid, components, input.n_discr, globalVec);
+    void bc_setUp(std::string type){
+        if(type == "parabolic"){
+            bc.setFunctions(type);
+            bc.set_IC(dmGrid, components);
+
+    } 
+    else if (components.size() > 1) {
+    bc.setFunctions("stationary");
+    bc.set_BC(dmGrid, components, input.n_discr);
     }
+    }
+
 
     PetscErrorCode save_grid(){
 
@@ -181,24 +193,37 @@ public:
 
 
     // Destructor
-    virtual ~Grid() {};
+    ~Grid() {
+    for(auto c : components){
+            VecDestroy(&c.variable);
+        }
+    VecDestroy(&globalVec);
+    DMDestroy(&dmGrid);
+    };
+
 };
 
 // Derived template specialization for staggered grid
-class StaggeredGrid : public Grid<StaggeredGrid> {
+class StaggeredGrid : public Grid {
 public:
-    StaggeredGrid(Params given_input) : Grid(given_input) {}
+    StaggeredGrid(Params given_input) : Grid(given_input) {
+        setDofs(input);
+        CreateGrid(&dmGrid, input);
+        setTypes();
+        setComponents();
+        DMCreateGlobalVector(dmGrid, &globalVec);
+    }
 
     // Method to set dofs for staggered grid
-    void setDofs(Params& input) {
+    void setDofs(Params& input) override{
         input.dofs = {0, 0, 1, 0}; // Set staggered grid dofs
     }
 
-    void setTypes() {
+    void setTypes() override {
         boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT};
     }
 
-    void setComponents(){
+    void setComponents() override {
         Vec U, V, W;
         DMCreateGlobalVector(dmGrid, &U);
         DMCreateGlobalVector(dmGrid, &V);
@@ -215,20 +240,26 @@ public:
 };
 
 
-class CenteredGrid : public Grid<CenteredGrid> {
+class CenteredGrid : public Grid {
 public:
-    CenteredGrid(Params given_input) : Grid(given_input) {}
+    CenteredGrid(Params given_input) : Grid(given_input) {
+        setDofs(input);
+        CreateGrid(&dmGrid, input);
+        setTypes();
+        setComponents();
+        DMCreateGlobalVector(dmGrid, &globalVec);
+    }
 
     // Method to set dofs for centered grid
-    void setDofs(Params& input) {
+    void setDofs(Params& input) override {
         input.dofs = {0, 0, 0, 1}; // Set centered grid dofs
     }
 
-    void setTypes() {
+    void setTypes() override {
         boundaryTypes = {ELEMENT};
     }
 
-    void setComponents(){
+    void setComponents() override {
         Vec P;
         DMCreateGlobalVector(dmGrid, &P);
         components.resize(1);
@@ -236,40 +267,47 @@ public:
     }
 
     ~CenteredGrid() {};
+
 };
 
-// class ShiftedGrid : public Grid<ShiftedGrid> {
+class ShiftedGrid : public Grid {
 
+public:
+    ShiftedGrid(Params given_input) : Grid(given_input) {
+        setDofs(input);
+        CreateGrid(&dmGrid, input);
+        setTypes();
+        setComponents();
+        DMCreateGlobalVector(dmGrid, &globalVec);
+    }
 
-// public:
-//     ShiftedGrid(Params given_input) : Grid(given_input) {}
+    // Method to set dofs for shifted grid
+    void setDofs(Params& input) override {
+        input.dofs = {0, 1, 1, 1}; // Set shifted grid dofs lati e facce per termini misti del non lineare
+    }
 
-//     // Method to set dofs for shifted grid
-//     void setDofs(Params& input) {
-//         input.dofs = {0, 1, 1, 0}; // Set shifted grid dofs lati e facce per termini misti del non lineare
-//     }
+    void setTypes() override {
+        boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT, ELEMENT,
+                        BACK_DOWN, BACK_UP, FRONT_DOWN, FRONT_UP, 
+                        DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT,
+                        BACK_LEFT, BACK_RIGHT, FRONT_LEFT, FRONT_RIGHT};
+    }
 
-//     void setTypes() {
-//         boundaryTypes = {RIGHT, LEFT, UP, DOWN, BACK, FRONT, 
-//                         BACK_DOWN, BACK_UP, FRONT_DOWN, FRONT_UP, 
-//                         DOWN_LEFT, DOWN_RIGHT, UP_LEFT, UP_RIGHT,
-//                         BACK_LEFT, BACK_RIGHT, FRONT_LEFT, FRONT_RIGHT};
-//     }
+    void setComponents() override {
+        Vec U, V, W;
+        DMCreateGlobalVector(dmGrid, &U);
+        DMCreateGlobalVector(dmGrid, &V);
+        DMCreateGlobalVector(dmGrid, &W);
+        components.resize(3);
+        components[0] = {U, {LEFT, RIGHT}, "x_component"};
+        components[1] = {V, {DOWN, UP}, "y_component"};
+        components[2] = {W, {BACK, FRONT}, "z_component"};
+    }
 
-//     void setComponents(){
-//         Vec U, V, W;
-//         DMCreateGlobalVector(dmGrid, &U);
-//         DMCreateGlobalVector(dmGrid, &V);
-//         DMCreateGlobalVector(dmGrid, &W);
-//         components.resize(3);
-//         components[0] = {U, LEFT, "x_component"};
-//         components[1] = {V, DOWN, "y_component"};
-//         components[2] = {W, BACK, "z_component"};
-//     }
+    
+    ~ShiftedGrid() {}; 
 
-
-//     ~ShiftedGrid() {};
-// };
+};
 
 
 

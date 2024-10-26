@@ -17,21 +17,39 @@ class BoundaryConditions {
     PetscReal vRef{4};
     PetscReal k{2*pi};
     PetscReal c{(5/6)*pi};
-    PetscReal d{(1/6)*pi};
+    PetscReal d{1.5*pi};
     PetscReal dt{0.01};
+    PetscReal a{pi/4};
+
     
     protected:
-    std::function<double(double, double, double, double)> bcFunctions[3];
-    PetscReal iter;
+    PetscReal iter = 0;
     PetscReal theta = d*d*dt*iter;
+    std::function<double(double, double, double, double)> bcFunctions[3];
 
     public: 
+    
+    //Default Constructor
+    BoundaryConditions() = default;
 
-    BoundaryConditions() {
-        bcFunctions[0] = [](double x, double y, double z, double theta) { return x + y + z;};
-        bcFunctions[1] = [](double x, double y, double z, double theta) { return 2*x + 2*y + 2*z; };
-        bcFunctions[2] = [](double x, double y, double z, double theta) { return 3*x+ 3*y + 3*z; };
+    void setFunctions(std::string const &  type){ 
+    // make a switch statement to set the boundary conditions based on the type
+    if (type == "parabolic"){
+        bcFunctions[0] = [this](double x, double y, double z, double theta) { return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; };
+        bcFunctions[1] = [this](double x, double y, double z, double theta) { return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; };
+        bcFunctions[2] = [this](double x, double y, double z, double theta) { return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; }; }
+        else if (type == "stokes"){
+        bcFunctions[0] = [this](double x, double y, double z, double theta) { return -k*cos(k*x)*cos(k*z)*sin(k*y) - k*sin(k*x)*sin(k*y)*sin(k*z); };
+        bcFunctions[1] = [this](double x, double y, double z, double theta) { return -k*cos(k*x)*cos(k*z)*sin(k*y) - k*sin(k*x)*sin(k*y)*sin(k*z); };
+        bcFunctions[2] = [this](double x, double y, double z, double theta) { return -k*cos(k*x)*cos(k*z)*sin(k*y) - k*sin(k*x)*sin(k*y)*sin(k*z); };
+        }
+        else {
+        bcFunctions[0] = [this](double x, double y, double z, double theta) { return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y));};
+        bcFunctions[1] = [this](double x, double y, double z, double theta) { return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y));};
+        bcFunctions[2] = [this](double x, double y, double z, double theta) { return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y));}; 
+        } 
     }
+
 
     PetscReal get_bcFunction(int index, double x, double y, double z, double theta) {
         if (index < 0 || index >= 3) {
@@ -99,7 +117,7 @@ class BoundaryConditions {
         PetscFunctionReturn(0);
     }
 
- PetscErrorCode set_BC(DM const & dmGrid, std::vector<Component> & components, std::array<PetscInt, 3> n_discr, Vec &globalVec){
+ PetscErrorCode set_BC(DM const & dmGrid, std::vector<Component> & components, std::array<PetscInt, 3> n_discr){
 
     PetscFunctionBegin;
     
@@ -171,6 +189,7 @@ class BoundaryConditions {
     PetscFunctionReturn(0);
 }
 
+    friend class Transport;
 
     ~BoundaryConditions() {};
 
