@@ -5,7 +5,30 @@ struct Component{
     Vec variable;
     DMStagStencilLocation location[2];
     std::string name;
+
+    //Component& operator=(const Component& other);
 };
+
+
+// Component& Component::operator=(const Component& other) {
+//     if (this != &other) {
+//         VecDestroy(&variable);
+//         VecDuplicate(other.variable, &variable);
+//         VecCopy(other.variable, variable);
+
+//         location[0] = other.location[0];
+
+//         if(this->name != "pressure"){
+//         location[1] = other.location[1];
+//         }
+
+//         name = other.name;
+//     }
+//     return *this;
+// }
+
+
+
 
 
 class BoundaryConditions {
@@ -20,20 +43,26 @@ class BoundaryConditions {
     PetscReal d{1.5*pi};
     PetscReal dt{0.01};
     PetscReal a{pi/4};
+    PetscReal Re{1};
 
     
     protected:
-    PetscReal iter = 0;
-    PetscReal theta = d*d*dt*iter;
-    std::function<double(double, double, double, double)> bcFunctions[3];
+    PetscReal theta = 0;
+    std::string pb_type;
+    
+    
 
     public: 
+
+    std::function<double(double, double, double, double)> bcFunctions[3];
     
     //Default Constructor
     BoundaryConditions() = default;
 
     void setFunctions(std::string const &  type){ 
-    // make a switch statement to set the boundary conditions based on the type
+    
+    pb_type = type;
+    //set the boundary conditions based on the type
     if (type == "parabolic"){
         bcFunctions[0] = [this](double x, double y, double z, double theta) { return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; };
         bcFunctions[1] = [this](double x, double y, double z, double theta) { return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; };
@@ -67,8 +96,16 @@ class BoundaryConditions {
         bcFunctions[index] = func;
     }
 
-    void set_time(){
-        theta = d*d*dt*(iter+1);
+    PetscReal get_time(const double &time){
+        
+        if(pb_type == "parabolic"){
+        theta = d*d*(time);}
+
+        if (pb_type == "stokes"){
+        theta = (1/Re)*time*pi*pi/3;}
+
+        return theta;
+        
     }
 
     PetscErrorCode set_IC(DM const & dmGrid, std::vector<Component> component){

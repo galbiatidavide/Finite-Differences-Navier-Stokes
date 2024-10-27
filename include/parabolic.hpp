@@ -8,6 +8,7 @@
 // 1. Parsare BC
 // 2. Parsare Exact Solution 
 // 3. Setter per Reynolds
+// 4. capire pointer functions o functions in bc e exact solution
 
 
 class Parabolic {
@@ -18,7 +19,7 @@ private:
     PetscReal time; //Current Time
     std::vector<Mat> lhs_comp;
     std::vector<Vec> rhs_comp;
-    std::function<double(double, double, double, double)>*  exactSolution[3];
+    std::function<double(double, double, double, double)>  exactSolution[3];
     std::vector<Component> n_components; 
 
     //parameters 
@@ -50,18 +51,36 @@ public:
         }
 
          for (int i = 0; i < 3; ++i) {
-            exactSolution[i] = &grid->bc.bcFunctions[i];
+            exactSolution[i] = grid->bc.bcFunctions[i];
         }
 
-        
-
+        init_n();
 
     };
 
+    PetscErrorCode init_n(){
+
+        PetscFunctionBegin;
+
+        n_components.resize(3);
+        Vec U_n, V_n, W_n;
+        DMCreateGlobalVector(grid->dmGrid, &U_n);
+        DMCreateGlobalVector(grid->dmGrid, &V_n);
+        DMCreateGlobalVector(grid->dmGrid, &W_n);
+
+        n_components[0] = {U_n, {grid->components[0].location[0], grid->components[0].location[1]}, grid->components[0].name + "_n"};
+        n_components[1] = {V_n, {grid->components[1].location[0], grid->components[1].location[1]}, grid->components[1].name + "_n"};
+        n_components[2] = {W_n, {grid->components[2].location[0], grid->components[2].location[1]}, grid->components[2].name + "_n"};  
+
+        VecCopy(grid->components[0].variable, n_components[0].variable);
+        VecCopy(grid->components[1].variable, n_components[1].variable);
+        VecCopy(grid->components[2].variable, n_components[2].variable);   
+        
+        PetscFunctionReturn(0);
+    }
+
     // Solve the problem.
     void solve();
-
-
 
     //PetscErrorCode assemble_matrices();
     // Compute the error.
@@ -77,6 +96,7 @@ public:
     };
 
     PetscErrorCode assemble_matrices();
+    PetscErrorCode assemble_rhs(const double &time);
 
 
 
@@ -89,7 +109,7 @@ protected:
     
 
     // Assemble the right-hand side of the problem.
-    PetscErrorCode assemble_rhs(const double &time);
+    //PetscErrorCode assemble_rhs(const double &time);
 
 
     // Solve the problem for one time step.
@@ -98,7 +118,21 @@ protected:
 public:
 
 //destructors
-~Parabolic() {};
+~Parabolic() {
+
+    for(auto c : n_components){
+        VecDestroy(&c.variable);
+    }
+
+    for(auto lhs : lhs_comp){
+        MatDestroy(&lhs);
+    }
+
+    for(auto rhs : rhs_comp){
+        VecDestroy(&rhs);
+    }
+
+};
 
 };
 

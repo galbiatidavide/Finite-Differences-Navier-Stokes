@@ -1173,6 +1173,294 @@ PetscFunctionReturn(0);
 }
 
 
+PetscErrorCode Parabolic::assemble_rhs(const double &time){
+
+    PetscReal theta = grid->bc.get_time(time);
+
+    PetscFunctionBegin;
+    
+    for(unsigned int i = 0; i < grid->components.size(); i++){
+
+        PetscInt        start[3], n[3], nExtra[3], N[3], ex, ey, ez, iuxStart, iuxEnd, icuxStart[3], icuxEnd[3];
+        DM              dmCoord;
+        Vec             coord, coordLocal;
+        PetscReal       ****arrCoord, ****arrVecLocal_n, ****arrRhs;
+
+
+        DMStagGetCorners(grid->dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], &nExtra[0], &nExtra[1], &nExtra[2]);
+        DMStagGetGlobalSizes(grid->dmGrid, &N[0], &N[1], &N[2]);
+
+        DMGetCoordinateDM(grid->dmGrid, &dmCoord);
+        DMGetCoordinates(grid->dmGrid, &coord);
+        DMGetLocalVector(dmCoord, &coordLocal);
+        DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+        DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+
+        for (int d = 0; d < 3; ++d) {
+            DMStagGetLocationSlot(dmCoord, n_components[i].location[0], d, &icuxStart[d]);
+            DMStagGetLocationSlot(dmCoord, n_components[i].location[1], d, &icuxEnd[d]);
+        }
+
+        DMStagGetLocationSlot(grid->dmGrid, n_components[i].location[0], 0, &iuxStart);
+        DMStagGetLocationSlot(grid->dmGrid, n_components[i].location[1], 0, &iuxEnd);
+
+        Vec local_n;
+        DMCreateLocalVector(grid->dmGrid, &local_n);
+        DMGlobalToLocalBegin(grid->dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
+        DMGlobalToLocalEnd(grid->dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
+        DMStagVecGetArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
+
+        Vec vecLocalRhs;
+        DMGetLocalVector(grid->dmGrid, &vecLocalRhs);
+        DMStagVecGetArray(grid->dmGrid, vecLocalRhs, &arrRhs);
+
+       //Set rhs of x_component
+        if (grid->components[i].name == "x_component") {
+
+            std::cout << "---------------------------------------" << std::endl;
+            std::cout << "rhs assemble for x_component at time " << time << std::endl;
+
+            for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
+                for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
+                    for(ex = start[0]; ex < start[0] +n[0]; ++ex){
+                
+
+                if (ex == N[0] - 1) {
+                    arrRhs[ez][ey][ex][iuxEnd] = exactSolution[i](arrCoord[ez][ey][ex][icuxEnd[0]], arrCoord[ez][ey][ex][icuxEnd[1]], arrCoord[ez][ey][ex][icuxEnd[2]], theta);}   
+                if (ex == 0) {
+                    arrRhs[ez][ey][ex][iuxStart] = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);} 
+                else {
+                    if (ey == 0) {
+                        if (ez == 0) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);                             
+                        } else if (ez == N[2] - 1) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] - hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);
+                        } else {
+                            PetscReal bc_2;
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] - hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                                                     
+                        }
+                    } else if (ey == N[1] - 1) {
+                        if (ez == 0) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);                                                  
+                        } else if (ez == N[2] - 1) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] + hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]] + hz, theta);                            
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);       
+                        } else {
+                            PetscReal bc_2;
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                            
+                        }
+                    } else if (ez == 0) {
+                        PetscReal bc_1;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                       
+                    } else if (ez == N[2] - 1) {
+                        PetscReal bc_1;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                        
+                    } else {
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                    }
+
+                } //else
+
+            } //for ex
+        } //for ey
+    } //for ez
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
+    DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
+    DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMRestoreLocalVector(grid->dmGrid, &local_n);
+    DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+
+    std::cout << "rhs assembled for x_component" << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
+
+    } //if x_component
+
+    if(grid->components[i].name == "y_component"){
+
+        std::cout << "---------------------------------------" << std::endl;
+        std::cout << "rhs assemble for y_component at time " << time << std::endl;
+
+        for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
+                for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
+                    for(ex = start[0]; ex < start[0] +n[0]; ++ex){
+                
+                if (ey == N[1] - 1) {
+                    arrRhs[ez][ey][ex][iuxEnd] = exactSolution[i](arrCoord[ez][ey][ex][icuxEnd[0]], arrCoord[ez][ey][ex][icuxEnd[1]], arrCoord[ez][ey][ex][icuxEnd[2]], theta);}   
+                if (ey == 0) {
+                    arrRhs[ez][ey][ex][iuxStart] = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);} 
+                else {
+                    if (ex == 0) {
+                        if (ez == 0) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);                             
+                        } else if (ez == N[2] - 1) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);
+                        } else {
+                            PetscReal bc_1;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
+                        }
+                    } else if (ex == N[0] - 1) {
+                        if (ez == 0) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);                                                  
+                        } else if (ez == N[2] - 1) {
+                            PetscReal bc_1, bc_2;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);                           
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);       
+                        } else {
+                            PetscReal bc_1;
+                            bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
+                        }
+                    } else if (ez == 0) {
+                        PetscReal bc_2;
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                       
+                    } else if (ez == N[2] - 1) {
+                        PetscReal bc_2;
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                        
+                    } else {
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                    }
+
+                } //else
+
+            } //for ex
+        } //for ey
+    } //for ez
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
+    DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
+    DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMRestoreLocalVector(grid->dmGrid, &local_n);
+    DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+
+    std::cout << "rhs assembled for y_component" << std::endl;
+    std::cout << "---------------------------------------" << std::endl;
+
+    } //if y_component
+
+
+    if(grid->components[i].name == "z_component"){
+
+    std::cout << "---------------------------------------" << std::endl;
+    std::cout << "rhs assemble for z_component at time " << time << std::endl;
+
+    for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
+            for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
+                for(ex = start[0]; ex < start[0] +n[0]; ++ex){
+            
+            if (ez == N[2] - 1) {
+                arrRhs[ez][ey][ex][iuxEnd] = exactSolution[i](arrCoord[ez][ey][ex][icuxEnd[0]], arrCoord[ez][ey][ex][icuxEnd[1]], arrCoord[ez][ey][ex][icuxEnd[2]], theta);}   
+            if (ez == 0) {
+                arrRhs[ez][ey][ex][iuxStart] = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);} 
+            else {
+                if (ex == 0) {
+                    if (ey == 0) {
+                        PetscReal bc_1, bc_2;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);                             
+                    } else if (ey == N[1] - 1) {
+                        PetscReal bc_1, bc_2;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);
+                    } else {
+                        PetscReal bc_1;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
+                    }
+                } else if (ex == N[0] - 1) {
+                    if (ey == 0) {
+                        PetscReal bc_1, bc_2;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);                                                  
+                    } else if (ey == N[1] - 1) {
+                        PetscReal bc_1, bc_2;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);                           
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);       
+                    } else {
+                        PetscReal bc_1;
+                        bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
+                    }
+                } else if (ey == 0) {
+                    PetscReal bc_2;
+                    bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                       
+                } else if (ey == N[1] - 1) {
+                    PetscReal bc_2;
+                    bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
+                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                        
+                } else {
+                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                }
+
+            } //else
+
+        } //for ex
+    } //for ey
+} //for ez
+
+DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
+DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
+DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+DMRestoreLocalVector(dmCoord, &coordLocal);
+DMRestoreLocalVector(grid->dmGrid, &local_n);
+DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+
+std::cout << "rhs assembled for z_component" << std::endl;
+std::cout << "---------------------------------------" << std::endl;
+
+} //if z_component
+
+} //for componenti
+
+PetscFunctionReturn(0);
+
+}
+
+
+
+
+
+
+
 PetscErrorCode Parabolic::saveMatrices(const std::string& filename_prefix) {
     PetscFunctionBegin;
 
