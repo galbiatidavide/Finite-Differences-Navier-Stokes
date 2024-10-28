@@ -1,6 +1,7 @@
 # Compiler
-CXX = g++
-CXXFLAGS = -Wall -O2 -std=c++11
+#CXX = g++
+CXX = mpicxx
+CXXFLAGS = -Wall -O2 -std=c++14
 
 # Paths
 INCLUDE_DIR = include
@@ -25,7 +26,7 @@ LIBS = -L/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/petsc/3.15.1/lib -lpetsc \
 CXXFLAGS += -I$(INCLUDE_DIR) -I$(PETSC_DIR)/include -I$(PETSC_DIR)/include/$(PETSC_ARCH) -I$(VTK_DIR)/include/vtk-9.0
 
 # Files to compile
-SRCS = $(SRC_DIR)/main.cpp  
+SRCS = $(SRC_DIR)/main.cpp $(SRC_DIR)/Parabolic.cpp 
 
 # Corresponding object files
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
