@@ -74,7 +74,7 @@ class BoundaryConditions {
         bcFunctions[index] = func;
     }
 
-    PetscReal get_time(const double &timeStep){
+    PetscReal get_time(const unsigned int &timeStep){
         
         if(pb_type == "stokes"){
         theta = d*d*(timeStep);}

@@ -1173,7 +1173,7 @@ PetscFunctionReturn(0);
 }
 
 
-PetscErrorCode Parabolic::assemble_rhs(const double &time){
+PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time){
 
     PetscReal theta = grid->bc.get_time(time);
     std::cout << "theta = " << theta << " at time " << time << std::endl;
@@ -1445,7 +1445,7 @@ PetscFunctionReturn(0);
 }
 
 
-PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
+PetscErrorCode Parabolic::solveTimeStep(const unsigned int &time_step){
 
     PetscFunctionBegin;
 
@@ -1453,7 +1453,7 @@ PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
     KSP       ksp;
     PC        pc;
     assemble_rhs(time_step);
-    output();
+    output_rhs(time_step);
     KSPCreate(PETSC_COMM_WORLD, &ksp);
     KSPSetType(ksp, KSPCG);
     KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
@@ -1463,6 +1463,7 @@ PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
     KSPDestroy(&ksp);
+    output(time_step);
     }
 
     PetscFunctionReturn(0);
@@ -1475,7 +1476,7 @@ PetscErrorCode Parabolic::Solve(){
 
         assemble_matrices();
 
-        PetscReal timeStep = 0;
+        PetscInt timeStep = 0;
     
         while(timeStep*dt < T-0.5){
             solveTimeStep(timeStep);
