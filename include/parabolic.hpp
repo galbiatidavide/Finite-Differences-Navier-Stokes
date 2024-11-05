@@ -23,7 +23,7 @@ private:
     std::vector<Component> n_components; 
 
     //parameters 
-    PetscReal Re = 1.0;
+    PetscReal Re = 10;
     PetscReal Ret = Re/dt;
     PetscReal hx, hy, hz;
 
@@ -80,7 +80,7 @@ public:
     }
 
     // Solve the problem.
-    void solve();
+    //void solve();
 
     //PetscErrorCode assemble_matrices();
     // Compute the error.
@@ -99,8 +99,11 @@ public:
     PetscErrorCode assemble_rhs(const double &time);
 
 
+    PetscErrorCode solveTimeStep(const double &time_step);
+    PetscErrorCode Solve();
 
-PetscErrorCode saveMatrices(const std::string& filename_prefix);
+    
+PetscErrorCode saveMatrices();
 
 
 protected:
@@ -111,9 +114,67 @@ protected:
     // Assemble the right-hand side of the problem.
     //PetscErrorCode assemble_rhs(const double &time);
 
-
     // Solve the problem for one time step.
-    void solve_time_step(){};
+    PetscErrorCode solveTimeStep();
+
+    PetscErrorCode output() {
+        
+        PetscFunctionBegin
+        for(unsigned int i = 0; i < grid->components.size(); i++){
+            // PetscViewer viewer;
+            // Vec r;
+            // DM pda;
+            // DMStagVecSplitToDMDA(grid->dmGrid, grid->components.at(i).variable, grid->components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            // PetscObjectSetName((PetscObject)r, grid->components.at(i).name.c_str());
+            // char filename_r[50];
+            // sprintf(filename_r, "results/%s_000%i.vtr", grid->components.at(i).name.c_str(), time_step);
+            // PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
+            // VecView(r, viewer);
+            // VecDestroy(&r);
+            // DMDestroy(&pda);
+            // PetscViewerDestroy(&viewer);
+            PetscViewer viewer_2;
+            Vec r;
+            DM pda;
+
+            DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
+
+            char filename_r[50];
+            sprintf(filename_r, "results/rhs_00%i.txt", i);  // Change extension to .txt
+            PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
+
+            VecView(r, viewer_2);  // View the vector contents in text format
+
+            // Cleanup
+            VecDestroy(&r);
+            DMDestroy(&pda);
+            PetscViewerDestroy(&viewer_2);
+        }
+
+        PetscFunctionReturn(0);
+}
+
+PetscErrorCode output_rhs(const unsigned int &time_step) {
+        
+        PetscFunctionBegin
+        for(unsigned int i = 0; i < grid->components.size(); i++){
+            PetscViewer viewer;
+            Vec r;
+            DM pda;
+            DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, grid->components.at(i).name.c_str());
+            char filename_r[50];
+            sprintf(filename_r, "results/rhs%i_000%i.vtr", i, time_step);
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
+            VecView(r, viewer);
+            VecDestroy(&r);
+            DMDestroy(&pda);
+            PetscViewerDestroy(&viewer);
+        }
+
+        PetscFunctionReturn(0);
+}
 
 public:
 

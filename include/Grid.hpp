@@ -47,9 +47,9 @@ struct Params {
     std::array<PetscInt, 3> n_discr;
     std::array<PetscInt, 4> dofs;
     std::array<std::array<PetscScalar, 2>, 3> intervals;
-    const PetscInt stencilWidth = 1;
-    const PetscScalar T = 1.0;
-    const PetscScalar dt = 0.125;
+    PetscInt stencilWidth = 1;
+    PetscScalar T = 1.0;
+    PetscScalar dt = 0.125;
     };
 
 

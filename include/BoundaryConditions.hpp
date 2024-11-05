@@ -5,29 +5,7 @@ struct Component{
     Vec variable;
     DMStagStencilLocation location[2];
     std::string name;
-
-    //Component& operator=(const Component& other);
 };
-
-
-// Component& Component::operator=(const Component& other) {
-//     if (this != &other) {
-//         VecDestroy(&variable);
-//         VecDuplicate(other.variable, &variable);
-//         VecCopy(other.variable, variable);
-
-//         location[0] = other.location[0];
-
-//         if(this->name != "pressure"){
-//         location[1] = other.location[1];
-//         }
-
-//         name = other.name;
-//     }
-//     return *this;
-// }
-
-
 
 
 
@@ -41,9 +19,9 @@ class BoundaryConditions {
     PetscReal k{2*pi};
     PetscReal c{(5/6)*pi};
     PetscReal d{1.5*pi};
-    PetscReal dt{0.01};
+    PetscReal dt{0.5};
     PetscReal a{pi/4};
-    PetscReal Re{1};
+    PetscReal Re{10};
 
     
     protected:
@@ -96,13 +74,19 @@ class BoundaryConditions {
         bcFunctions[index] = func;
     }
 
-    PetscReal get_time(const double &time){
+    PetscReal get_time(const double &timeStep){
         
-        if(pb_type == "parabolic"){
-        theta = d*d*(time);}
+        if(pb_type == "stokes"){
+        theta = d*d*(timeStep);}
 
-        if (pb_type == "stokes"){
-        theta = (1/Re)*time*pi*pi/3;}
+        if (pb_type == "parabolic"){
+        theta = (1/Re)*(timeStep+1)*dt*pi*pi/3;
+        std::cout<< "theta = " << theta << std::endl;
+        std::cout<< "timeStep = " << timeStep << std::endl;
+        std::cout << "dt = " << dt << std::endl;
+        std::cout << "Re = " << Re << std::endl;
+
+        }
 
         return theta;
         

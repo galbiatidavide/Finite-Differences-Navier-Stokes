@@ -13,8 +13,8 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
 
 
             if(grid -> components[i].name == "x_component"){
-            std::cout << "----------------------------" << std::endl;
-            std::cout << "lhs assemble for x_component" << std::endl;
+            // std::cout << "----------------------------" << std::endl;
+            // std::cout << "lhs assemble for x_component" << std::endl;
             for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                 for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
                     for (ex = start[0]; ex < start[0] + n[0]; ++ex) {
@@ -390,14 +390,14 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
 
     MatAssemblyBegin(lhs_comp[i], MAT_FINAL_ASSEMBLY);
     MatAssemblyEnd(lhs_comp[i], MAT_FINAL_ASSEMBLY);
-    std::cout << "lhs assembled for x_component" << std::endl;
-    std::cout << "-----------------------------" << std::endl;
+    // std::cout << "lhs assembled for x_component" << std::endl;
+    // std::cout << "-----------------------------" << std::endl;
 
     } //if x_component
 
     if(grid->components[i].name == "y_component"){
 
-    std::cout << "lhs assemble for y_component" << std::endl;
+    // std::cout << "lhs assemble for y_component" << std::endl;
 
         for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
             for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -776,14 +776,14 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
     MatAssemblyBegin(lhs_comp[i], MAT_FINAL_ASSEMBLY);
     MatAssemblyEnd(lhs_comp[i], MAT_FINAL_ASSEMBLY);
 
-    std::cout << "lhs assembled for y_component" << std::endl;
-    std::cout << "-----------------------------" << std::endl;
+    // std::cout << "lhs assembled for y_component" << std::endl;
+    // std::cout << "-----------------------------" << std::endl;
 
 } //if y_component
 
 if(grid->components[i].name == "z_component"){
 
-std::cout << "lhs assemble for z_component" << std::endl;
+// std::cout << "lhs assemble for z_component" << std::endl;
 
 for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
         for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1159,14 +1159,14 @@ for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
     MatAssemblyBegin(lhs_comp[i], MAT_FINAL_ASSEMBLY);
     MatAssemblyEnd(lhs_comp[i], MAT_FINAL_ASSEMBLY);
 
-    std::cout << "lhs assembled for z_component" << std::endl;
-    std::cout << "-----------------------------" << std::endl;
+    // std::cout << "lhs assembled for z_component" << std::endl;
+    // std::cout << "-----------------------------" << std::endl;
 
 } //if z_component
-
-
 } //for componenti 
 
+std::cout << "lhs assembled for all components" << std::endl;
+std::cout << "---------------------------------" << std::endl;
 
 PetscFunctionReturn(0); 
 
@@ -1176,6 +1176,7 @@ PetscFunctionReturn(0);
 PetscErrorCode Parabolic::assemble_rhs(const double &time){
 
     PetscReal theta = grid->bc.get_time(time);
+    std::cout << "theta = " << theta << " at time " << time << std::endl;
 
     PetscFunctionBegin;
     
@@ -1198,12 +1199,12 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
 
 
         for (int d = 0; d < 3; ++d) {
-            DMStagGetLocationSlot(dmCoord, n_components[i].location[0], d, &icuxStart[d]);
-            DMStagGetLocationSlot(dmCoord, n_components[i].location[1], d, &icuxEnd[d]);
+            DMStagGetLocationSlot(dmCoord, grid->components[i].location[0], d, &icuxStart[d]);
+            DMStagGetLocationSlot(dmCoord, grid->components[i].location[1], d, &icuxEnd[d]);
         }
 
-        DMStagGetLocationSlot(grid->dmGrid, n_components[i].location[0], 0, &iuxStart);
-        DMStagGetLocationSlot(grid->dmGrid, n_components[i].location[1], 0, &iuxEnd);
+        DMStagGetLocationSlot(grid->dmGrid, grid->components[i].location[0], 0, &iuxStart);
+        DMStagGetLocationSlot(grid->dmGrid, grid->components[i].location[1], 0, &iuxEnd);
 
         Vec local_n;
         DMCreateLocalVector(grid->dmGrid, &local_n);
@@ -1217,9 +1218,6 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
 
        //Set rhs of x_component
         if (grid->components[i].name == "x_component") {
-
-            std::cout << "---------------------------------------" << std::endl;
-            std::cout << "rhs assemble for x_component at time " << time << std::endl;
 
             for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                 for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1241,38 +1239,38 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] - hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);
                         } else {
                             PetscReal bc_2;
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] - hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                                                     
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                                                     
                         }
                     } else if (ey == N[1] - 1) {
                         if (ez == 0) {
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);                                                  
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);                                                  
                         } else if (ez == N[2] - 1) {
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]] + hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]] + hz, theta);                            
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);       
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hy*hy) - bc_2/(hz*hz);       
                         } else {
                             PetscReal bc_2;
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                            
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                            
                         }
                     } else if (ez == 0) {
                         PetscReal bc_1;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                       
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                       
                     } else if (ez == N[2] - 1) {
                         PetscReal bc_1;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                        
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hz*hz);                        
                     } else {
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
                     }
 
                 } //else
@@ -1289,15 +1287,10 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
     DMRestoreLocalVector(grid->dmGrid, &local_n);
     DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
 
-    std::cout << "rhs assembled for x_component" << std::endl;
-    std::cout << "---------------------------------------" << std::endl;
 
     } //if x_component
 
     if(grid->components[i].name == "y_component"){
-
-        std::cout << "---------------------------------------" << std::endl;
-        std::cout << "rhs assemble for y_component at time " << time << std::endl;
 
         for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                 for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1318,38 +1311,38 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);
                         } else {
                             PetscReal bc_1;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
                         }
                     } else if (ex == N[0] - 1) {
                         if (ez == 0) {
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);                                                  
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);                                                  
                         } else if (ez == N[2] - 1) {
                             PetscReal bc_1, bc_2;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                             bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);                           
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);       
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hz*hz);       
                         } else {
                             PetscReal bc_1;
                             bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                            arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
+                            arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
                         }
                     } else if (ez == 0) {
                         PetscReal bc_2;
                         bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]-hz, theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                       
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                       
                     } else if (ez == N[2] - 1) {
                         PetscReal bc_2;
                         bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]]+hz, theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                        
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hz*hz);                        
                     } else {
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
                     }
 
                 } //else
@@ -1366,16 +1359,10 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
     DMRestoreLocalVector(grid->dmGrid, &local_n);
     DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
 
-    std::cout << "rhs assembled for y_component" << std::endl;
-    std::cout << "---------------------------------------" << std::endl;
-
     } //if y_component
 
 
     if(grid->components[i].name == "z_component"){
-
-    std::cout << "---------------------------------------" << std::endl;
-    std::cout << "rhs assemble for z_component at time " << time << std::endl;
 
     for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
             for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1396,38 +1383,38 @@ PetscErrorCode Parabolic::assemble_rhs(const double &time){
                         PetscReal bc_1, bc_2;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                         bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);
                     } else {
                         PetscReal bc_1;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]-hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                                                     
                     }
                 } else if (ex == N[0] - 1) {
                     if (ey == 0) {
                         PetscReal bc_1, bc_2;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                         bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);                                                  
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);                                                  
                     } else if (ey == N[1] - 1) {
                         PetscReal bc_1, bc_2;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
                         bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);                           
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);       
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx) - bc_2/(hy*hy);       
                     } else {
                         PetscReal bc_1;
                         bc_1 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]]+hx, arrCoord[ez][ey][ex][icuxStart[1]], arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                        arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
+                        arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_1/(hx*hx);                            
                     }
                 } else if (ey == 0) {
                     PetscReal bc_2;
                     bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]-hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                       
+                    arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                       
                 } else if (ey == N[1] - 1) {
                     PetscReal bc_2;
                     bc_2 = exactSolution[i](arrCoord[ez][ey][ex][icuxStart[0]], arrCoord[ez][ey][ex][icuxStart[1]]+hy, arrCoord[ez][ey][ex][icuxStart[2]], theta);
-                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                        
+                    arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart] - bc_2/(hy*hy);                        
                 } else {
-                    arrRhs[ez][ey][ez][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
+                    arrRhs[ez][ey][ex][iuxStart] = -Ret*arrVecLocal_n[ez][ey][ex][iuxStart];
                 }
 
             } //else
@@ -1444,29 +1431,101 @@ DMRestoreLocalVector(dmCoord, &coordLocal);
 DMRestoreLocalVector(grid->dmGrid, &local_n);
 DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
 
-std::cout << "rhs assembled for z_component" << std::endl;
-std::cout << "---------------------------------------" << std::endl;
 
 } //if z_component
 
 } //for componenti
+
+std::cout << "rhs assembled for all components at time " << theta << std::endl;
+std::cout << "-----------------------------------------" << std::endl;
+
 
 PetscFunctionReturn(0);
 
 }
 
 
+// PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
+
+//     PetscFunctionBegin;
+
+//     for (size_t i = 0; i < grid->components.size(); ++i) {  
+//     KSP       ksp;
+//     PC        pc;
+//     assemble_rhs(time_step);
+//     output();
+//     KSPCreate(PETSC_COMM_WORLD, &ksp);
+//     KSPSetType(ksp, KSPCG);
+//     KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
+//     KSPGetPC(ksp, &pc);
+//     PCSetType(pc, PCFIELDSPLIT);
+//     PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+//     KSPSetFromOptions(ksp);
+//     KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
+//     KSPDestroy(&ksp);
+//     }
+
+//     PetscFunctionReturn(0);
+// }
+
+PetscErrorCode Parabolic::solveTimeStep(const double &time_step) {
+    PetscFunctionBegin;
+
+    for (size_t i = 0; i < grid->components.size(); ++i) {  
+        KSP ksp;
+        PC pc;
+
+        // Assemble the right-hand side for the current time step
+        assemble_rhs(time_step);
+        output();
+
+        // Create the Krylov Subspace Solver and set it to be fully configurable
+        KSPCreate(PETSC_COMM_WORLD, &ksp);
+
+        // Set the operator matrices (left-hand side) for this component
+        KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
+
+        // Get the preconditioner context and leave its type unspecified
+        KSPGetPC(ksp, &pc);
+
+        // Allow all options to be set at runtime via the command line
+        KSPSetFromOptions(ksp);
+
+        // Solve the linear system
+        KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
+
+        // Destroy the KSP object after use
+        KSPDestroy(&ksp);
+    }
+
+    PetscFunctionReturn(0);
+}
+
+
+PetscErrorCode Parabolic::Solve(){
+    
+        PetscFunctionBegin;
+
+        assemble_matrices();
+
+        PetscReal timeStep = 0;
+    
+        while(timeStep*dt < T-0.5){
+            solveTimeStep(timeStep);
+            timeStep++;
+        }
+    
+        PetscFunctionReturn(0);
+}
 
 
 
-
-
-PetscErrorCode Parabolic::saveMatrices(const std::string& filename_prefix) {
+PetscErrorCode Parabolic::saveMatrices() {
     PetscFunctionBegin;
 
     for (size_t i = 0; i < lhs_comp.size(); ++i) {
 
-        std::string filename = filename_prefix + "_lhs_" + std::to_string(i) + ".txt";
+        std::string filename =  "dio_" + std::to_string(i) + ".txt";
         PetscViewer viewer;
 
         PetscViewerASCIIOpen(PETSC_COMM_WORLD, filename.c_str(), &viewer);
