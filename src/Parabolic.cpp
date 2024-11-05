@@ -1445,57 +1445,24 @@ PetscFunctionReturn(0);
 }
 
 
-// PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
+PetscErrorCode Parabolic::solveTimeStep(const double &time_step){
 
-//     PetscFunctionBegin;
-
-//     for (size_t i = 0; i < grid->components.size(); ++i) {  
-//     KSP       ksp;
-//     PC        pc;
-//     assemble_rhs(time_step);
-//     output();
-//     KSPCreate(PETSC_COMM_WORLD, &ksp);
-//     KSPSetType(ksp, KSPCG);
-//     KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
-//     KSPGetPC(ksp, &pc);
-//     PCSetType(pc, PCFIELDSPLIT);
-//     PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
-//     KSPSetFromOptions(ksp);
-//     KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
-//     KSPDestroy(&ksp);
-//     }
-
-//     PetscFunctionReturn(0);
-// }
-
-PetscErrorCode Parabolic::solveTimeStep(const double &time_step) {
     PetscFunctionBegin;
 
     for (size_t i = 0; i < grid->components.size(); ++i) {  
-        KSP ksp;
-        PC pc;
-
-        // Assemble the right-hand side for the current time step
-        assemble_rhs(time_step);
-        output();
-
-        // Create the Krylov Subspace Solver and set it to be fully configurable
-        KSPCreate(PETSC_COMM_WORLD, &ksp);
-
-        // Set the operator matrices (left-hand side) for this component
-        KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
-
-        // Get the preconditioner context and leave its type unspecified
-        KSPGetPC(ksp, &pc);
-
-        // Allow all options to be set at runtime via the command line
-        KSPSetFromOptions(ksp);
-
-        // Solve the linear system
-        KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
-
-        // Destroy the KSP object after use
-        KSPDestroy(&ksp);
+    KSP       ksp;
+    PC        pc;
+    assemble_rhs(time_step);
+    output();
+    KSPCreate(PETSC_COMM_WORLD, &ksp);
+    KSPSetType(ksp, KSPCG);
+    KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
+    KSPGetPC(ksp, &pc);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    KSPSetFromOptions(ksp);
+    KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
+    KSPDestroy(&ksp);
     }
 
     PetscFunctionReturn(0);
