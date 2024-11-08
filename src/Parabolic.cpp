@@ -1173,9 +1173,9 @@ PetscFunctionReturn(0);
 }
 
 
-PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time){
+PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
 
-    PetscReal theta = grid->bc.get_time(time);
+    PetscReal theta = grid->bc.get_time(time_step);
     std::cout << "theta = " << theta << " at time " << time << std::endl;
 
     PetscFunctionBegin;
@@ -1287,6 +1287,23 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time){
     DMRestoreLocalVector(grid->dmGrid, &local_n);
     DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
 
+        // PetscViewer viewer_2;
+        // Vec r;
+        // DM pda;
+
+        // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+        // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
+
+        // char filename_r[50];
+        // sprintf(filename_r, "results/rhs_00%i.txt", i);  // Change extension to .txt
+        // PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
+
+        // VecView(r, viewer_2);  // View the vector contents in text format
+
+        // // Cleanup
+        // VecDestroy(&r);
+        // DMDestroy(&pda);
+        // PetscViewerDestroy(&viewer_2);
 
     } //if x_component
 
@@ -1358,6 +1375,24 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time){
     DMRestoreLocalVector(dmCoord, &coordLocal);
     DMRestoreLocalVector(grid->dmGrid, &local_n);
     DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+
+    // PetscViewer viewer_2;
+    // Vec r;
+    // DM pda;
+
+    // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+    // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
+
+    // char filename_r[50];
+    // sprintf(filename_r, "results/rhs_00%i.txt", i);  // Change extension to .txt
+    // PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
+
+    // VecView(r, viewer_2);  // View the vector contents in text format
+
+    // // Cleanup
+    // VecDestroy(&r);
+    // DMDestroy(&pda);
+    // PetscViewerDestroy(&viewer_2);
 
     } //if y_component
 
@@ -1431,6 +1466,23 @@ DMRestoreLocalVector(dmCoord, &coordLocal);
 DMRestoreLocalVector(grid->dmGrid, &local_n);
 DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
 
+    // PetscViewer viewer_2;
+    // Vec r;
+    // DM pda;
+
+    // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+    // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
+
+    // char filename_r[50];
+    // sprintf(filename_r, "results/rhs_00%i.txt", i);  // Change extension to .txt
+    // PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
+
+    // VecView(r, viewer_2);  // View the vector contents in text format
+
+    // // Cleanup
+    // VecDestroy(&r);
+    // DMDestroy(&pda);
+    // PetscViewerDestroy(&viewer_2);
 
 } //if z_component
 
@@ -1452,10 +1504,12 @@ PetscErrorCode Parabolic::solveTimeStep(const unsigned int &time_step){
     for (size_t i = 0; i < grid->components.size(); ++i) {  
     KSP       ksp;
     PC        pc;
+    
     assemble_rhs(time_step);
     output_rhs(time_step);
     KSPCreate(PETSC_COMM_WORLD, &ksp);
     KSPSetType(ksp, KSPCG);
+    saveMatrices();
     KSPSetOperators(ksp, lhs_comp[i], lhs_comp[i]);
     KSPGetPC(ksp, &pc);
     PCSetType(pc, PCFIELDSPLIT);
@@ -1463,6 +1517,7 @@ PetscErrorCode Parabolic::solveTimeStep(const unsigned int &time_step){
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
     KSPDestroy(&ksp);
+    VecCopy(grid->components[i].variable, n_components[i].variable);
     output(time_step);
     }
 
@@ -1475,6 +1530,7 @@ PetscErrorCode Parabolic::Solve(){
         PetscFunctionBegin;
 
         assemble_matrices();
+        //saveMatrices();
 
         PetscInt timeStep = 0;
     
