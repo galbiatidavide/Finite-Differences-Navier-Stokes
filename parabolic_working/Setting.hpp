@@ -71,6 +71,48 @@ public:
 };
 
 template <>
+class ProblemSetting<struct Transport> : public Setting {
+public:
+    ProblemSetting(PetscInt nx_, PetscInt ny_, PetscInt nz_,
+                   PetscReal Lx_0_, PetscReal Ly_0_, PetscReal Lz_0_,
+                   PetscReal Lx_, PetscReal Ly_, PetscReal Lz_,
+                   PetscReal dt_, PetscReal iter_)
+        : Setting(nx_, ny_, nz_, Lx_0_, Ly_0_, Lz_0_, Lx_, Ly_, Lz_, dt_, iter_)
+    {
+        DMStagCreate3d(PETSC_COMM_WORLD, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE,
+                       nx, ny, nz, PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE,
+                       0, 0, 1, 0, DMSTAG_STENCIL_BOX, 1, NULL, NULL, NULL, &dmGrid_Staggered);
+        DMSetFromOptions(dmGrid_Staggered);
+        DMSetUp(dmGrid_Staggered);
+        DMStagSetUniformCoordinatesExplicit(dmGrid_Staggered, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+
+        DMStagCreate3d(PETSC_COMM_WORLD, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE,
+                       nx, ny, nz, PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE,
+                       0, 1, 1, 0, DMSTAG_STENCIL_BOX, 1, NULL, NULL, NULL, &dmGrid_Shifted);
+        DMSetFromOptions(dmGrid_Shifted);
+        DMSetUp(dmGrid_Shifted);
+        DMStagSetUniformCoordinatesExplicit(dmGrid_Shifted, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+
+        DMStagCreate3d(PETSC_COMM_WORLD, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE,
+                       nx, ny, nz, PETSC_DECIDE, PETSC_DECIDE, PETSC_DECIDE,
+                       0, 0, 1, 1, DMSTAG_STENCIL_BOX, 1, NULL, NULL, NULL, &dmGrid_Centered);
+        DMSetFromOptions(dmGrid_Centered);
+        DMSetUp(dmGrid_Centered);
+        DMStagSetUniformCoordinatesExplicit(dmGrid_Centered, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+    }
+
+    DM dmGrid_Shifted;
+    DM dmGrid_Centered;
+    DM dmGrid_Staggered;
+
+    ~ProblemSetting() {
+        DMDestroy(&dmGrid_Shifted);
+        DMDestroy(&dmGrid_Centered);
+        DMDestroy(&dmGrid_Staggered);
+    }
+};
+
+template <>
 class ProblemSetting<struct Poisson> : public Setting {
 public:
     using Setting::Setting;
