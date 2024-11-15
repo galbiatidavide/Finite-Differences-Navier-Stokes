@@ -42,17 +42,6 @@
 #define FRONT_UP_RIGHT   DMSTAG_FRONT_UP_RIGHT
 
 
-// Define the Params structure
-struct Params {
-    std::array<PetscInt, 3> n_discr;
-    std::array<PetscInt, 4> dofs;
-    std::array<std::array<PetscScalar, 2>, 3> intervals;
-    PetscInt stencilWidth = 1;
-    PetscScalar T = 1.0;
-    PetscScalar dt = 0.125;
-    };
-
-
 
 // Template class for Grid
 class Grid {
@@ -68,18 +57,11 @@ public:
 
     
     // Constructor
-    Grid(Params given_input) : input(given_input) {
-        // static_cast<GridType*>(this)->setDofs(input); // Call the derived class method to set dofs
-        // CreateGrid(&dmGrid, input);
-        // static_cast<GridType*>(this)->setTypes();
-        // static_cast<GridType*>(this)->setComponents();
-        // DMCreateGlobalVector(dmGrid, &globalVec);
-    }
+    Grid(Params given_input) : input(given_input) {};
 
     virtual void setDofs(Params& input) = 0;
     virtual void setTypes() = 0;
     virtual void setComponents() = 0;
-
 
 
     // Create grid 
@@ -174,18 +156,37 @@ public:
 
         PetscFunctionBegin
         for(unsigned int i = 0; i < components.size(); i++){
-            PetscViewer viewer;
+            // PetscViewer viewer;
+            // Vec r;
+            // DM pda;
+            // DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            // PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
+            // char filename_r[50];
+            // sprintf(filename_r, "%s.vtr", components.at(i).name.c_str());
+            // PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
+            // VecView(r, viewer);
+            // VecDestroy(&r);
+            // DMDestroy(&pda);
+            // PetscViewerDestroy(&viewer);
+
+            PetscViewer viewer_2;
             Vec r;
             DM pda;
-            DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
-            PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
+
+            DMStagVecSplitToDMDA(dmGrid, components[i].variable, components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, "comp");  // Set name of vector
+
             char filename_r[50];
-            sprintf(filename_r, "%s.vtr", components.at(i).name.c_str());
-            PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
-            VecView(r, viewer);
+            sprintf(filename_r, "results/comp%i.txt", i);  // Change extension to .txt
+            PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
+
+            VecView(r, viewer_2);  // View the vector contents in text format
+
+            // Cleanup
             VecDestroy(&r);
             DMDestroy(&pda);
-            PetscViewerDestroy(&viewer);
+            PetscViewerDestroy(&viewer_2);
+
         }
 
         PetscFunctionReturn(0);
@@ -206,12 +207,14 @@ public:
 // Derived template specialization for staggered grid
 class StaggeredGrid : public Grid {
 public:
+    
     StaggeredGrid(Params given_input) : Grid(given_input) {
         setDofs(input);
         CreateGrid(&dmGrid, input);
         setTypes();
         setComponents();
         DMCreateGlobalVector(dmGrid, &globalVec);
+        bc.set_params(input);
     }
 
     // Method to set dofs for staggered grid
@@ -248,6 +251,7 @@ public:
         setTypes();
         setComponents();
         DMCreateGlobalVector(dmGrid, &globalVec);
+        bc.set_params(input);
     }
 
     // Method to set dofs for centered grid
@@ -279,6 +283,7 @@ public:
         setTypes();
         setComponents();
         DMCreateGlobalVector(dmGrid, &globalVec);
+        bc.set_params(input);
     }
 
     // Method to set dofs for shifted grid

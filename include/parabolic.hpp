@@ -17,7 +17,7 @@
 
 class Parabolic {
 private:
-    std::unique_ptr<Grid> grid;
+    StaggeredGrid grid;
     PetscReal dt; //Time step
     PetscReal T; //Final Time
     PetscReal time; //Current Time
@@ -37,26 +37,25 @@ public:
     Parabolic(Params input): dt(input.dt), T(input.T), 
                             hx((input.intervals[0][1]-input.intervals[0][0])/input.n_discr[0]), 
                             hy((input.intervals[1][1]-input.intervals[1][0])/input.n_discr[1]), 
-                            hz((input.intervals[2][1]-input.intervals[2][0])/input.n_discr[2]) {
+                            hz((input.intervals[2][1]-input.intervals[2][0])/input.n_discr[2]), grid(input) {
         
 
-        grid = std::make_unique<StaggeredGrid>(input);
-        grid->bc_setUp("parabolic");
-        grid->save_grid();
+        grid.bc_setUp("parabolic");
+        grid.save_grid();
 
-        lhs_comp.resize(grid->components.size());
-        rhs_comp.resize(grid->components.size());
+        lhs_comp.resize(grid.components.size());
+        rhs_comp.resize(grid.components.size());
 
         for(auto &lhs : lhs_comp){
-            DMCreateMatrix(grid->dmGrid, &lhs);
+            DMCreateMatrix(grid.dmGrid, &lhs);
         }
 
         for(auto &rhs : rhs_comp){
-            DMCreateGlobalVector(grid->dmGrid, &rhs);
+            DMCreateGlobalVector(grid.dmGrid, &rhs);
         }
 
          for (int i = 0; i < 3; ++i) {
-            exactSolution[i] = grid->bc.bcFunctions[i];
+            exactSolution[i] = grid.bc.bcFunctions[i];
         }
 
         init_n();
@@ -69,17 +68,17 @@ public:
 
         n_components.resize(3);
         Vec U_n, V_n, W_n;
-        DMCreateGlobalVector(grid->dmGrid, &U_n);
-        DMCreateGlobalVector(grid->dmGrid, &V_n);
-        DMCreateGlobalVector(grid->dmGrid, &W_n);
+        DMCreateGlobalVector(grid.dmGrid, &U_n);
+        DMCreateGlobalVector(grid.dmGrid, &V_n);
+        DMCreateGlobalVector(grid.dmGrid, &W_n);
 
-        n_components[0] = {U_n, {grid->components[0].location[0], grid->components[0].location[1]}, grid->components[0].name + "_n"};
-        n_components[1] = {V_n, {grid->components[1].location[0], grid->components[1].location[1]}, grid->components[1].name + "_n"};
-        n_components[2] = {W_n, {grid->components[2].location[0], grid->components[2].location[1]}, grid->components[2].name + "_n"};  
+        n_components[0] = {U_n, {grid.components[0].location[0], grid.components[0].location[1]}, grid.components[0].name + "_n"};
+        n_components[1] = {V_n, {grid.components[1].location[0], grid.components[1].location[1]}, grid.components[1].name + "_n"};
+        n_components[2] = {W_n, {grid.components[2].location[0], grid.components[2].location[1]}, grid.components[2].name + "_n"};  
 
-        VecCopy(grid->components[0].variable, n_components[0].variable);
-        VecCopy(grid->components[1].variable, n_components[1].variable);
-        VecCopy(grid->components[2].variable, n_components[2].variable);   
+        VecCopy(grid.components[0].variable, n_components[0].variable);
+        VecCopy(grid.components[1].variable, n_components[1].variable);
+        VecCopy(grid.components[2].variable, n_components[2].variable);   
         
         PetscFunctionReturn(0);
     }
@@ -97,7 +96,7 @@ public:
     // Vec GetSolutionY(){};
     // Vec GetSolutionZ(){};
     void SaveSolution(){
-        grid->save_grid();
+        grid.save_grid();
     };
 
     PetscErrorCode assemble_matrices();
@@ -125,14 +124,14 @@ protected:
     PetscErrorCode output(const unsigned int &time_step) {
         
         PetscFunctionBegin
-        for(unsigned int i = 0; i < grid->components.size(); i++){
+        for(unsigned int i = 0; i < grid.components.size(); i++){
             PetscViewer viewer;
             Vec r;
             DM pda;
-            DMStagVecSplitToDMDA(grid->dmGrid, grid->components.at(i).variable, grid->components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
-            PetscObjectSetName((PetscObject)r, grid->components.at(i).name.c_str());
+            DMStagVecSplitToDMDA(grid.dmGrid, grid.components.at(i).variable, grid.components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, grid.components.at(i).name.c_str());
             char filename_r[50];
-            sprintf(filename_r, "results/%s_000%i.vtr", grid->components.at(i).name.c_str(), time_step);
+            sprintf(filename_r, "results/%s_000%i.vtr", grid.components.at(i).name.c_str(), time_step);
             PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
             VecView(r, viewer);
             VecDestroy(&r);
@@ -146,12 +145,12 @@ protected:
 PetscErrorCode output_rhs(const unsigned int &time_step) {
         
         PetscFunctionBegin
-        for(unsigned int i = 0; i < grid->components.size(); i++){
+        for(unsigned int i = 0; i < grid.components.size(); i++){
             // PetscViewer viewer;
             // Vec r;
             // DM pda;
-            // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0],  DM_BOUNDARY_NONE, &pda, &r);
-            // PetscObjectSetName((PetscObject)r, grid->components.at(i).name.c_str());
+            // DMStagVecSplitToDMDA(grid.dmGrid, rhs_comp[i], grid.components[i].location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            // PetscObjectSetName((PetscObject)r, grid.components.at(i).name.c_str());
             // char filename_r[50];
             // sprintf(filename_r, "results/rhs%i_00%i.vtr", i, time_step);
             // PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
@@ -163,7 +162,7 @@ PetscErrorCode output_rhs(const unsigned int &time_step) {
             Vec r;
             DM pda;
 
-            DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+            DMStagVecSplitToDMDA(grid.dmGrid, rhs_comp[i], grid.components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
             PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
 
             char filename_r[50];

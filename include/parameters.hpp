@@ -52,9 +52,9 @@ PetscReal constexpr A = 1;
 PetscReal constexpr B = 1;
 PetscReal constexpr C = 1;
 //Define the domain & grid
-PetscInt constexpr nx{40};
-PetscInt constexpr ny{40};
-PetscInt constexpr nz{40};
+PetscInt constexpr nx{4};
+PetscInt constexpr ny{4};
+PetscInt constexpr nz{4};
 PetscReal constexpr Lx_0{0};
 PetscReal constexpr Ly_0{0};
 PetscReal constexpr Lz_0{0};
@@ -64,10 +64,10 @@ PetscReal constexpr Ly{1.0};
 PetscReal constexpr Lz{1.0};
 
 //Define the time
-PetscReal constexpr dt{0.05};
+PetscReal constexpr dt{0.5};
 PetscReal constexpr iter{2};
 
-PetscReal constexpr Re{100};
+PetscReal constexpr Re{10};
 PetscReal constexpr LRef{100};
 PetscReal constexpr nu{vRef*LRef/Re};
 PetscReal theta{0};

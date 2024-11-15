@@ -7,6 +7,18 @@ struct Component{
     std::string name;
 };
 
+// Define the Params structure
+struct Params {
+    std::array<PetscInt, 3> n_discr;
+    std::array<PetscInt, 4> dofs;
+    std::array<std::array<PetscScalar, 2>, 3> intervals;
+    PetscInt stencilWidth = 1;
+    PetscScalar T = 1.0;
+    PetscScalar dt = 0.125;
+    PetscScalar Re = 10;
+    };
+
+
 
 
 class BoundaryConditions {
@@ -57,6 +69,11 @@ class BoundaryConditions {
         } 
     }
 
+    void set_params(Params input){
+        dt = input.dt;
+        Re = input.Re;
+    }
+
 
     PetscReal get_bcFunction(int index, double x, double y, double z, double theta) {
         if (index < 0 || index >= 3) {
@@ -81,11 +98,6 @@ class BoundaryConditions {
 
         if (pb_type == "parabolic"){
         theta = (1/Re)*(timeStep+1)*dt*pi*pi/3;
-        std::cout<< "theta = " << theta << std::endl;
-        std::cout<< "timeStep = " << timeStep << std::endl;
-        std::cout << "dt = " << dt << std::endl;
-        std::cout << "Re = " << Re << std::endl;
-
         }
 
         return theta;

@@ -7,11 +7,11 @@ int main(int argc, char **argv) {
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
 
     Params input;
-    input.dofs = {8, 2, 1, 0};
     input.n_discr = {4, 4, 4};
     input.intervals = {{{-0.5, 0.5}, {-0.5, 0.5}, {-0.5, 0.5}}};
     input.T = 1.0;
     input.dt = 0.5;
+    input.Re = 10;
 
 {
 

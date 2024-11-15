@@ -4,15 +4,15 @@ PetscErrorCode Parabolic::assemble_matrices(){
 
 PetscFunctionBegin;
 
-for(unsigned int i = 0; i < grid->components.size(); i++){
+for(unsigned int i = 0; i < grid.components.size(); i++){
 
             PetscInt        start[3], n[3], N[3], ex, ey, ez;
 
-            DMStagGetCorners(grid->dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], NULL, NULL, NULL);
-            DMStagGetGlobalSizes(grid->dmGrid, &N[0], &N[1], &N[2]);
+            DMStagGetCorners(grid.dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], NULL, NULL, NULL);
+            DMStagGetGlobalSizes(grid.dmGrid, &N[0], &N[1], &N[2]);
 
 
-            if(grid -> components[i].name == "x_component"){
+            if(grid . components[i].name == "x_component"){
             // std::cout << "----------------------------" << std::endl;
             // std::cout << "lhs assemble for x_component" << std::endl;
             for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
@@ -28,7 +28,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                     row.k = ez;
                     row.loc = RIGHT;
                     row.c = 0;
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                 }      
                 /* Equation on left face of this element */
                 if (ex == 0) {
@@ -39,7 +39,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                     row.k = ez;
                     row.loc = LEFT;
                     row.c = 0;
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                     
                     } else {
                     DMStagStencil row, col[7];
@@ -381,7 +381,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                         valA[6] = 1.0 / (hz * hz);
                     }
 
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
 
                 } //else
             } //for ex
@@ -395,7 +395,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
 
     } //if x_component
 
-    if(grid->components[i].name == "y_component"){
+    if(grid.components[i].name == "y_component"){
 
     // std::cout << "lhs assemble for y_component" << std::endl;
 
@@ -412,7 +412,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                     row.k                  = ez;
                     row.loc                = UP;
                     row.c                  = 0;
-                    DMStagMatSetValuesStencil(grid -> dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid . dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                 }                
                 /* Equation on bottom face of this element */
                 if (ey == 0) {
@@ -424,7 +424,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                     row.k                  = ez;
                     row.loc                = DOWN;
                     row.c                  = 0;
-                    DMStagMatSetValuesStencil(grid -> dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid . dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                 } else {
                     /* Y-momentum equation, (v_xx + v_yy + v_zz) - p_y = f^y */
                     DMStagStencil row, col[7];
@@ -765,7 +765,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
                         valA[6]    = 1.0 / (hz * hz);                       
                     }
 
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
 
                 } //else
                 
@@ -781,7 +781,7 @@ for(unsigned int i = 0; i < grid->components.size(); i++){
 
 } //if y_component
 
-if(grid->components[i].name == "z_component"){
+if(grid.components[i].name == "z_component"){
 
 // std::cout << "lhs assemble for z_component" << std::endl;
 
@@ -797,7 +797,7 @@ for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                     row.k                  = ez;
                     row.loc                = FRONT;
                     row.c                  = 0;
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                 }                
                 /* Equation on back face of this element */
                 if (ez == 0) {
@@ -809,7 +809,7 @@ for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                     row.k                  = ez;
                     row.loc                = BACK;
                     row.c                  = 0;
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, 1, &row, &valA, INSERT_VALUES);
                 } else {
                     /* Z-momentum equation, (w_xx + w_yy + w_zz) - p_z = f^z */
                     DMStagStencil row, col[7];
@@ -1150,7 +1150,7 @@ for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                         valA[6]    = 1.0 / (hz * hz);                         
                     }
 
-                    DMStagMatSetValuesStencil(grid->dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
+                    DMStagMatSetValuesStencil(grid.dmGrid, lhs_comp[i], 1, &row, nEntries, col, valA, INSERT_VALUES);
                 } //else
             } //for ex
         } //for ey
@@ -1175,12 +1175,12 @@ PetscFunctionReturn(0);
 
 PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
 
-    PetscReal theta = grid->bc.get_time(time_step);
+    PetscReal theta = grid.bc.get_time(time_step);
     std::cout << "theta = " << theta << " at time " << time << std::endl;
 
     PetscFunctionBegin;
     
-    for(unsigned int i = 0; i < grid->components.size(); i++){
+    for(unsigned int i = 0; i < grid.components.size(); i++){
 
         PetscInt        start[3], n[3], nExtra[3], N[3], ex, ey, ez, iuxStart, iuxEnd, icuxStart[3], icuxEnd[3];
         DM              dmCoord;
@@ -1188,36 +1188,36 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
         PetscReal       ****arrCoord, ****arrVecLocal_n, ****arrRhs;
 
 
-        DMStagGetCorners(grid->dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], &nExtra[0], &nExtra[1], &nExtra[2]);
-        DMStagGetGlobalSizes(grid->dmGrid, &N[0], &N[1], &N[2]);
+        DMStagGetCorners(grid.dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], &nExtra[0], &nExtra[1], &nExtra[2]);
+        DMStagGetGlobalSizes(grid.dmGrid, &N[0], &N[1], &N[2]);
 
-        DMGetCoordinateDM(grid->dmGrid, &dmCoord);
-        DMGetCoordinates(grid->dmGrid, &coord);
+        DMGetCoordinateDM(grid.dmGrid, &dmCoord);
+        DMGetCoordinates(grid.dmGrid, &coord);
         DMGetLocalVector(dmCoord, &coordLocal);
         DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
 
 
         for (int d = 0; d < 3; ++d) {
-            DMStagGetLocationSlot(dmCoord, grid->components[i].location[0], d, &icuxStart[d]);
-            DMStagGetLocationSlot(dmCoord, grid->components[i].location[1], d, &icuxEnd[d]);
+            DMStagGetLocationSlot(dmCoord, grid.components[i].location[0], d, &icuxStart[d]);
+            DMStagGetLocationSlot(dmCoord, grid.components[i].location[1], d, &icuxEnd[d]);
         }
 
-        DMStagGetLocationSlot(grid->dmGrid, grid->components[i].location[0], 0, &iuxStart);
-        DMStagGetLocationSlot(grid->dmGrid, grid->components[i].location[1], 0, &iuxEnd);
+        DMStagGetLocationSlot(grid.dmGrid, grid.components[i].location[0], 0, &iuxStart);
+        DMStagGetLocationSlot(grid.dmGrid, grid.components[i].location[1], 0, &iuxEnd);
 
         Vec local_n;
-        DMCreateLocalVector(grid->dmGrid, &local_n);
-        DMGlobalToLocalBegin(grid->dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
-        DMGlobalToLocalEnd(grid->dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
-        DMStagVecGetArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
+        DMCreateLocalVector(grid.dmGrid, &local_n);
+        DMGlobalToLocalBegin(grid.dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
+        DMGlobalToLocalEnd(grid.dmGrid, n_components[i].variable, INSERT_VALUES, local_n);
+        DMStagVecGetArrayRead(grid.dmGrid, local_n, &arrVecLocal_n);
 
         Vec vecLocalRhs;
-        DMGetLocalVector(grid->dmGrid, &vecLocalRhs);
-        DMStagVecGetArray(grid->dmGrid, vecLocalRhs, &arrRhs);
+        DMGetLocalVector(grid.dmGrid, &vecLocalRhs);
+        DMStagVecGetArray(grid.dmGrid, vecLocalRhs, &arrRhs);
 
        //Set rhs of x_component
-        if (grid->components[i].name == "x_component") {
+        if (grid.components[i].name == "x_component") {
 
             for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                 for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1280,18 +1280,18 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
     } //for ez
 
     DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
-    DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
-    DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
-    DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+    DMStagVecRestoreArrayRead(grid.dmGrid, local_n, &arrVecLocal_n);
+    DMStagVecRestoreArray(grid.dmGrid, vecLocalRhs, &arrRhs);
+    DMLocalToGlobal(grid.dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
     DMRestoreLocalVector(dmCoord, &coordLocal);
-    DMRestoreLocalVector(grid->dmGrid, &local_n);
-    DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+    DMRestoreLocalVector(grid.dmGrid, &local_n);
+    DMRestoreLocalVector(grid.dmGrid, &vecLocalRhs);
 
         // PetscViewer viewer_2;
         // Vec r;
         // DM pda;
 
-        // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+        // DMStagVecSplitToDMDA(grid.dmGrid, rhs_comp[i], grid.components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
         // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
 
         // char filename_r[50];
@@ -1307,7 +1307,7 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
 
     } //if x_component
 
-    if(grid->components[i].name == "y_component"){
+    if(grid.components[i].name == "y_component"){
 
         for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
                 for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1369,18 +1369,18 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
     } //for ez
 
     DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
-    DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
-    DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
-    DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+    DMStagVecRestoreArrayRead(grid.dmGrid, local_n, &arrVecLocal_n);
+    DMStagVecRestoreArray(grid.dmGrid, vecLocalRhs, &arrRhs);
+    DMLocalToGlobal(grid.dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
     DMRestoreLocalVector(dmCoord, &coordLocal);
-    DMRestoreLocalVector(grid->dmGrid, &local_n);
-    DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+    DMRestoreLocalVector(grid.dmGrid, &local_n);
+    DMRestoreLocalVector(grid.dmGrid, &vecLocalRhs);
 
     // PetscViewer viewer_2;
     // Vec r;
     // DM pda;
 
-    // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+    // DMStagVecSplitToDMDA(grid.dmGrid, rhs_comp[i], grid.components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
     // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
 
     // char filename_r[50];
@@ -1397,7 +1397,7 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
     } //if y_component
 
 
-    if(grid->components[i].name == "z_component"){
+    if(grid.components[i].name == "z_component"){
 
     for (ez = start[2]; ez < start[2] + n[2]; ++ez) {
             for (ey = start[1]; ey < start[1] + n[1]; ++ey) {
@@ -1459,18 +1459,18 @@ PetscErrorCode Parabolic::assemble_rhs(const unsigned int &time_step){
 } //for ez
 
 DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
-DMStagVecRestoreArrayRead(grid->dmGrid, local_n, &arrVecLocal_n);
-DMStagVecRestoreArray(grid->dmGrid, vecLocalRhs, &arrRhs);
-DMLocalToGlobal(grid->dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
+DMStagVecRestoreArrayRead(grid.dmGrid, local_n, &arrVecLocal_n);
+DMStagVecRestoreArray(grid.dmGrid, vecLocalRhs, &arrRhs);
+DMLocalToGlobal(grid.dmGrid, vecLocalRhs, INSERT_VALUES, rhs_comp[i]);
 DMRestoreLocalVector(dmCoord, &coordLocal);
-DMRestoreLocalVector(grid->dmGrid, &local_n);
-DMRestoreLocalVector(grid->dmGrid, &vecLocalRhs);
+DMRestoreLocalVector(grid.dmGrid, &local_n);
+DMRestoreLocalVector(grid.dmGrid, &vecLocalRhs);
 
     // PetscViewer viewer_2;
     // Vec r;
     // DM pda;
 
-    // DMStagVecSplitToDMDA(grid->dmGrid, rhs_comp[i], grid->components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
+    // DMStagVecSplitToDMDA(grid.dmGrid, rhs_comp[i], grid.components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
     // PetscObjectSetName((PetscObject)r, "rhs");  // Set name of vector
 
     // char filename_r[50];
@@ -1501,7 +1501,7 @@ PetscErrorCode Parabolic::solveTimeStep(const unsigned int &time_step){
 
     PetscFunctionBegin;
 
-    for (size_t i = 0; i < grid->components.size(); ++i) {  
+    for (size_t i = 0; i < grid.components.size(); ++i) {  
     KSP       ksp;
     PC        pc;
     
@@ -1515,9 +1515,9 @@ PetscErrorCode Parabolic::solveTimeStep(const unsigned int &time_step){
     PCSetType(pc, PCFIELDSPLIT);
     PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetFromOptions(ksp);
-    KSPSolve(ksp, rhs_comp[i], grid->components[i].variable);
+    KSPSolve(ksp, rhs_comp[i], grid.components[i].variable);
     KSPDestroy(&ksp);
-    VecCopy(grid->components[i].variable, n_components[i].variable);
+    VecCopy(grid.components[i].variable, n_components[i].variable);
     output(time_step);
     }
 
