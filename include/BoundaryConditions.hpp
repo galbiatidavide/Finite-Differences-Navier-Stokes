@@ -16,6 +16,7 @@ struct Params {
     PetscScalar T = 1.0;
     PetscScalar dt = 0.125;
     PetscScalar Re = 10;
+    unsigned int iter = 100;
     };
 
 

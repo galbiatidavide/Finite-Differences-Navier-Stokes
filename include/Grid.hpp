@@ -155,42 +155,107 @@ public:
     PetscErrorCode save_grid(){
 
         PetscFunctionBegin
+        std::cout<<"Saving grid..."<<std::endl;
         for(unsigned int i = 0; i < components.size(); i++){
-            // PetscViewer viewer;
-            // Vec r;
-            // DM pda;
-            // DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
-            // PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
-            // char filename_r[50];
-            // sprintf(filename_r, "%s.vtr", components.at(i).name.c_str());
-            // PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
-            // VecView(r, viewer);
-            // VecDestroy(&r);
-            // DMDestroy(&pda);
-            // PetscViewerDestroy(&viewer);
-
-            PetscViewer viewer_2;
+            PetscViewer viewer;
             Vec r;
             DM pda;
-
-            DMStagVecSplitToDMDA(dmGrid, components[i].variable, components[i].location[0], DM_BOUNDARY_NONE, &pda, &r);
-            PetscObjectSetName((PetscObject)r, "comp");  // Set name of vector
-
+            DMStagVecSplitToDMDA(this->dmGrid, components.at(i).variable, components.at(i).location[0],  DM_BOUNDARY_NONE, &pda, &r);
+            PetscObjectSetName((PetscObject)r, components.at(i).name.c_str());
             char filename_r[50];
-            sprintf(filename_r, "results/comp%i.txt", i);  // Change extension to .txt
-            PetscViewerASCIIOpen(PetscObjectComm((PetscObject)pda), filename_r, &viewer_2); // Use ASCII viewer
-
-            VecView(r, viewer_2);  // View the vector contents in text format
-
-            // Cleanup
+            sprintf(filename_r, "results/%s.vtr", components.at(i).name.c_str());
+            PetscViewerVTKOpen(PetscObjectComm((PetscObject)pda), filename_r, FILE_MODE_WRITE, &viewer);
+            VecView(r, viewer);
             VecDestroy(&r);
             DMDestroy(&pda);
-            PetscViewerDestroy(&viewer_2);
+            PetscViewerDestroy(&viewer);
 
         }
 
         PetscFunctionReturn(0);
     }
+
+    PetscErrorCode CreateReferenceSolutionTry(unsigned int i, PetscReal const & timeStep)
+{
+    PetscInt        start[3], n[3], nExtra[3], ex, ey, ez, iux, icux[3], iuy, icuy[3], iuz, icuz[3];
+    DM              dmCoord;
+    Vec             vecLocal, coord, coordLocal;
+    PetscReal ****arrVec, ****arrCoord;
+    PetscReal theta = bc.get_time(timeStep);
+
+    PetscFunctionBegin;
+
+    DMStagGetCorners(dmGrid, &start[0], &start[1], &start[2], &n[0], &n[1], &n[2], &nExtra[0], &nExtra[1], &nExtra[2]);
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+
+    DMGetCoordinates(dmGrid, &coord);
+    DMGetLocalVector(dmCoord, &coordLocal);
+    DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+    if(i == 0){
+    DMStagGetLocationSlot(dmCoord, LEFT, 0, &icux[0]);
+    DMStagGetLocationSlot(dmCoord, LEFT, 1, &icux[1]);
+    DMStagGetLocationSlot(dmCoord, LEFT, 2, &icux[2]); 
+    DMStagGetLocationSlot(dmGrid, LEFT, 0, &iux);
+    }
+
+    if(i == 1){
+    DMStagGetLocationSlot(dmCoord, DOWN, 0, &icuy[0]);
+    DMStagGetLocationSlot(dmCoord, DOWN, 1, &icuy[1]);
+    DMStagGetLocationSlot(dmCoord, DOWN, 2, &icuy[2]);
+    DMStagGetLocationSlot(dmGrid, DOWN, 0, &iuy);
+    }
+
+    if(i == 2){
+    DMStagGetLocationSlot(dmCoord, BACK, 0, &icuz[0]);
+    DMStagGetLocationSlot(dmCoord, BACK, 1, &icuz[1]);
+    DMStagGetLocationSlot(dmCoord, BACK, 2, &icuz[2]);
+    DMStagGetLocationSlot(dmGrid, BACK, 0, &iuz);
+    }
+  
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    DMGetLocalVector(dmGrid, &vecLocal);
+    DMStagVecGetArray(dmGrid, vecLocal, &arrVec);
+
+    if(i == 0){
+    for (ez = start[2]; ez < start[2] + n[2] + nExtra[2]; ++ez) {
+        for (ey = start[1]; ey < start[1] + n[1] + nExtra[1]; ++ey) {
+            for (ex = start[0]; ex < start[0] + n[0] + nExtra[0]; ++ex) {
+                arrVec[ez][ey][ex][iux] = bc.bcFunctions[i](arrCoord[ez][ey][ex][icux[0]], arrCoord[ez][ey][ex][icux[1]], arrCoord[ez][ey][ex][icux[2]], theta);
+            }
+        }
+    }
+    }
+
+    if(i == 1){
+    for (ez = start[2]; ez < start[2] + n[2] + nExtra[2]; ++ez) {
+        for (ey = start[1]; ey < start[1] + n[1] + nExtra[1]; ++ey) {
+            for (ex = start[0]; ex < start[0] + n[0] + nExtra[0]; ++ex) {
+                arrVec[ez][ey][ex][iuy] = bc.bcFunctions[i](arrCoord[ez][ey][ex][icuy[0]], arrCoord[ez][ey][ex][icuy[1]], arrCoord[ez][ey][ex][icuy[2]], theta);
+            }
+        }
+    }
+    }
+
+    if(i == 2){
+    for (ez = start[2]; ez < start[2] + n[2] + nExtra[2]; ++ez) {
+        for (ey = start[1]; ey < start[1] + n[1] + nExtra[1]; ++ey) {
+            for (ex = start[0]; ex < start[0] + n[0] + nExtra[0]; ++ex) {
+                arrVec[ez][ey][ex][iuz] = bc.bcFunctions[i](arrCoord[ez][ey][ex][icuz[0]], arrCoord[ez][ey][ex][icuz[1]], arrCoord[ez][ey][ex][icuz[2]], theta);
+            }
+        }
+    }
+    }
+
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMStagVecRestoreArray(dmGrid, vecLocal, &arrVec);
+    DMLocalToGlobal(dmGrid, vecLocal, INSERT_VALUES, globalVec);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMRestoreLocalVector(dmGrid, &vecLocal);
+
+    PetscFunctionReturn(0);
+}
 
 
     // Destructor

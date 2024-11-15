@@ -1,5 +1,5 @@
 //#include "MeshHandler.hpp"
-#include "Parabolic.hpp"
+#include "parabolic.hpp"
 
 
 int main(int argc, char **argv) {
@@ -12,23 +12,13 @@ int main(int argc, char **argv) {
     input.T = 1.0;
     input.dt = 0.5;
     input.Re = 10;
+    input.iter = 2;
 
 {
 
-    // StaggeredGrid grid(input);
-    // grid.bc_setUp("stokes");
-    // grid.save_grid();
-    // MeshHandler<StaggeredGrid> staggeredMeshHandler(input, "surface_cut.stl");
-    // staggeredMeshHandler.bc_setUp("stationary");
-    // staggeredMeshHandler.reader();
-    // staggeredMeshHandler.give_penalty();
-    // staggeredMeshHandler.save_grid();
-
-
     Parabolic pb(input);
-    //pb.assemble_matrices();
-    //pb.saveMatrices();
     pb.Solve();
+
 }
 
     PetscFinalize();
