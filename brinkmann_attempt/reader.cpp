@@ -12,8 +12,6 @@
 #include <cmath>
 #include <petscdm.h>
 #include <petscdmstag.h>
-#include <petscksp.h>
-
 
 #define BACK_DOWN_LEFT   DMSTAG_BACK_DOWN_LEFT
 #define BACK_DOWN        DMSTAG_BACK_DOWN
@@ -48,11 +46,7 @@ struct GridCell {
 };
 
 
-bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin,
-                           const std::array<double, 3>& rayVector,
-                           const std::array<double, 3>& v0,
-                           const std::array<double, 3>& v1,
-                           const std::array<double, 3>& v2) {
+bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin, const std::array<double, 3>& rayVector, const std::array<double, 3>& v0, const std::array<double, 3>& v1, const std::array<double, 3>& v2) {
     const double EPSILON = 1e-8;
     std::array<double, 3> edge1, edge2, h, s, q;
     double a, f, u, v;
@@ -101,10 +95,7 @@ bool rayIntersectsTriangle(const std::array<double, 3>& rayOrigin,
     return false; // No intersection
 }
 
-
-bool isPointInsideMesh(const std::array<double, 3>& point,
-                       const std::vector<std::array<double, 3>>& vertices,
-                       const std::vector<std::array<int, 3>>& faces) {
+bool isPointInsideMesh(const std::array<double, 3>& point, const std::vector<std::array<double, 3>>& vertices, const std::vector<std::array<int, 3>>& faces) {
     // Define a ray direction. We'll use the positive x-direction.
     std::array<double, 3> rayDirection = {1.0, 0.0, 0.0};
 
@@ -125,27 +116,8 @@ bool isPointInsideMesh(const std::array<double, 3>& point,
     return (intersectionCount % 2 == 1);
 }
 
-
-static PetscErrorCode CreateGrid(DM* pdmSol, PetscInt dof1, PetscInt dof2, PetscInt dof3, PetscScalar nx, PetscScalar ny, PetscScalar nz, PetscReal Lx_0, PetscReal Lx, PetscReal Ly_0, PetscReal Ly, PetscReal Lz_0, PetscReal Lz)
+void createGridSTL(const std::vector<std::array<double, 3>>& vertices, std::unordered_map<std::string, GridCell>& grid, double cellSize, const std::array<double, 3>& gridOrigin)
 {
-    DM dmSol;
-    const PetscInt dof0 = 0;
-    const PetscInt stencilWidth = 1;
-    DMStagCreate3d(PETSC_COMM_WORLD, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, DM_BOUNDARY_NONE, nx, ny, nz, PETSC_DECIDE,
-                   PETSC_DECIDE, PETSC_DECIDE, dof0, dof1, dof2, dof3, DMSTAG_STENCIL_BOX, stencilWidth, NULL, NULL,
-                   NULL, pdmSol);
-    dmSol = *pdmSol;
-    DMSetFromOptions(dmSol);
-    DMSetUp(dmSol);
-    DMStagSetUniformCoordinatesExplicit(dmSol, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-
-    return 0;
-}
-
-void createGridSTL(const std::vector<std::array<double, 3>>& vertices, 
-                std::unordered_map<std::string, GridCell>& grid, 
-                double cellSize, 
-                const std::array<double, 3>& gridOrigin) {
     
     for (const auto& vertex : vertices) {
         int x_idx = static_cast<int>((vertex[0] - gridOrigin[0]) / cellSize);
@@ -274,46 +246,15 @@ void reader(const std::string& filename, std::vector<std::array<double, 3>>& ver
 
 }
 
+PetscErrorCode createMaskU(DM const & dmGrid, Vec & vec_stag, std::vector<std::array<double, 3>> const & vertices, std::vector<std::array<int, 3>> const & faces) {
 
-int main(int argc, char* argv[]) {
-
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <surface_cut.stl>" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    std::vector<std::array<double, 3>> vertices;
-    std::vector<std::array<int, 3>> faces;
-    std::string filename = argv[1];
-    reader(filename, vertices, faces);
-
-    PetscInitialize(&argc, &argv, (char*)0, "Help text for this program");
-
-    static PetscInt nx_  = 40;
-    static PetscInt ny_  = 40;
-    static PetscInt nz_  = 40;
-
-    static PetscReal Lx_0   = 0;
-    static PetscReal Ly_0  = 0.2;
-    static PetscReal Lz_0  = 0;
-    static PetscReal Lx = 0.9;
-    static PetscReal Ly = 0.9;
-    static PetscReal Lz = 0.9;
-
-    DM dmGrid, dm_cent;
-    CreateGrid(&dm_cent, 0, 0, 1, nx_, ny_, nz_, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-    CreateGrid(&dmGrid, 0, 1, 0, nx_, ny_, nz_, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-
-    Vec vec_stag, vec_cent;
-    DMCreateGlobalVector(dm_cent, &vec_cent);
-    DMCreateGlobalVector(dmGrid, &vec_stag);
-
-    //staggered
-    PetscInt icux_right[3], icux_left[3], icux_up[3], icux_down[3], icux_back[3], icux_front[3], iux_right, iux_left, iux_up, iux_down, iux_back, iux_front;
-    PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
+    PetscInt icux_right[3], icux_left[3], iux_right, iux_left;
+    PetscInt startx, starty, startz, N[3], ex, ey, ez, nx, ny, nz, d;
     DM dmCoord;
     Vec coord, coordLocal, vec_stag_local;
     PetscReal ****arrCoord, ****arrVecStag;   
+
+    PetscFunctionBegin;
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
@@ -323,42 +264,26 @@ int main(int argc, char* argv[]) {
     DMGetLocalVector(dmCoord, &coordLocal);
     DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
 
-
     for (d = 0; d < 3; ++d) {
         DMStagGetLocationSlot(dmCoord, RIGHT, d, &icux_right[d]);
         DMStagGetLocationSlot(dmCoord, LEFT, d, &icux_left[d]);
-        DMStagGetLocationSlot(dmCoord, UP, d, &icux_up[d]);
-        DMStagGetLocationSlot(dmCoord, DOWN, d, &icux_down[d]);
-        DMStagGetLocationSlot(dmCoord, BACK, d, &icux_back[d]);
-        DMStagGetLocationSlot(dmCoord, FRONT, d, &icux_front[d]);
     }  
 
     DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
 
     DMStagGetLocationSlot(dmGrid, RIGHT, 0, &iux_right);
     DMStagGetLocationSlot(dmGrid, LEFT, 0, &iux_left);
-    DMStagGetLocationSlot(dmGrid, UP, 0, &iux_up);
-    DMStagGetLocationSlot(dmGrid, DOWN, 0, &iux_down);
-    DMStagGetLocationSlot(dmGrid, BACK, 0, &iux_back);
-    DMStagGetLocationSlot(dmGrid, FRONT, 0, &iux_front);
 
     DMCreateLocalVector(dmGrid, &vec_stag_local);
     DMGlobalToLocalBegin(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
     DMGlobalToLocalEnd(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
     DMStagVecGetArray(dmGrid, vec_stag_local, &arrVecStag);
 
-    //LEFT, DOWN, BACK se sono alla fine anche destra sopra e davanti 
-
     std::vector<std::vector<PetscInt>> icux;
     icux.push_back({icux_right[0], icux_right[1], icux_right[2]});
     icux.push_back({icux_left[0], icux_left[1], icux_left[2]});
-    icux.push_back({icux_up[0], icux_up[1], icux_up[2]});
-    icux.push_back({icux_down[0], icux_down[1], icux_down[2]});
-    icux.push_back({icux_back[0], icux_back[1], icux_back[2]});
-    icux.push_back({icux_front[0], icux_front[1], icux_front[2]});
 
-
-    std::vector<PetscInt> iux = {iux_right, iux_left, iux_up, iux_down, iux_back, iux_front};
+    std::vector<PetscInt> iux = {iux_right, iux_left};
 
     for (ez = startz; ez < startz + nz; ++ez) {
         for (ey = starty; ey < starty + ny; ++ey) {
@@ -367,10 +292,10 @@ int main(int argc, char* argv[]) {
                     for (auto j : iux){
                     std::array<double, 3> point = {arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]};
                     if (isPointInsideMesh(point, vertices, faces)) {
-                        arrVecStag[ez][ey][ex][j] = 1.0;
+                        arrVecStag[ez][ey][ex][j] = 0.0;
                     }
                     else {
-                        arrVecStag[ez][ey][ex][j] = 1000.0;
+                        arrVecStag[ez][ey][ex][j] = eps;
                         }
                     }
                 }
@@ -378,29 +303,155 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-
+    
     DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
     DMRestoreLocalVector(dmCoord, &coordLocal);
     DMStagVecRestoreArray(dmGrid, vec_stag_local, &arrVecStag);
     DMLocalToGlobal(dmGrid, vec_stag_local, INSERT_VALUES, vec_stag);
     DMRestoreLocalVector(dmGrid, &vec_stag_local);
 
-    PetscViewer viewer_stag;
-    DM dmGrid;
-    //DMStagCreateCompatibleDMStag(dmSol_Staggered_y, 0, 0, 1, 0, &DM_v);
-    Vec rd;
-    DMStagVecSplitToDMDA(dmGrid, vec_stag, DOWN, 0, &dmGrid, &rd);
-    PetscObjectSetName((PetscObject)rd, "r_values_down");
-    char filename_rd[50];
-    sprintf(filename_rd, "results/r_values_down%03zu.vtr");
-    PetscViewerVTKOpen(PetscObjectComm((PetscObject)dmGrid), filename_rd, FILE_MODE_WRITE, &viewer_stag);
-    VecView(rd, viewer_stag);
-    VecDestroy(&rd);
-    DMDestroy(&dmGrid);
-    PetscViewerDestroy(&viewer_stag);
+    PetscFunctionReturn(0);
+}
+
+PetscErrorCode createMaskV(DM const & dmGrid, Vec & vec_stag, std::vector<std::array<double, 3>> const & vertices, std::vector<std::array<int, 3>> const & faces) {
+
+    PetscInt icuy_up[3], icuy_down[3], iuy_up, iuy_down;
+    PetscInt startx, starty, startz, N[3], ex, ey, ez, nx, ny, nz, d;
+    DM dmCoord;
+    Vec coord, coordLocal, vec_stag_local;
+    PetscReal ****arrCoord, ****arrVecStag;   
+
+    PetscFunctionBegin;
+
+    DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
+    DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+
+    DMGetCoordinates(dmGrid, &coord);
+    DMGetLocalVector(dmCoord, &coordLocal);
+    DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+    for (d = 0; d < 3; ++d) {
+        DMStagGetLocationSlot(dmCoord, UP, d, &icuy_up[d]);
+        DMStagGetLocationSlot(dmCoord, DOWN, d, &icuy_down[d]);
+    }  
+
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    DMStagGetLocationSlot(dmGrid, UP, 0, &iuy_up);
+    DMStagGetLocationSlot(dmGrid, DOWN, 0, &iuy_down);
+
+    DMCreateLocalVector(dmGrid, &vec_stag_local);
+    DMGlobalToLocalBegin(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
+    DMGlobalToLocalEnd(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
+    DMStagVecGetArray(dmGrid, vec_stag_local, &arrVecStag);
+
+    std::vector<std::vector<PetscInt>> icuy;
+    icuy.push_back({icuy_up[0], icuy_up[1], icuy_up[2]});
+    icuy.push_back({icuy_down[0], icuy_down[1], icuy_down[2]});
+
+    std::vector<PetscInt> iuy = {iuy_up, iuy_down};
+
+    for (ez = startz; ez < startz + nz; ++ez) {
+        for (ey = starty; ey < starty + ny; ++ey) {
+            for (ex = startx; ex < startx + nx; ++ex) {
+                for(auto i : icuy) {
+                    for (auto j : iuy){
+                    std::array<double, 3> point = {arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]};
+                    if (isPointInsideMesh(point, vertices, faces)) {
+                        arrVecStag[ez][ey][ex][j] = 0.0;
+                    }
+                    else {
+                        arrVecStag[ez][ey][ex][j] = eps;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMStagVecRestoreArray(dmGrid, vec_stag_local, &arrVecStag);
+    DMLocalToGlobal(dmGrid, vec_stag_local, INSERT_VALUES, vec_stag);
+    DMRestoreLocalVector(dmGrid, &vec_stag_local);
+
+    PetscFunctionReturn(0);
+}
+
+PetscErrorCode createMaskW(DM const & dmGrid, Vec & vec_stag, std::vector<std::array<double, 3>> const & vertices, std::vector<std::array<int, 3>> const & faces) {
+
+    PetscInt icuz_front[3], icuz_back[3], iuz_front, iuz_back;
+    PetscInt startx, starty, startz, N[3], ex, ey, ez, nx, ny, nz, d;
+    DM dmCoord;
+    Vec coord, coordLocal, vec_stag_local;
+    PetscReal ****arrCoord, ****arrVecStag;   
+
+    PetscFunctionBegin;
+
+    DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
+    DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    DMGetCoordinateDM(dmGrid, &dmCoord);
+
+    DMGetCoordinates(dmGrid, &coord);
+    DMGetLocalVector(dmCoord, &coordLocal);
+    DMGlobalToLocal(dmCoord, coord, INSERT_VALUES, coordLocal);
+
+    for (d = 0; d < 3; ++d) {
+        DMStagGetLocationSlot(dmCoord, FRONT, d, &icuz_front[d]);
+        DMStagGetLocationSlot(dmCoord, BACK, d, &icuz_back[d]);
+    }  
+
+    DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
+
+    DMStagGetLocationSlot(dmGrid, FRONT, 0, &iuz_front);
+    DMStagGetLocationSlot(dmGrid, BACK, 0, &iuz_back);
+
+    DMCreateLocalVector(dmGrid, &vec_stag_local);
+    DMGlobalToLocalBegin(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
+    DMGlobalToLocalEnd(dmGrid, vec_stag, INSERT_VALUES, vec_stag_local);
+    DMStagVecGetArray(dmGrid, vec_stag_local, &arrVecStag);
+
+    std::vector<std::vector<PetscInt>> icuz;
+    icuz.push_back({icuz_front[0], icuz_front[1], icuz_front[2]});
+    icuz.push_back({icuz_back[0], icuz_back[1], icuz_back[2]});
+
+    std::vector<PetscInt> iuz = {iuz_front, iuz_back};
+
+    for (ez = startz; ez < startz + nz; ++ez) {
+        for (ey = starty; ey < starty + ny; ++ey) {
+            for (ex = startx; ex < startx + nx; ++ex) {
+                for(auto i : icuz) {
+                    for (auto j : iuz){
+                    std::array<double, 3> point = {arrCoord[ez][ey][ex][i[0]], arrCoord[ez][ey][ex][i[1]], arrCoord[ez][ey][ex][i[2]]};
+                    if (isPointInsideMesh(point, vertices, faces)) {
+                        arrVecStag[ez][ey][ex][j] = 0.0;
+                    }
+                    else {
+                        arrVecStag[ez][ey][ex][j] = eps;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    
+    DMStagVecRestoreArrayRead(dmCoord, coordLocal, &arrCoord);
+    DMRestoreLocalVector(dmCoord, &coordLocal);
+    DMStagVecRestoreArray(dmGrid, vec_stag_local, &arrVecStag);
+    DMLocalToGlobal(dmGrid, vec_stag_local, INSERT_VALUES, vec_stag);
+    DMRestoreLocalVector(dmGrid, &vec_stag_local);
+
+    PetscFunctionReturn(0);
+}
+
+
+
+
+
     
 
-    PetscFinalize();
 
-    return EXIT_SUCCESS;
-}
+    
