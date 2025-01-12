@@ -38,7 +38,7 @@ To compile and run the project, make sure you have the following tools and libra
     ```
     For the Brinkmann solver the name of the .stl has to be indicated.
    An Example one is given, to run the solver on the example mesh execute the following command:
-       ```bash
+     ```bash
     ./bin/main caroitd.stl
     ```
     The program will compute the solution and store the results in the results directory
