@@ -21,7 +21,7 @@ To compile and run the project, make sure you have the following tools and libra
    ```bash
    source /u/sw/etc/bash.bashrc
    module load gcc-glibc
-   module load Eigen
+   module load eigen
    module load vtk
    module load petsc
 
