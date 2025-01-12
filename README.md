@@ -1,6 +1,7 @@
 # Finite Differences Navier-Stokes Solver
 
 This project implements a solver based on finite differences for the Navier-Stokes equations.
+Th solver can be used both on a default cubic domain as well as on a input original mesh which exploits the Brinkmann penalization method.
 
 ## **Requirements**
 
@@ -34,6 +35,11 @@ To compile and run the project, make sure you have the following tools and libra
     To run the solver, execute the following command:
     ```bash
     ./bin/main 
+    ```
+    For the Brinkmann solver the name of the .stl has to be indicated.
+   An Example one is given, to run the solver on the example mesh execute the following command:
+       ```bash
+    ./bin/main caroitd.stl
     ```
     The program will compute the solution and store the results in the results directory
 
