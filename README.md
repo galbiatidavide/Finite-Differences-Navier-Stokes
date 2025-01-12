@@ -1,7 +1,6 @@
 # Finite Differences Navier-Stokes Solver
 
 This project implements a solver based on finite differences for the Navier-Stokes equations.
-The solver can be used on a default cubic geometry as well as on an inputed .stl orginal mesh for the brinkmann solver.
 
 ## **Requirements**
 
