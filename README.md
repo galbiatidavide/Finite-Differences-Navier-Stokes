@@ -33,6 +33,7 @@ To compile and run the project, make sure you have the following tools and libra
 
 3. **Usage**
     To run the solver, execute the following command:
+    ```bash
     ./bin/main 
     The program will compute the solution and store the results in the results directory
 
