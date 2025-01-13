@@ -1362,17 +1362,27 @@ PetscErrorCode const navier_stokes_problem::manage_pressure()
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCMG);
+    PCSetType(pc, PCBJACOBI);
+    //PCHYPRESetType(pc, "euclid");
+    KSPSetTolerances(ksp, PETSC_DEFAULT, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, div, P);
 
     KSPConvergedReason reason;
     KSPGetConvergedReason(ksp, &reason);
+    PetscInt iterations;
+    KSPGetIterationNumber(ksp, &iterations);
+    PetscReal residual_norm;
+    KSPGetResidualNorm(ksp, &residual_norm);
+
     if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "Pressure KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        PetscPrintf(PETSC_COMM_WORLD, "p-field KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
     } else {
-        PetscPrintf(PETSC_COMM_WORLD, "Pressure KSP converged. Reason: %s\n", KSPConvergedReasons[reason]);
+        PetscPrintf(PETSC_COMM_WORLD, 
+                    "p-field KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                    iterations, residual_norm, KSPConvergedReasons[reason]);
     }
+
 
     VecDestroy(&div);
     KSPDestroy(&ksp);
