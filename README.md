@@ -1,7 +1,7 @@
 # Finite Differences Navier-Stokes Solver
 
 This project implements a solver based on finite differences for the Navier-Stokes equations.
-Th solver can be used both on a default cubic domain as well as on a input original mesh which exploits the Brinkmann penalization method.
+The solver can be used both on a default cubic domain as well as on an input original mesh which exploits the Brinkmann penalization method.
 
 ## **Requirements**
 
