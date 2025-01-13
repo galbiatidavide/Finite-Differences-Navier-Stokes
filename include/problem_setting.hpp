@@ -4,6 +4,7 @@
 //PETSc
 #include <petscdmstag.h>
 #include <petscksp.h>
+#include <petscmat.h>
 //VTK
 #include <vtkSTLReader.h>
 
@@ -63,11 +64,11 @@ namespace problem_setting
     PetscReal constexpr Lz{0.5};
 
     PetscReal constexpr dt{0.00625}; 
-    PetscReal constexpr iter{16};
+    PetscReal constexpr iter{15};
 
     PetscReal constexpr Re{1.0};
 
-    constexpr bool brinkmann{false};
+    inline bool brinkmann{false};
 
     inline PetscReal theta;
     //mask
@@ -75,7 +76,7 @@ namespace problem_setting
     inline std::vector<std::array<int, 3>> faces;
     inline std::string filename;
 
-    constexpr char *base_path = "/media/dave/dave_data/results/";
+    constexpr char *base_path = "results/";
 
 
     constexpr PetscReal uxRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)

@@ -1,46 +1,60 @@
-# Compiler and flags
-CXX = mpicxx
-CXXFLAGS = -O3 -Wall -std=c++17
+MPICXX ?= $(shell which mpicxx)
+CXX = $(MPICXX)
+CXXFLAGS = -Wall -O3 -std=c++20
 
-# PETSc configuration (using pkg-config)
-PETSC_CFLAGS = $(shell pkg-config --cflags PETSc)
-PETSC_LIBS = $(shell pkg-config --libs PETSc)
 
-# VTK configuration
-VTK_INC = $(mkVtkInc)
-VTK_LIB = $(mkVtkLib)
-VTK_CFLAGS = -I$(VTK_INC)
-VTK_LIBS = /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkCommonCore-9.0.so \
-           /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkCommonDataModel-9.0.so \
-           /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkIOCore-9.0.so \
-           /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkIOLegacy-9.0.so \
-           /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkCommonExecutionModel-9.0.so \
-           /u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib/libvtkIOGeometry-9.0.so
+# Paths
+INCLUDE_DIR = include
+SRC_DIR = src
+OBJ_DIR = obj
+BIN_DIR = bin
+RESULTS_DIR = results
 
-# Directories
-SRCDIR = src
-INCDIR = include
-BINDIR = bin
-OBJDIR = obj
 
-# Source files and target
-MAIN = $(SRCDIR)/main_problem.cpp
-SRCS = $(filter-out $(MAIN), $(wildcard $(SRCDIR)/*.cpp))  # All other .cpp files
-OBJS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRCS)) $(OBJDIR)/main_problem.o
-TARGET = $(BINDIR)/my_program
+# Libraries
+PETSC_DIR ?= $(shell echo $$PETSC_DIR)
+PETSC_ARCH ?= $(shell echo $$PETSC_ARCH)
+VTK_DIR ?= $(shell echo $$mkVtkPrefix)
+LIBS = $(shell pkg-config --libs PETSc)
+LIBS = -L$(PETSC_DIR)/lib -lpetsc -L$(VTK_DIR)/lib 
+LIBS = -L/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/petsc/3.15.1/lib -lpetsc \
+       -L/u/sw/toolchains/gcc-glibc/11.2.0/pkgs/vtk/9.0.3/lib \
+       -lvtkCommonCore-9.0 -lvtkIOCore-9.0 -lvtkFiltersCore-9.0 \
+       -lvtkCommonDataModel-9.0 -lvtkIOXML-9.0 -lvtkRenderingCore-9.0 \
+       -lvtkCommonExecutionModel-9.0 -lvtkIOGeometry-9.0
 
-# Rules
-all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	mkdir -p $(BINDIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(PETSC_LIBS) $(VTK_LIBS)
+# Include directories
+CXXFLAGS += -I$(INCLUDE_DIR) -I$(PETSC_DIR)/include -I$(PETSC_DIR)/include/$(PETSC_ARCH) -I$(VTK_DIR)/include/vtk-9.0
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	mkdir -p $(OBJDIR)
-	$(CXX) $(CXXFLAGS) $(PETSC_CFLAGS) $(VTK_CFLAGS) -I$(INCDIR) -c $< -o $@
+# Source and object files
+SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
+# Executable name
+EXEC = $(BIN_DIR)/main
+
+
+# Build executable
+$(EXEC): $(OBJS) | $(BIN_DIR) $(RESULTS_DIR)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LIBS)
+
+# Build object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Create directories if not exist
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(RESULTS_DIR):
+	mkdir -p $(RESULTS_DIR)
+
+# Clean rule
 clean:
-	rm -rf $(OBJDIR) $(BINDIR)
+	rm -rf $(OBJ_DIR)/*.o $(EXEC)
 
-.PHONY: all clean
+.PHONY: clean
