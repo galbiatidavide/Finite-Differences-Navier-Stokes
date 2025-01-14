@@ -425,7 +425,7 @@ namespace problem_setting
         const vtkIdType *pts;
         while (triangles->GetNextCell(npts, pts)) {
             if (npts == 3) {
-                faces.push_back({{ pts[0], pts[1], pts[2] }});
+                faces.push_back({{ static_cast<int>(pts[0]), static_cast<int>(pts[1]), static_cast<int>(pts[2]) }});
             }
         }
     }

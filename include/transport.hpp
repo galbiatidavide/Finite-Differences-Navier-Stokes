@@ -34,8 +34,9 @@ class transport_problem_x {
 protected:
 
     DM dmGrid_Shifted;
-    DM dmGrid_Centered;
     DM dmGrid_Staggered;
+    DM dmGrid_Centered;
+    
 
 
     Vec U_n, V_n, W_n;
@@ -165,8 +166,9 @@ class transport_problem_y {
 protected:
 
     DM dmGrid_Shifted;
-    DM dmGrid_Centered;
     DM dmGrid_Staggered;
+    DM dmGrid_Centered;
+    
 
     Vec U_n, V_n, W_n;
     Vec mask_U, mask_V, mask_W;
@@ -287,8 +289,9 @@ class transport_problem_z {
 protected:
 
     DM dmGrid_Shifted;
-    DM dmGrid_Centered;
     DM dmGrid_Staggered;
+    DM dmGrid_Centered;
+    
 
     Vec U_n, V_n, W_n;
     Vec mask_U, mask_V, mask_W;

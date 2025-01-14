@@ -45,8 +45,9 @@ DM dmGrid_staggered_y;
 DM dmGrid_staggered_z;
 DM dmGrid_centered;
 DM dmGrid_cent_rich;
-DM dmGrid_shift_transp;
 DM dmGrid_stag_transp;
+DM dmGrid_shift_transp;
+
 
 Vec P;
 Vec P_x;

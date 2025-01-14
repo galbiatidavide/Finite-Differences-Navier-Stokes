@@ -76,7 +76,7 @@ namespace problem_setting
     inline std::vector<std::array<int, 3>> faces;
     inline std::string filename;
 
-    constexpr char *base_path = "results/";
+    constexpr const char *base_path = "results/";
 
 
     constexpr PetscReal uxRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)

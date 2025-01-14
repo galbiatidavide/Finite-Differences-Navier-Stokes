@@ -12,7 +12,7 @@ const PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta)
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
-    PetscReal const hx = 1.0 / N[0];
+
     PetscReal const hy = 1.0 / N[1];
     PetscReal const hz = 1.0 / N[2];
 
@@ -153,7 +153,7 @@ const PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta, 
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
-    PetscReal const hx = 1.0 / N[0];
+    
     PetscReal const hy = 1.0 / N[1];
     PetscReal const hz = 1.0 / N[2];
 
@@ -819,8 +819,8 @@ const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta)
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+
     PetscReal const hx = 1.0 / N[0];
-    PetscReal const hy = 1.0 / N[1];
     PetscReal const hz = 1.0 / N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
@@ -957,8 +957,8 @@ const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta, 
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+
     PetscReal const hx = 1.0 / N[0];
-    PetscReal const hy = 1.0 / N[1];
     PetscReal const hz = 1.0 / N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
@@ -1612,9 +1612,10 @@ PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta)
     PetscReal ****arrCoord;
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+
     PetscReal hx = 1.0 / N[0];
     PetscReal hy = 1.0 / N[1];
-    PetscReal hz = 1.0 / N[2];
+    
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -1747,9 +1748,10 @@ PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta, 
     PetscReal ****arrCoord;
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
+    
     PetscReal hx = 1.0 / N[0];
     PetscReal hy = 1.0 / N[1];
-    PetscReal hz = 1.0 / N[2];
+    
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
