@@ -1351,12 +1351,12 @@ PetscErrorCode const navier_stokes_problem::manage_pressure()
     CheckSolution(div, force);*/
 
     //assemble_lhs();
-    PetscReal mean;
+    /*PetscReal mean;
     PetscInt size;
     VecSum(div, &mean);
     VecGetSize(div, &size);
     mean = mean / size;
-    VecShift(div, -mean);
+    VecShift(div, -mean);*/
 
     KSPCreate(PETSC_COMM_WORLD, &ksp);
     KSPSetType(ksp, KSPGMRES);
