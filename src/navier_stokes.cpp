@@ -1364,7 +1364,7 @@ PetscErrorCode const navier_stokes_problem::manage_pressure()
     KSPGetPC(ksp, &pc);
     PCSetType(pc, PCBJACOBI);
     //PCHYPRESetType(pc, "euclid");
-    KSPSetTolerances(ksp, PETSC_DEFAULT, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT);
+    //KSPSetTolerances(ksp, PETSC_DEFAULT, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, div, P);
 

@@ -43,32 +43,32 @@ namespace problem_setting
     #define FRONT_UP_RIGHT   DMSTAG_FRONT_UP_RIGHT
 
     PetscReal constexpr pi = 3.14159265358979323846;
-    PetscReal constexpr eps=std::numeric_limits<float>::max();
+    PetscReal constexpr eps=1e6;
 
     PetscReal constexpr a = pi/4;
     PetscReal constexpr d = 1.5*pi;
-    PetscInt constexpr nx{80};
-    PetscInt constexpr ny{80};
-    PetscInt constexpr nz{80};
-    PetscReal constexpr Lx_0{253};
+    PetscInt constexpr nx{32};
+    PetscInt constexpr ny{32};
+    PetscInt constexpr nz{32};
+    /*PetscReal constexpr Lx_0{253};
     PetscReal constexpr Ly_0{235};
     PetscReal constexpr Lz_0{190};
     PetscReal constexpr Lx{292};
     PetscReal constexpr Ly{310};
-    PetscReal constexpr Lz{232};
-    /*PetscReal constexpr Lx_0{-0.5};
+    PetscReal constexpr Lz{232};*/
+    PetscReal constexpr Lx_0{-0.5};
     PetscReal constexpr Ly_0{-0.5};
     PetscReal constexpr Lz_0{-0.5};
     PetscReal constexpr Lx{0.5};
     PetscReal constexpr Ly{0.5};
-    PetscReal constexpr Lz{0.5};*/
+    PetscReal constexpr Lz{0.5};
 
-    PetscReal constexpr dt{1e-4};
-    PetscReal constexpr iter{1000};
+    PetscReal constexpr dt{0.00625};
+    PetscReal constexpr iter{16};
 
-    PetscReal constexpr Re{200};
+    PetscReal constexpr Re{1};
 
-    inline bool brinkmann{true};
+    inline bool brinkmann{false};
 
     inline PetscReal theta;
     //mask
@@ -76,24 +76,24 @@ namespace problem_setting
     inline std::vector<std::array<int, 3>> faces;
     inline std::string filename;
 
-    constexpr const char *base_path = "/media/dave/dave_data/results/";
+    constexpr const char *base_path = "results/";
 
 
     constexpr PetscReal uxRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
     {
-        //return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y))*exp(-d*d*theta); //navier stokes
+        return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y))*exp(-d*d*theta); //navier stokes
         //quando fai test ricorda di cambiare il valore di theta e degli altri parametri e di sistemarlo
         //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; //parabolic
         //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); //transport
-        return 0;
+        //return 0;
     }
 
     constexpr PetscReal uyRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
     {
-        //return -a*(exp(a*y)*sin(a*z + d*x) + exp(a*x)*cos(a*y + d*z))*exp(-d*d*theta); // navier stokes
+        return -a*(exp(a*y)*sin(a*z + d*x) + exp(a*x)*cos(a*y + d*z))*exp(-d*d*theta); // navier stokes
         //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; //parabolic
         //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); //transport
-        if(y == 310)
+        /*if(y == 310)
         {
             return -1.0;
         }
@@ -114,17 +114,17 @@ namespace problem_setting
         else 
         {
             return 0;
-        }
+        }*/
 
 
     }
 
     constexpr PetscReal uzRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
     {
-        //return -a*(exp(a*z)*sin(a*x + d*y) + exp(a*y)*cos(a*z + d*x))*exp(-d*d*theta); //navier stokes
+        return -a*(exp(a*z)*sin(a*x + d*y) + exp(a*y)*cos(a*z + d*x))*exp(-d*d*theta); //navier stokes
         //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; // parabolic
         //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); // transport
-        return 0;
+        //return 0;
     }
 
     constexpr PetscReal pRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
