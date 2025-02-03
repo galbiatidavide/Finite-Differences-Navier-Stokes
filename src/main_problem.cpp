@@ -43,13 +43,14 @@ int main(int argc, char **argv)
 
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
 
-    if(argc == 2)
+    if(argc == 2 and std::string(argv[1]) == "-h")
     {
         filename = argv[1];
         std::cout << "Reading geometry from " << argv[1] << std::endl;
         reader(filename, vertices, faces);
         
     }
+
     auto start = std::chrono::high_resolution_clock::now();
 
     {

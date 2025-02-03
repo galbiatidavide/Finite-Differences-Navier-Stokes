@@ -11,7 +11,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hy = 1.0 / N[1];
+        PetscReal hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -110,7 +110,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hz = 1.0 / N[2];
+        PetscReal hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -210,7 +210,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -308,7 +308,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -403,7 +403,7 @@
         PetscReal       hy;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hy = 1.0 / N[1];
+        hy = D_y/ N[1];
         Vec AB_local;
         PetscScalar ****arrAB_local;
         DMCreateLocalVector(dmGrid_Shifted, &AB_local);
@@ -460,7 +460,7 @@
         PetscReal       hz;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hz = 1.0 / N[2];
+        hz = D_z/ N[2];
 
         Vec AB_local;
         PetscScalar ****arrAB_local;
@@ -595,7 +595,7 @@
         PetscReal ****arrCoord, ****arrVec, ****arrU;    
         DMStagGetCorners(dmGrid_Centered, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Centered, &N[0], &N[1], &N[2]);
-        PetscReal const hx = 1.0 / N[0];
+        PetscReal const hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Centered, &dmCoord);
         DMGetCoordinates(dmGrid_Centered, &coord);
         DMGetLocalVector(dmCoord, &coordLocal);
@@ -840,7 +840,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hy = 1.0 / N[1];
+        PetscReal hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -939,7 +939,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hz = 1.0 / N[2];
+        PetscReal hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1039,7 +1039,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1137,7 +1137,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1235,7 +1235,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hz = 1.0 / N[2];
+        PetscReal hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1332,7 +1332,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hy = 1.0 / N[1];
+        PetscReal hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1428,7 +1428,7 @@
         PetscReal       hx;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hx = 1.0 / N[0];
+        hx = D_x/ N[0];
         Vec AB_local;
         PetscScalar ****arrAB_local;
         DMCreateLocalVector(dmGrid_Shifted, &AB_local);
@@ -1486,7 +1486,7 @@
         PetscReal       hz;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hz = 1.0 / N[2];
+        hz = D_z/ N[2];
 
         Vec AB_local;
         PetscScalar ****arrAB_local;
@@ -1622,7 +1622,7 @@
         PetscReal ****arrCoord, ****arrVec, ****arrV;    
         DMStagGetCorners(dmGrid_Centered, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Centered, &N[0], &N[1], &N[2]);
-        PetscReal const hy = 1.0 / N[1];
+        PetscReal const hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Centered, &dmCoord);
         DMGetCoordinates(dmGrid_Centered, &coord);
         DMGetLocalVector(dmCoord, &coordLocal);
@@ -1887,7 +1887,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hy = 1.0 / N[1];
+        PetscReal hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -1986,7 +1986,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hz = 1.0 / N[2];
+        PetscReal hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -2086,7 +2086,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -2184,7 +2184,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hx = 1.0 / N[0];
+        PetscReal hx = D_x/ N[0];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -2282,7 +2282,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hz = 1.0 / N[2];
+        PetscReal hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -2379,7 +2379,7 @@
         PetscScalar ****arrCoord;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        PetscReal hy = 1.0 / N[1];
+        PetscReal hy = D_y/ N[1];
         DMGetCoordinateDM(dmGrid_Shifted, &dmCoord);
         DMGetCoordinatesLocal(dmGrid_Shifted, &coordLocal);
         DMStagVecGetArrayRead(dmCoord, coordLocal, &arrCoord);
@@ -2475,7 +2475,7 @@
         PetscReal       hx;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hx = 1.0 / N[0];
+        hx = D_x/ N[0];
         Vec AB_local;
         PetscScalar ****arrAB_local;
         DMCreateLocalVector(dmGrid_Shifted, &AB_local);
@@ -2532,7 +2532,7 @@
         PetscReal       hy;
         DMStagGetCorners(dmGrid_Shifted, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Shifted, &N[0], &N[1], &N[2]);
-        hy = 1.0 / N[1];
+        hy = D_y/ N[1];
         Vec AB_local;
         PetscScalar ****arrAB_local;
         DMCreateLocalVector(dmGrid_Shifted, &AB_local);
@@ -2665,7 +2665,7 @@
         PetscReal ****arrCoord, ****arrVec, ****arrW;    
         DMStagGetCorners(dmGrid_Centered, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
         DMStagGetGlobalSizes(dmGrid_Centered, &N[0], &N[1], &N[2]);
-        PetscReal const hz = 1.0 / N[2];
+        PetscReal const hz = D_z/ N[2];
         DMGetCoordinateDM(dmGrid_Centered, &dmCoord);
         DMGetCoordinates(dmGrid_Centered, &coord);
         DMGetLocalVector(dmCoord, &coordLocal);

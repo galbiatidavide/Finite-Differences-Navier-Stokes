@@ -13,8 +13,8 @@ const PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta)
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
 
-    PetscReal const hy = 1.0 / N[1];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hy = D_y /N[1];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -154,8 +154,8 @@ const PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta, 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
     
-    PetscReal const hy = 1.0 / N[1];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hy = D_y /N[1];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -317,9 +317,9 @@ PetscErrorCode parabolic_problem_x::assemble_lhs()
     PetscReal ****arrCoord;
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
-    PetscReal const hx = 1.0 / N[0];
-    PetscReal const hy = 1.0 / N[1];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hx = D_x /N[0];
+    PetscReal const hy = D_y /N[1];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -820,8 +820,8 @@ const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta)
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
 
-    PetscReal const hx = 1.0 / N[0];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hx = D_x /N[0];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -958,8 +958,8 @@ const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta, 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
 
-    PetscReal const hx = 1.0 / N[0];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hx = D_x /N[0];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -1099,9 +1099,9 @@ PetscErrorCode parabolic_problem_y::assemble_lhs()
     PetscReal ****arrCoord;
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
-    PetscReal const hx = 1.0 / N[0];
-    PetscReal const hy = 1.0 / N[1];
-    PetscReal const hz = 1.0 / N[2];
+    PetscReal const hx = D_x /N[0];
+    PetscReal const hy = D_y /N[1];
+    PetscReal const hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);
@@ -1613,8 +1613,8 @@ PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta)
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
 
-    PetscReal hx = 1.0 / N[0];
-    PetscReal hy = 1.0 / N[1];
+    PetscReal hx = D_x /N[0];
+    PetscReal hy = D_y /N[1];
     
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
@@ -1749,8 +1749,8 @@ PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta, 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
     
-    PetscReal hx = 1.0 / N[0];
-    PetscReal hy = 1.0 / N[1];
+    PetscReal hx = D_x /N[0];
+    PetscReal hy = D_y /N[1];
     
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
@@ -1890,9 +1890,9 @@ PetscErrorCode parabolic_problem_z::assemble_lhs()
 
     DMStagGetCorners(dmGrid, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid, &N[0], &N[1], &N[2]);
-    PetscReal hx = 1.0 / N[0];
-    PetscReal hy = 1.0 / N[1];
-    PetscReal hz = 1.0 / N[2];
+    PetscReal hx = D_x /N[0];
+    PetscReal hy = D_y /N[1];
+    PetscReal hz = D_z/ N[2];
 
     DMGetCoordinateDM(dmGrid, &dmCoord);
     DMGetCoordinatesLocal(dmGrid, &coordLocal);

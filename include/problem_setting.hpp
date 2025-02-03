@@ -62,9 +62,12 @@ namespace problem_setting
     PetscReal constexpr Lx{0.5};
     PetscReal constexpr Ly{0.5};
     PetscReal constexpr Lz{0.5};
+    PetscReal constexpr D_x{Lx - Lx_0};
+    PetscReal constexpr D_y{Ly - Ly_0};
+    PetscReal constexpr D_z{Lz - Lz_0};
 
-    PetscReal constexpr dt{0.00625};
-    PetscReal constexpr iter{16};
+    PetscReal constexpr dt{0.00625/2};
+    PetscReal constexpr iter{32};
 
     PetscReal constexpr Re{1};
 
