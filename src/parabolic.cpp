@@ -729,8 +729,8 @@ PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta)
     KSPSetType(ksp, KSPCG);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, U_up);
@@ -766,8 +766,8 @@ PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta, Vec cons
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, U_up);
@@ -1512,8 +1512,8 @@ PetscErrorCode parabolic_problem_y::solve_step(PetscReal const & theta)
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, V_up);
@@ -1552,8 +1552,8 @@ PetscErrorCode parabolic_problem_y::solve_step(PetscReal const & theta, Vec cons
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, V_up);    
@@ -2311,8 +2311,8 @@ PetscErrorCode parabolic_problem_z::solve_step(PetscReal const & theta)
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, W_up);
@@ -2349,8 +2349,8 @@ PetscErrorCode parabolic_problem_z::solve_step(PetscReal const & theta, Vec cons
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCJACOBI);
-    //PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
+    PCSetType(pc, PCFIELDSPLIT);
+    PCFieldSplitSetDetectSaddlePoint(pc, PETSC_TRUE);
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, W_up);
