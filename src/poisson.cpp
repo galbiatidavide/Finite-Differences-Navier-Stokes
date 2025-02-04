@@ -1266,9 +1266,12 @@ PetscErrorCode const poisson_problem::derive_z_P(Vec & P_z_shifted, Vec const & 
     PetscFunctionReturn(0); 
 }
 
-PetscErrorCode const poisson_problem::manage_pressure_x(Vec const & P, Vec const & P_x)
+PetscErrorCode const poisson_problem::manage_pressure_x(std::optional<std::reference_wrapper<Vec>> P_opt, std::optional<std::reference_wrapper<Vec>> P_x_opt)
 {
     PetscFunctionBegin;
+
+    Vec &P = P_opt ? P_opt.value().get() : this->P;
+    Vec &P_x = P_x_opt ? P_x_opt.value().get() : this->P_x;
 
     Vec P_shifted;
     DMCreateGlobalVector(dmGrid_cent_rich, &P_shifted);
@@ -1287,9 +1290,11 @@ PetscErrorCode const poisson_problem::manage_pressure_x(Vec const & P, Vec const
     PetscFunctionReturn(0); 
 }
 
-PetscErrorCode const poisson_problem::manage_pressure_y(Vec const & P, Vec const & P_y)
+PetscErrorCode const poisson_problem::manage_pressure_y(std::optional<std::reference_wrapper<Vec>> P_opt, std::optional<std::reference_wrapper<Vec>> P_y_opt)
 {
-    PetscFunctionBegin
+    PetscFunctionBegin;
+    Vec &P = P_opt ? P_opt.value().get() : this->P;
+    Vec &P_y = P_y_opt ? P_y_opt.value().get() : this->P_y;
 
     Vec P_shifted;
     DMCreateGlobalVector(dmGrid_cent_rich, &P_shifted);
@@ -1306,9 +1311,12 @@ PetscErrorCode const poisson_problem::manage_pressure_y(Vec const & P, Vec const
     PetscFunctionReturn(0); 
 }
 
-PetscErrorCode const poisson_problem::manage_pressure_z(Vec const & P, Vec const & P_z)
+PetscErrorCode const poisson_problem::manage_pressure_z(std::optional<std::reference_wrapper<Vec>> P_opt, std::optional<std::reference_wrapper<Vec>> P_z_opt)
 {
-    PetscFunctionBegin
+    PetscFunctionBegin;
+
+    Vec &P = P_opt ? P_opt.value().get() : this->P;
+    Vec &P_z = P_opt ? P_z_opt.value().get() : this->P_z;
 
     Vec P_shifted;
     DMCreateGlobalVector(dmGrid_cent_rich, &P_shifted);
@@ -1325,32 +1333,25 @@ PetscErrorCode const poisson_problem::manage_pressure_z(Vec const & P, Vec const
     PetscFunctionReturn(0); 
 }
 
-PetscErrorCode const poisson_problem::manage_pressure(Vec const & U_up, Vec const & V_up, Vec const & W_up, Vec const & P)
+PetscErrorCode const poisson_problem::manage_pressure(std::optional<std::reference_wrapper<Vec>> U_opt,
+std::optional<std::reference_wrapper<Vec>> V_up_opt,
+std::optional<std::reference_wrapper<Vec>> W_up_opt,  
+std::optional<std::reference_wrapper<Vec>> P_opt)
 {
     KSP ksp;
     PC  pc;
 
     PetscFunctionBegin;
 
-    //Stiamo usando direttamente U_pre, V_pre, W_pre come reference. Dovrebbe essere sicuro ma non mi fiderei. Pare funzionare comunque.
-    /*Vec U_n, V_n, W_n;
-    DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-    DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-    DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-    VecCopy(U_pre, U_n);
-    VecCopy(V_pre, V_n);
-    VecCopy(W_pre, W_n);*/
+    Vec &U_up = U_opt ? U_opt.value().get() : this->U_up;
+    Vec &V_up = V_up_opt ? V_up_opt.value().get() : this->V_up;
+    Vec &W_up = W_up_opt ? W_up_opt.value().get() : this->W_up;
+    Vec &P = P_opt ? P_opt.value().get() : this->P;  
 
     Vec div;
     DMCreateGlobalVector(dmGrid_centered, &div);
     compute_divergence(div, U_up, V_up, W_up);     
 
-    /*Vec force;
-    DMCreateGlobalVector(dmGrid_centered, &force);
-    CreateReferenceSolutionTryForce(dmGrid_centered, force, 0);
-    CheckSolution(div, force);*/
-
-    //assemble_lhs();
     /*PetscReal mean;
     PetscInt size;
     VecSum(div, &mean);

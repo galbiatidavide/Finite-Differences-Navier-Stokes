@@ -52,6 +52,9 @@ Vec P;   ///< Pressure field.
 Vec P_x; ///< Pressure derivative in x-direction.
 Vec P_y; ///< Pressure derivative in y-direction.
 Vec P_z; ///< Pressure derivative in z-direction.
+Vec U_up; ///< Velocity component in the x-direction.
+Vec V_up; ///< Velocity component in the y-direction.
+Vec W_up; ///< Velocity component in the z-direction.
 
 Mat A;   ///< Matrix for the discretized Poisson equation.
 
@@ -112,13 +115,17 @@ poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM
     DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
     DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
     DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
+    DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
+    DMCreateGlobalVector(dmGrid_staggered_y, &V_up);
+    DMCreateGlobalVector(dmGrid_staggered_z, &W_up);
+
     DMCreateMatrix(dmGrid_centered, &A);
     assemble_lhs();
 }
 
 //sistemo questo costruttore
-/*
-navier_stokes_problem()
+
+poisson_problem()
 {
     //Allocate the grids
     CreateGrid(&dmGrid_staggered_x, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
@@ -134,9 +141,6 @@ navier_stokes_problem()
     CreateAnalyticalU(dmGrid_staggered_x, U_up, 0);
     CreateAnalyticalV(dmGrid_staggered_y, V_up, 0);
     CreateAnalyticalW(dmGrid_staggered_z, W_up, 0);
-    PetscReal norm_U;
-    VecNorm(U_up, NORM_INFINITY, &norm_U);
-    std::cout << "Norm U: " << norm_U << std::endl;
 
     DMCreateGlobalVector(dmGrid_centered, &P);
     DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
@@ -144,24 +148,10 @@ navier_stokes_problem()
     DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
     DMCreateMatrix(dmGrid_centered, &A);
 
-    DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
-    DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
-    DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
-
-    if(brinkmann)
-    {
-        createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
-        createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
-        createMaskW(dmGrid_staggered_z, mask_W, vertices, faces);
-    }
-    else {
-        VecSet(mask_U, 0.0);
-        VecSet(mask_V, 0.0);
-        VecSet(mask_W, 0.0);
-    }
+    assemble_lhs();
 
 };
-*/
+
 
 /**
  * @brief Exports simulation results in .vtk format for visualization.
@@ -174,25 +164,28 @@ PetscErrorCode const exodus(size_t i);
  * @param W_up Velocity field in the z-direction.
  * @param P Pressure field.
  */
-PetscErrorCode const manage_pressure(Vec const & U_up, Vec const & V_up, Vec const & W_up, Vec const & P);
+PetscErrorCode const manage_pressure(std::optional<std::reference_wrapper<Vec>> U_opt = std::nullopt,
+std::optional<std::reference_wrapper<Vec>> V_up_opt = std::nullopt,
+std::optional<std::reference_wrapper<Vec>> W_up_opt = std::nullopt, 
+std::optional<std::reference_wrapper<Vec>> P_opt = std::nullopt);
 /**
  * @brief Assembles the pressure derivative in the x-direction on the staggered grid.
  * @param P Pressure field.
  * @param P_x Updated pressure derivative in the x-direction.
  */
-PetscErrorCode const manage_pressure_x(Vec const & P, Vec const & P_x);
+PetscErrorCode const manage_pressure_x(std::optional<std::reference_wrapper<Vec>> P_opt = std::nullopt, std::optional<std::reference_wrapper<Vec>> P_x_opt = std::nullopt);
 /**
  * @brief Assembles the pressure derivative in the y-direction on the staggered grid.
  * @param P Pressure field.
  * @param P_y Updated pressure derivative in the y-direction.
  */
-PetscErrorCode const manage_pressure_y(Vec const & P, Vec const & P_y);
+PetscErrorCode const manage_pressure_y(std::optional<std::reference_wrapper<Vec>> P_opt = std::nullopt, std::optional<std::reference_wrapper<Vec>> P_y_opt = std::nullopt);
 /**
  * @brief Assembles the pressure derivative in the z-direction on the staggered grid.
  * @param P Pressure field.
  * @param P_z Updated pressure derivative in the z-direction.
  */
-PetscErrorCode const manage_pressure_z(Vec const & P, Vec const & P_z);
+PetscErrorCode const manage_pressure_z(std::optional<std::reference_wrapper<Vec>> P_opt = std::nullopt, std::optional<std::reference_wrapper<Vec>> P_z_opt = std::nullopt);
 /**
  * @brief Destructor to clean up allocated resources. required by PETSc management of native objects.
  */
@@ -202,6 +195,9 @@ PetscErrorCode const manage_pressure_z(Vec const & P, Vec const & P_z);
     VecDestroy(&P_x);
     VecDestroy(&P_y);
     VecDestroy(&P_z);
+    VecDestroy(&U_up);
+    VecDestroy(&V_up);
+    VecDestroy(&W_up);
     MatDestroy(&A);
     DMDestroy(&dmGrid_staggered_x);
     DMDestroy(&dmGrid_staggered_y);
