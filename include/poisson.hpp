@@ -26,48 +26,84 @@
 #include "utils.hpp"
 #include "config_problem.hpp"
 
-
-//penalizzazione
-//rivedo slide formaggia
-//templare args solve_step
-
 using namespace problem_setting;
 
 #ifndef POISSON_PROBLEM_HPP
 #define POISSON_PROBLEM_HPP
-
+/**
+ * @class poisson_problem
+ * @brief Represents a Poisson equation solver for pressure correction in fluid simulations.
+ *
+ * This class solves the Poisson equation for a variabble like pressure, with homogeneous Neumann boundary conditions.
+ * It manages the assembly of matrices, calculation of divergence. In our framework, it is used to solve the pressure correction in the Navier-Stokes equations.
+ * For our purposes, enforcing compatibility condition was not required. Beware that for a stand-alone problem, compatible-to-null-bc's source must be provided.
+ */
 class poisson_problem
 {
 private:
 
-//Cannot be declared as constant
-DM dmGrid_staggered_x;
-DM dmGrid_staggered_y;
-DM dmGrid_staggered_z;
-DM dmGrid_centered;
-DM dmGrid_cent_rich;
+DM dmGrid_staggered_x; ///< Discretized grid for staggered x-direction.
+DM dmGrid_staggered_y; ///< Discretized grid for staggered y-direction.
+DM dmGrid_staggered_z; ///< Discretized grid for staggered z-direction.
+DM dmGrid_centered;    ///< Discretized grid for centered formulation.
+DM dmGrid_cent_rich;   ///< Refined centered grid for pressure computation.
 
-Vec P;
-Vec P_x;
-Vec P_y;
-Vec P_z;
+Vec P;   ///< Pressure field.
+Vec P_x; ///< Pressure derivative in x-direction.
+Vec P_y; ///< Pressure derivative in y-direction.
+Vec P_z; ///< Pressure derivative in z-direction.
 
-Mat A;
+Mat A;   ///< Matrix for the discretized Poisson equation.
 
+/**
+ * @brief Assembles the left-hand side (LHS) matrix for the Poisson problem.
+ */
 PetscErrorCode const assemble_lhs();
-
+/**
+ * @brief Computes the divergence term for velocity fields and outputs on dmGrid_centered_rich grid.
+ * @param div Output divergence vector.
+ * @param U Velocity component in the x-direction.
+ * @param V Velocity component in the y-direction.
+ * @param W Velocity component in the z-direction.
+ */
 PetscErrorCode const assemble_divergence(Vec & div, Vec const & U, Vec const &  V, Vec const & W);
-
+/**
+ * @brief Assemble routines for a previously found divergence of the given velocity field and migrates it on the correct dmGrid_centered grid.
+ * @param div Output divergence vector.
+ * @param U Velocity component in the x-direction.
+ * @param V Velocity component in the y-direction.
+ * @param W Velocity component in the z-direction.
+ */
 PetscErrorCode const compute_divergence(Vec & div, Vec const & U_n, Vec const & V_n, Vec const & W_n);
-
+/**
+ * @brief Computes the derivative of the pressure field in the x-direction and outputes on dmGrid_centered_rich grid.
+ * @param P_x_shifted Output shifted pressure derivative.
+ * @param vec Input pressure field.
+ */
 PetscErrorCode const derive_x_P(Vec & P_x_shifted, Vec const & vec);
-
+/**
+ * @brief Computes the derivative of the pressure field in the y-direction and outputes on dmGrid_centered_rich grid.
+ * @param P_y_shifted Output shifted pressure derivative.
+ * @param vec Input pressure field.
+ */
 PetscErrorCode const derive_y_P(Vec & P_y_shifted, Vec const & vec);
-
+/**
+ * @brief Computes the derivative of the pressure field in the z-direction and outputes on dmGrid_centered_rich grid.
+ * @param P_z_shifted Output shifted pressure derivative.
+ * @param vec Input vector.
+ */
 PetscErrorCode const derive_z_P(Vec & P_z_shifted, Vec const & vec);
 
 public:
 
+/**
+ * @brief Constructor to initialize the Poisson problem with pre-allocated grids.
+ * @param dmGrid_staggered_x Grid for staggered x-direction.
+ * @param dmGrid_staggered_y Grid for staggered y-direction.
+ * @param dmGrid_staggered_z Grid for staggered z-direction.
+ * @param dmGrid_centered Grid for centered formulation.
+ * @param dmGrid_cent_rich Grid for refined pressure computation.
+ */
 poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich)
     : dmGrid_staggered_x(dmGrid_staggered_x), dmGrid_staggered_y(dmGrid_staggered_y), dmGrid_staggered_z(dmGrid_staggered_z), dmGrid_centered(dmGrid_centered), dmGrid_cent_rich(dmGrid_cent_rich)
 
@@ -80,6 +116,7 @@ poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM
     assemble_lhs();
 }
 
+//sistemo questo costruttore
 /*
 navier_stokes_problem()
 {
@@ -125,16 +162,40 @@ navier_stokes_problem()
 
 };
 */
+
+/**
+ * @brief Exports simulation results in .vtk format for visualization.
+ */
 PetscErrorCode const exodus(size_t i);
-
+/**
+ * @brief Solves the elliptic Poisson equation with GMRES and multigrid preconditioner.
+ * @param U_up Velocity field in the x-direction.
+ * @param V_up Velocity field in the y-direction.
+ * @param W_up Velocity field in the z-direction.
+ * @param P Pressure field.
+ */
 PetscErrorCode const manage_pressure(Vec const & U_up, Vec const & V_up, Vec const & W_up, Vec const & P);
-
+/**
+ * @brief Assembles the pressure derivative in the x-direction on the staggered grid.
+ * @param P Pressure field.
+ * @param P_x Updated pressure derivative in the x-direction.
+ */
 PetscErrorCode const manage_pressure_x(Vec const & P, Vec const & P_x);
-
+/**
+ * @brief Assembles the pressure derivative in the y-direction on the staggered grid.
+ * @param P Pressure field.
+ * @param P_y Updated pressure derivative in the y-direction.
+ */
 PetscErrorCode const manage_pressure_y(Vec const & P, Vec const & P_y);
-
+/**
+ * @brief Assembles the pressure derivative in the z-direction on the staggered grid.
+ * @param P Pressure field.
+ * @param P_z Updated pressure derivative in the z-direction.
+ */
 PetscErrorCode const manage_pressure_z(Vec const & P, Vec const & P_z);
-
+/**
+ * @brief Destructor to clean up allocated resources. required by PETSc management of native objects.
+ */
 ~poisson_problem()
 {
     VecDestroy(&P);
@@ -147,20 +208,7 @@ PetscErrorCode const manage_pressure_z(Vec const & P, Vec const & P_z);
     DMDestroy(&dmGrid_staggered_z);
     DMDestroy(&dmGrid_centered);
     DMDestroy(&dmGrid_cent_rich);
-    /*VecDestroy(&mask_U);
-    VecDestroy(&mask_V);
-    VecDestroy(&mask_W);*/
-
-
-    /*VecDestroy(&U_prova);
-    VecDestroy(&V_prova);
-    VecDestroy(&W_prova);*/
-    // NO NEED TO CALL: HO STAMPATO QUANDO ENTRA NEL DISTRUTTORE DI PARABOLIC_PROBLEM E LO FA DOPO cout << "Destructor called" << std::endl;
-    /*pb_x.~parabolic_problem_x();
-    pb_y.~parabolic_problem_y();
-    pb_z.~parabolic_problem_z();*/
     std::cout << "Poisson Destructor Called" << std::endl;
-
 }
 
 };

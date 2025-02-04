@@ -1,12 +1,14 @@
 #include <chrono>
 #include <iostream>
 #include <limits>
+#include <optional>
 //PETSc
 #include <petscdmstag.h>
 #include <petscksp.h>
 #include <petscmat.h>
 //VTK
 #include <vtkSTLReader.h>
+
 
 #ifndef MACROS_HPP
 #define MACROS_HPP
