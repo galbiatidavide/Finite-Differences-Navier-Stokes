@@ -670,88 +670,17 @@
         PetscFunctionReturn(0);
     }
 
-    PetscErrorCode const transport_problem_x::solve_step_x(PetscScalar const & theta)
+
+    PetscErrorCode const transport_problem_x::solve_step_x(PetscScalar const & theta,     
+    std::optional<std::reference_wrapper<Vec>> U_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt)
     {
-        Vec U_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
-        DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Shifted, U_shift);
 
-        Vec V_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &V_shift);
-        DMStagMigrateVec(dmGrid_Staggered, V_n, dmGrid_Shifted, V_shift);
+        Vec &U_n = U_n_opt ? U_n_opt.value().get() : this->U_n; 
+        Vec &V_n = V_n_opt ? V_n_opt.value().get() : this->V_n; 
+        Vec &W_n = W_n_opt ? W_n_opt.value().get() : this->W_n; 
 
-        Vec W_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &W_shift);
-        DMStagMigrateVec(dmGrid_Staggered, W_n, dmGrid_Shifted, W_shift);
-
-        Vec UV_y, UW_z;
-        DMCreateGlobalVector(dmGrid_Shifted, &UV_y);
-        DMCreateGlobalVector(dmGrid_Shifted, &UW_z);
-        Vec mixedFirst;
-        DMCreateGlobalVector(dmGrid_Staggered, &mixedFirst);
-
-        {        
-            Vec U_y, U_z, V_y, W_z, UV, UW;
-            DMCreateGlobalVector(dmGrid_Shifted, &U_y);
-            DMCreateGlobalVector(dmGrid_Shifted, &U_z);
-            DMCreateGlobalVector(dmGrid_Shifted, &V_y);
-            DMCreateGlobalVector(dmGrid_Shifted, &W_z);
-            DMCreateGlobalVector(dmGrid_Shifted, &UV);
-            DMCreateGlobalVector(dmGrid_Shifted, &UW);
-            FirstShiftU_y(U_y, U_shift, theta);
-            FirstShiftU_z(U_z, U_shift, theta);
-            FirstShiftV_y(V_y, V_shift, theta);
-            FirstShiftW_z(W_z, W_shift, theta); 
-            VecPointwiseMult(UV, U_y, V_y);
-            VecPointwiseMult(UW, U_z, W_z);
-            FirstDerive_y(UV_y, UV);
-            FirstDerive_z(UW_z, UW);
-            VecAXPY(UV_y, 1.0, UW_z);
-            PetscObjectDestroy((PetscObject*)&U_y);
-            PetscObjectDestroy((PetscObject*)&U_z);
-            PetscObjectDestroy((PetscObject*)&V_y);
-            PetscObjectDestroy((PetscObject*)&W_z);
-            PetscObjectDestroy((PetscObject*)&UV);
-            PetscObjectDestroy((PetscObject*)&UW);
-        }           
-
-        DMStagMigrateVec(dmGrid_Shifted, UV_y, dmGrid_Staggered, mixedFirst);
-
-        Vec U_center;
-        DMCreateGlobalVector(dmGrid_Centered, &U_center);
-        DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Centered, U_center);
-
-        Vec U_c;
-        DMCreateGlobalVector(dmGrid_Centered, &U_c);
-        CenterU(U_c, U_center, theta);
-
-        Vec U2_x;
-        DMCreateGlobalVector(dmGrid_Centered, &U2_x);
-        Derive_x(U2_x, U_c, theta);
-
-        Vec homoFirst;
-        DMCreateGlobalVector(dmGrid_Staggered, &homoFirst);
-        DMStagMigrateVec(dmGrid_Centered, U2_x, dmGrid_Staggered, homoFirst);
-        VecAXPBYPCZ(U_n, -dt, -dt, 1.0, homoFirst, mixedFirst);
-        //VecCopy(U_n, U_int);
-        //VecCopy(U_n, U_0);
-
-        PetscObjectDestroy((PetscObject*)&U_shift);
-        PetscObjectDestroy((PetscObject*)&V_shift);
-        PetscObjectDestroy((PetscObject*)&W_shift);
-        PetscObjectDestroy((PetscObject*)&UV_y);
-        PetscObjectDestroy((PetscObject*)&UW_z);
-        PetscObjectDestroy((PetscObject*)&mixedFirst);
-        PetscObjectDestroy((PetscObject*)&U_c);
-        PetscObjectDestroy((PetscObject*)&U2_x);
-        PetscObjectDestroy((PetscObject*)&U_center);
-        PetscObjectDestroy((PetscObject*)&homoFirst);
-
-        PetscFunctionReturn(0);        
-    }
-
-    PetscErrorCode const transport_problem_x::solve_step_x(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n)
-    {
         Vec U_shift;
         DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
         DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Shifted, U_shift);
@@ -1699,102 +1628,17 @@
         PetscFunctionReturn(0);
     }
 
-    PetscErrorCode const transport_problem_y::solve_step_y(PetscScalar const & theta)
+
+
+    PetscErrorCode const transport_problem_y::solve_step_y(PetscScalar const & theta,    
+    std::optional<std::reference_wrapper<Vec>> U_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt)
     {
-        Vec U_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
-        DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Shifted, U_shift);
 
-        Vec V_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &V_shift);
-        DMStagMigrateVec(dmGrid_Staggered, V_n, dmGrid_Shifted, V_shift);
-
-        Vec W_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &W_shift);
-        DMStagMigrateVec(dmGrid_Staggered, W_n, dmGrid_Shifted, W_shift);
-
-        Vec VU_x, VW_z;
-        DMCreateGlobalVector(dmGrid_Shifted, &VU_x);
-        DMCreateGlobalVector(dmGrid_Shifted, &VW_z);
-        Vec mixedSecond;
-        DMCreateGlobalVector(dmGrid_Staggered, &mixedSecond);
-
-        {
-            Vec V_x, V_z, U_x, W_z, VU, VW;
-            DMCreateGlobalVector(dmGrid_Shifted, &V_x);
-            DMCreateGlobalVector(dmGrid_Shifted, &V_z);
-            DMCreateGlobalVector(dmGrid_Shifted, &U_x);
-            DMCreateGlobalVector(dmGrid_Shifted, &W_z);
-            DMCreateGlobalVector(dmGrid_Shifted, &VU);
-            DMCreateGlobalVector(dmGrid_Shifted, &VW);
-            FirstShiftV_y(V_x, V_shift, theta);
-            SecondShiftV_z(V_z, V_shift, theta);
-            FirstShiftU_y(U_x, U_shift, theta);
-            SecondShiftW_z(W_z, W_shift, theta);
-            VecPointwiseMult(VU, V_x, U_x);
-            VecPointwiseMult(VW, V_z, W_z);
-            SecondDerive_x(VU_x, VU);
-            SecondDerive_z(VW_z, VW);
-            VecAXPY(VU_x, 1.0, VW_z);
-            PetscObjectDestroy((PetscObject*)&V_x);
-            PetscObjectDestroy((PetscObject*)&V_z);
-            PetscObjectDestroy((PetscObject*)&U_x);
-            PetscObjectDestroy((PetscObject*)&W_z);
-            PetscObjectDestroy((PetscObject*)&VU);
-            PetscObjectDestroy((PetscObject*)&VW);
-        }
-
-        DMStagMigrateVec(dmGrid_Shifted, VU_x, dmGrid_Staggered, mixedSecond);
-
-        Vec V_center;
-        DMCreateGlobalVector(dmGrid_Centered, &V_center);
-        DMStagMigrateVec(dmGrid_Staggered, V_n, dmGrid_Centered, V_center);
-
-        Vec V_c;
-        DMCreateGlobalVector(dmGrid_Centered, &V_c);
-        CenterV(V_c, V_center, theta);
-
-        Vec V2_y;
-        DMCreateGlobalVector(dmGrid_Centered, &V2_y);
-        Derive_y(V2_y, V_c, theta);
-
-        Vec homoSecond;
-        DMCreateGlobalVector(dmGrid_Staggered, &homoSecond);
-        DMStagMigrateVec(dmGrid_Centered, V2_y, dmGrid_Staggered, homoSecond);
-
-        VecAXPBYPCZ(V_n, -dt, -dt, 1.0, homoSecond, mixedSecond);
-        //VecCopy(V_n, V_int);
-        //VecCopy(V_n, V_0);
-
-        PetscObjectDestroy((PetscObject*)&U_shift);
-        PetscObjectDestroy((PetscObject*)&V_shift);
-        PetscObjectDestroy((PetscObject*)&W_shift);
-        
-        PetscObjectDestroy((PetscObject*)&VU_x);
-        PetscObjectDestroy((PetscObject*)&VW_z);
-        PetscObjectDestroy((PetscObject*)&mixedSecond);
-
-        PetscObjectDestroy((PetscObject*)&V_c);
-        PetscObjectDestroy((PetscObject*)&V2_y);
-        PetscObjectDestroy((PetscObject*)&V_center);
-        PetscObjectDestroy((PetscObject*)&homoSecond);
-
-        VecDestroy(&U_n);
-        VecDestroy(&V_n);
-        VecDestroy(&W_n);
-
-        PetscFunctionReturn(0);
-    }
-
-    PetscErrorCode const transport_problem_y::solve_step_y(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n)
-    {
-        /*Vec U_n, V_n, W_n;
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        VecCopy(U_0, U_n);
-        VecCopy(V_0, V_n);
-        VecCopy(W_0, W_n);*/
+        Vec &U_n = U_n_opt ? U_n_opt.value().get() : this->U_n; 
+        Vec &V_n = V_n_opt ? V_n_opt.value().get() : this->V_n; 
+        Vec &W_n = W_n_opt ? W_n_opt.value().get() : this->W_n; 
 
         Vec U_shift;
         DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
@@ -2739,95 +2583,17 @@
         PetscFunctionReturn(0);
     }
 
-    PetscErrorCode const transport_problem_z::solve_step_z(PetscScalar const & theta)
+
+    PetscErrorCode const transport_problem_z::solve_step_z(PetscScalar const & theta,     
+    std::optional<std::reference_wrapper<Vec>> U_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt)
     {
 
-        Vec U_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
-        DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Shifted, U_shift);
-
-        Vec V_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &V_shift);
-        DMStagMigrateVec(dmGrid_Staggered, V_n, dmGrid_Shifted, V_shift);
-
-        Vec W_shift;
-        DMCreateGlobalVector(dmGrid_Shifted, &W_shift);
-        DMStagMigrateVec(dmGrid_Staggered, W_n, dmGrid_Shifted, W_shift);
-
-        Vec WU_x, WV_y;
-        DMCreateGlobalVector(dmGrid_Shifted, &WU_x);
-        DMCreateGlobalVector(dmGrid_Shifted, &WV_y);
-        Vec mixedThird;
-        DMCreateGlobalVector(dmGrid_Staggered, &mixedThird);
-        {
-            Vec W_x, W_y, U_x, V_y, WU, WV;
-            DMCreateGlobalVector(dmGrid_Shifted, &W_x);
-            DMCreateGlobalVector(dmGrid_Shifted, &W_y);
-            DMCreateGlobalVector(dmGrid_Shifted, &U_x);
-            DMCreateGlobalVector(dmGrid_Shifted, &V_y);
-            DMCreateGlobalVector(dmGrid_Shifted, &WU);
-            DMCreateGlobalVector(dmGrid_Shifted, &WV);
-            FirstShiftW_z(W_x, W_shift, theta);// ==FirsShiftW_z
-            SecondShiftW_z(W_y, W_shift, theta);// ==SecondShiftW_z
-            FirstShiftU_z(U_x, U_shift, theta);// ==FirsShiftU_z
-            SecondShiftV_z(V_y, V_shift, theta);// ==SecondShiftV_z
-            VecPointwiseMult(WU, W_x, U_x);
-            VecPointwiseMult(WV, W_y, V_y);
-            ThirdDerive_x(WU_x, WU);
-            ThirdDerive_y(WV_y, WV);
-            VecAXPY(WU_x, 1.0, WV_y);
-            PetscObjectDestroy((PetscObject*)&W_x);
-            PetscObjectDestroy((PetscObject*)&W_y);
-            PetscObjectDestroy((PetscObject*)&U_x);
-            PetscObjectDestroy((PetscObject*)&V_y);
-            PetscObjectDestroy((PetscObject*)&WU);
-            PetscObjectDestroy((PetscObject*)&WV);
-        }
-
-        DMStagMigrateVec(dmGrid_Shifted, WU_x, dmGrid_Staggered, mixedThird);
-
-        Vec W_center;
-        DMCreateGlobalVector(dmGrid_Centered, &W_center);
-        DMStagMigrateVec(dmGrid_Staggered, W_n, dmGrid_Centered, W_center);
-
-        Vec W_c;
-        DMCreateGlobalVector(dmGrid_Centered, &W_c);
-        CenterW(W_c, W_center, theta);
-
-        Vec W2_z;
-        DMCreateGlobalVector(dmGrid_Centered, &W2_z);
-        Derive_z(W2_z, W_c, theta);
-
-        Vec homoThird;
-        DMCreateGlobalVector(dmGrid_Staggered, &homoThird);
-        DMStagMigrateVec(dmGrid_Centered, W2_z, dmGrid_Staggered, homoThird);
-
-        VecAXPBYPCZ(W_n, -dt, -dt, 1.0, homoThird, mixedThird);
-        //VecCopy(W_n, W_int);
-        //VecCopy(W_n, W_0);
-
-        PetscObjectDestroy((PetscObject*)&U_shift);
-        PetscObjectDestroy((PetscObject*)&V_shift);
-        PetscObjectDestroy((PetscObject*)&W_shift);
-
-        PetscObjectDestroy((PetscObject*)&WU_x);
-        PetscObjectDestroy((PetscObject*)&WV_y);
-        PetscObjectDestroy((PetscObject*)&mixedThird);
-
-        PetscObjectDestroy((PetscObject*)&W_c);
-        PetscObjectDestroy((PetscObject*)&W2_z);
-        PetscObjectDestroy((PetscObject*)&W_center);
-        PetscObjectDestroy((PetscObject*)&homoThird);
-
-        VecDestroy(&U_n);
-        VecDestroy(&V_n);
-        VecDestroy(&W_n);
-
-        PetscFunctionReturn(0);
-    }
-
-    PetscErrorCode const transport_problem_z::solve_step_z(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n)
-    {
+        Vec &U_n = U_n_opt ? U_n_opt.value().get() : this->U_n; 
+        Vec &V_n = V_n_opt ? V_n_opt.value().get() : this->V_n; 
+        Vec &W_n = W_n_opt ? W_n_opt.value().get() : this->W_n; 
+        
         Vec U_shift;
         DMCreateGlobalVector(dmGrid_Shifted, &U_shift);
         DMStagMigrateVec(dmGrid_Staggered, U_n, dmGrid_Shifted, U_shift);

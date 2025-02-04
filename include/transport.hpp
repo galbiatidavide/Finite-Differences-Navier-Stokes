@@ -149,9 +149,11 @@ public:
     /**
      * @brief Performs a single time step for solving the transport equation.
      */
-    PetscErrorCode const solve_step_x(PetscScalar const & theta);
 
-    PetscErrorCode const solve_step_x(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n);
+    PetscErrorCode const solve_step_x(PetscScalar const & theta, 
+    std::optional<std::reference_wrapper<Vec>> U_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt = std::nullopt);
 
     /*PetscErrorCode const solve_x()
     {
@@ -321,9 +323,11 @@ public:
     /**
      * @brief Performs a single time step for solving the transport equation.
      */
-    PetscErrorCode const solve_step_y(PetscScalar const & theta);
 
-    PetscErrorCode const solve_step_y(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n);
+    PetscErrorCode const solve_step_y(PetscScalar const & theta,     
+    std::optional<std::reference_wrapper<Vec>> U_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt = std::nullopt);
 
     /*Vec get_V() const { return V_int; }
 
@@ -479,9 +483,11 @@ public:
     /**
      * @brief Performs a single time step for solving the transport equation.
      */
-    PetscErrorCode const solve_step_z(PetscScalar const & theta);
 
-    PetscErrorCode const solve_step_z(PetscScalar const & theta, Vec const & U_n, Vec const & V_n, Vec const & W_n);
+    PetscErrorCode const solve_step_z(PetscScalar const & theta,     
+    std::optional<std::reference_wrapper<Vec>> U_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> V_n_opt = std::nullopt, 
+    std::optional<std::reference_wrapper<Vec>> W_n_opt = std::nullopt);
 
     /*Vec get_W() const { return W_int; }
 
