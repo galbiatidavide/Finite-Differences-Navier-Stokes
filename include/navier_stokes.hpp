@@ -62,26 +62,6 @@ Vec U_up, V_up, W_up;
 
 Vec mask_U, mask_V, mask_W;
 
-PetscErrorCode const assemble_lhs();
-
-PetscErrorCode const assemble_divergence(Vec & div, Vec const & U, Vec const &  V, Vec const & W);
-
-PetscErrorCode const compute_divergence(Vec & div, Vec const & U_n, Vec const & V_n, Vec const & W_n);
-
-PetscErrorCode const derive_x_P(Vec & P_x_shifted, Vec const & vec);
-
-PetscErrorCode const derive_y_P(Vec & P_y_shifted, Vec const & vec);
-
-PetscErrorCode const derive_z_P(Vec & P_z_shifted, Vec const & vec);
-
-PetscErrorCode const manage_pressure_x();
-
-PetscErrorCode const manage_pressure_y();
-
-PetscErrorCode const manage_pressure_z();
-
-PetscErrorCode const manage_pressure();
-
 PetscErrorCode const update_bc_U(PetscReal const & theta);
 
 PetscErrorCode const update_bc_V(PetscReal const & theta);
@@ -142,9 +122,6 @@ navier_stokes_problem()
     CreateAnalyticalU(dmGrid_staggered_x, U_up, 0);
     CreateAnalyticalV(dmGrid_staggered_y, V_up, 0);
     CreateAnalyticalW(dmGrid_staggered_z, W_up, 0);
-    PetscReal norm_U;
-    VecNorm(U_up, NORM_INFINITY, &norm_U);
-    std::cout << "Norm U: " << norm_U << std::endl;
 
     DMCreateGlobalVector(dmGrid_centered, &P);
     DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
@@ -209,7 +186,7 @@ PetscErrorCode const solve();
     /*pb_x.~parabolic_problem_x();
     pb_y.~parabolic_problem_y();
     pb_z.~parabolic_problem_z();*/
-    std::cout << "Destructor called" << std::endl;
+    std::cout << "Navier-Stokes Destructor Called" << std::endl;
 
 }
 

@@ -22,7 +22,10 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
-#include "problem_setting.hpp"
+#include "macros.hpp"
+#include "utils.hpp"
+#include "config_problem.hpp"
+
 
 using namespace problem_setting;
 

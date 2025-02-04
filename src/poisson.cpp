@@ -1368,19 +1368,21 @@ PetscErrorCode const poisson_problem::manage_pressure(Vec const & U_up, Vec cons
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, div, P);
 
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
+    if(monitor_convergence) {
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "p-field KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "p-field KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "p-field KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "p-field KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
 
 

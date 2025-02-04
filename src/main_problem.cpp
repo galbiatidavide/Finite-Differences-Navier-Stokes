@@ -23,17 +23,10 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <chrono>
-#include <iostream>
-#include <limits>
-//PETSc
-#include <petscdmstag.h>
-#include <petscksp.h>
-//VTK
-#include <vtkSTLReader.h>
-
-#include "problem_setting.hpp"
+#include "macros.hpp"
+#include "config_problem.hpp"
 #include "navier_stokes.hpp"
+
 
 int main(int argc, char **argv)
 {   
@@ -43,7 +36,7 @@ int main(int argc, char **argv)
 
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
 
-    if(argc == 2 and std::string(argv[1]) == "-h")
+    if(argc == 2 and std::string(argv[1]) != "-objects_dump")
     {
         filename = argv[1];
         std::cout << "Reading geometry from " << argv[1] << std::endl;

@@ -22,8 +22,10 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
+#include "macros.hpp"
+#include "utils.hpp"
+#include "config_problem.hpp"
 
-#include "problem_setting.hpp"
 
 //penalizzazione
 //rivedo slide formaggia
@@ -157,7 +159,7 @@ PetscErrorCode const manage_pressure_z(Vec const & P, Vec const & P_z);
     /*pb_x.~parabolic_problem_x();
     pb_y.~parabolic_problem_y();
     pb_z.~parabolic_problem_z();*/
-    std::cout << "Destructor called" << std::endl;
+    std::cout << "Poisson Destructor Called" << std::endl;
 
 }
 

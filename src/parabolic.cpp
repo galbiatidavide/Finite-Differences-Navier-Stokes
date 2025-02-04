@@ -719,6 +719,7 @@ PetscErrorCode parabolic_problem_x::assemble_lhs()
 }
 
 PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta)
+
 {
     PetscFunctionBegin;   
     KSP       ksp;
@@ -733,20 +734,22 @@ PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta)
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, U_up);
-    
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "u-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "u-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+    if(monitor_convergence) {
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
+
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "u-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "u-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
 
     KSPDestroy(&ksp);   
@@ -768,20 +771,22 @@ PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta, Vec cons
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, U_up);
+    if(monitor_convergence) {
 
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "u-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "u-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "u-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "u-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
 
 
@@ -1512,20 +1517,26 @@ PetscErrorCode parabolic_problem_y::solve_step(PetscReal const & theta)
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, V_up);
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "v-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "v-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+    if(monitor_convergence)
+    {
+
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
+
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "v-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "v-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
+    
 
     KSPDestroy(&ksp);        
     PetscFunctionReturn(0);
@@ -1546,19 +1557,23 @@ PetscErrorCode parabolic_problem_y::solve_step(PetscReal const & theta, Vec cons
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, V_up);    
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "v-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "v-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+    if(monitor_convergence)
+    {
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
+
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "v-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "v-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
     KSPDestroy(&ksp);        
     PetscFunctionReturn(0);
@@ -2302,19 +2317,22 @@ PetscErrorCode parabolic_problem_z::solve_step(PetscReal const & theta)
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, W_up);
 
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
+    if(monitor_convergence)
+    {
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "w-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "w-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "w-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "w-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
 
     KSPDestroy(&ksp);  
@@ -2336,19 +2354,23 @@ PetscErrorCode parabolic_problem_z::solve_step(PetscReal const & theta, Vec cons
     KSPSetTolerances(ksp, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, rhs, W_up);
-    KSPConvergedReason reason;
-    KSPGetConvergedReason(ksp, &reason);
-    PetscInt iterations;
-    KSPGetIterationNumber(ksp, &iterations);
-    PetscReal residual_norm;
-    KSPGetResidualNorm(ksp, &residual_norm);
 
-    if (reason < 0) {
-        PetscPrintf(PETSC_COMM_WORLD, "w-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
-    } else {
-        PetscPrintf(PETSC_COMM_WORLD, 
-                    "w-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
-                    iterations, residual_norm, KSPConvergedReasons[reason]);
+    if(monitor_convergence)
+    {
+        KSPConvergedReason reason;
+        KSPGetConvergedReason(ksp, &reason);
+        PetscInt iterations;
+        KSPGetIterationNumber(ksp, &iterations);
+        PetscReal residual_norm;
+        KSPGetResidualNorm(ksp, &residual_norm);
+
+        if (reason < 0) {
+            PetscPrintf(PETSC_COMM_WORLD, "w-comp KSP did not converge. Reason: %s\n", KSPConvergedReasons[reason]);
+        } else {
+            PetscPrintf(PETSC_COMM_WORLD, 
+                        "w-comp KSP converged in %d iterations with a final residual norm of %g. Reason: %s\n", 
+                        iterations, residual_norm, KSPConvergedReasons[reason]);
+        }
     }
 
     KSPDestroy(&ksp);  

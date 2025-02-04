@@ -22,8 +22,10 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
+#include "macros.hpp"
+#include "utils.hpp"
+#include "config_problem.hpp"
 
-#include "problem_setting.hpp"
 using namespace problem_setting;
 
 #ifndef PARABOLIC_PROBLEM_X_HPP
@@ -100,6 +102,7 @@ public:
         VecDestroy(&U_up);
         DMDestroy(&dmGrid);
         VecDestroy(&mask_U);
+        std::cout << "Parabolic_x Destructor Called" << std::endl;
     }
 
 };
@@ -176,6 +179,8 @@ public:
         VecDestroy(&V_up);
         DMDestroy(&dmGrid);
         VecDestroy(&mask_V);
+        std::cout << "Parabolic_y Destructor Called" << std::endl;
+
     }
 
 };
@@ -253,6 +258,7 @@ public:
         VecDestroy(&W_up);
         DMDestroy(&dmGrid);
         VecDestroy(&mask_W);
+        std::cout << "Parabolic_z Destructor Called" << std::endl;
     }
 
 };
