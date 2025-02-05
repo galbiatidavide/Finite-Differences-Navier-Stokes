@@ -1,27 +1,3 @@
-/******************************************************************************
- *                                                                            *
- *  Project:    Brinkman - Navier-Stokes multiple solver                      *                  
- *  Author:     Dave & Ale                                                    *
- *  Created:    26 October 2023                                               *
- *                                                                            *
- *  Copyright © 2023 Dave & Ale. All rights reserved.                         *
- *                                                                            *
- *  Redistribution and use in source and binary forms, with or without        *
- *  modification, are permitted provided that the following conditions are    *
- *  met:                                                                      *
- *                                                                            *
- *  1. Redistributions of source code must retain the above copyright notice, *
- *     this list of conditions, and the following disclaimer.                 *
- *  2. Redistributions in binary form must reproduce the above copyright      *
- *     notice, this list of conditions, and the following disclaimer in the   *
- *     documentation and/or other materials provided with the distribution.   *
- *                                                                            *
- *  THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY EXPRESS OR IMPLIED          *
- *  WARRANTIES, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY OR FITNESS FOR   *
- *  A PARTICULAR PURPOSE. THE AUTHOR SHALL NOT BE HELD LIABLE FOR ANY CLAIMS  *
- *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
- *                                                                            *
- ******************************************************************************/
 
 #include "utils.hpp"
 
@@ -222,7 +198,7 @@ PetscErrorCode CreateAnalyticalP(DM const & dmGrid, Vec & vec, PetscReal const &
 }
 */
 
-PetscErrorCode CreateGrid(DM * const dmGrid, PetscInt const & dof1, PetscInt const & dof2, PetscInt const & dof3, PetscInt const & nx, PetscInt const & ny, PetscInt const & nz, PetscReal const & Lx_0, PetscReal const & Lx, PetscReal const & Ly_0, PetscReal const & Ly, PetscReal const & Lz_0, PetscReal const & Lz)
+PetscErrorCode CreateGrid(DM * const dmGrid, PetscInt const & dof1, PetscInt const & dof2, PetscInt const & dof3)
 {
     const PetscInt dof0 = 0;
     const PetscInt stencilWidth = 1;

@@ -1,3 +1,4 @@
+/// \file
 /******************************************************************************
  *                                                                            *
  *  Project:    Brinkman - Navier-Stokes multiple solver                      *                  
@@ -22,10 +23,7 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
-#include "macros.hpp"
 #include "utils.hpp"
-#include "config_problem.hpp"
-
 
 using namespace problem_setting;
 
@@ -120,9 +118,9 @@ public:
      */
     transport_problem_x()
     {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
+        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
+        CreateGrid(&dmGrid_Centered, 0, 1, 1);
         DMCreateGlobalVector(dmGrid_Staggered, &U_n);
         DMCreateGlobalVector(dmGrid_Staggered, &V_n);
         DMCreateGlobalVector(dmGrid_Staggered, &W_n);
@@ -222,17 +220,9 @@ protected:
      */
     PetscErrorCode FirstShiftU_y(Vec & UShifted, Vec const & vec, PetscScalar const & theta); //okok
     /**
-     * @brief Performs the shift for x-component in a 3D transport non-linear problem in the z-direction. Interpolates velocity component on edges.
-     */
-    PetscErrorCode FirstShiftU_z(Vec & UShifted, Vec const & vec, PetscScalar const & theta); //okok
-    /**
      * @brief Performs the shift for y-component in a 3D transport non-linear problem in the y-direction. Interpolates velocity component on edges.
      */
     PetscErrorCode FirstShiftV_y(Vec & VShifted, Vec const & vec, PetscScalar const & theta); //ok
-    /**
-     * @brief Performs the shift for z-component in a 3D transport non-linear problem in the z-direction. Interpolates velocity component on edges.
-     */
-    PetscErrorCode FirstShiftW_z(Vec & WShifted, Vec const & vec, PetscScalar const & theta); //ok
     /**
      * @brief Performs the shift for y-component in a 3D transport non-linear problem in the z-direction. Interpolates velocity component on edges.
      */
@@ -295,9 +285,9 @@ public:
      */
     transport_problem_y()
     {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
+        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
+        CreateGrid(&dmGrid_Centered, 0, 1, 1);
         DMCreateGlobalVector(dmGrid_Staggered, &U_n);
         DMCreateGlobalVector(dmGrid_Staggered, &V_n);
         DMCreateGlobalVector(dmGrid_Staggered, &W_n);
@@ -377,18 +367,11 @@ protected:
     Vec U_n, V_n, W_n;   ///< Velocity fields at the current time step.
 
     Vec mask_U, mask_V, mask_W; ///< Mask vectors for boundary conditions.
-    /**
-     * @brief Performs the shift for x-component in a 3D transport non-linear problem in the y-direction. Interpolates velocity component on edges.
-     */
-    PetscErrorCode FirstShiftU_y(Vec & UShifted, Vec const & vec, PetscScalar const & theta); //okok
+
     /**
      * @brief Performs the shift for x-component in a 3D transport non-linear problem in the z-direction. Interpolates velocity component on edges.
      */
     PetscErrorCode FirstShiftU_z(Vec & UShifted, Vec const & vec, PetscScalar const & theta); //okok
-    /**
-     * @brief Performs the shift for y-component in a 3D transport non-linear problem in the y-direction. Interpolates velocity component on edges.
-     */
-    PetscErrorCode FirstShiftV_y(Vec & VShifted, Vec const & vec, PetscScalar const & theta); //ok
     /**
      * @brief Performs the shift for z-component in a 3D transport non-linear problem in the z-direction. Interpolates velocity component on edges.
      */
@@ -455,9 +438,9 @@ public:
      */
     transport_problem_z()
     {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
+        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
+        CreateGrid(&dmGrid_Centered, 0, 1, 1);
         DMCreateGlobalVector(dmGrid_Staggered, &U_n);
         DMCreateGlobalVector(dmGrid_Staggered, &V_n);
         DMCreateGlobalVector(dmGrid_Staggered, &W_n);

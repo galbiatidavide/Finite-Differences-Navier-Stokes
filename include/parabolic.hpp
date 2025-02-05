@@ -24,9 +24,7 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
-#include "macros.hpp"
 #include "utils.hpp"
-#include "config_problem.hpp"
 
 using namespace problem_setting;
 
@@ -90,7 +88,7 @@ public:
 
     parabolic_problem_x()
     {   
-        CreateGrid(&dmGrid, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+        CreateGrid(&dmGrid, 0, 1, 0);
         DMCreateMatrix(dmGrid, &A);
         DMCreateGlobalVector(dmGrid, &rhs);
         DMCreateGlobalVector(dmGrid, &U_up);
@@ -200,7 +198,7 @@ public:
     */
 
     parabolic_problem_y()
-    {   CreateGrid(&dmGrid, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+    {   CreateGrid(&dmGrid, 0, 1, 0);
         DMCreateMatrix(dmGrid, &A);
         DMCreateGlobalVector(dmGrid, &rhs);
         DMCreateGlobalVector(dmGrid, &V_up);
@@ -302,7 +300,7 @@ public:
      * @brief Default constructor for stand-alone problem.
      */
     parabolic_problem_z()
-    {   CreateGrid(&dmGrid, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+    {   CreateGrid(&dmGrid, 0, 1, 0);
         DMCreateMatrix(dmGrid, &A);
         DMCreateGlobalVector(dmGrid, &rhs);
         DMCreateGlobalVector(dmGrid, &W_up);

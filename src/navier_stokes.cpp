@@ -1,5 +1,6 @@
 #include "navier_stokes.hpp"
 
+/*
 PetscErrorCode const navier_stokes_problem::update_bc_U(PetscReal const & theta)
 {
     PetscInt icux_left[3], icux_right[3], iux_left, iux_right;
@@ -229,7 +230,7 @@ PetscErrorCode const navier_stokes_problem::update_bc_W(PetscReal const & theta)
 
     PetscFunctionReturn(0);
 }
-
+*/
 PetscErrorCode const navier_stokes_problem::update_velocity(PetscReal const & theta)
 {
     PetscFunctionBegin;

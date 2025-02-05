@@ -1,3 +1,4 @@
+/// \file
 /******************************************************************************
  *                                                                            *
  *  Project:    Brinkman - Navier-Stokes multiple solver                      *                  
@@ -22,9 +23,7 @@
  *  OR DAMAGES ARISING FROM THE USE OF THIS SOFTWARE.                         *
  *                                                                            *
  ******************************************************************************/
-#include "macros.hpp"
 #include "utils.hpp"
-#include "config_problem.hpp"
 
 using namespace problem_setting;
 
@@ -128,11 +127,11 @@ poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM
 poisson_problem()
 {
     //Allocate the grids
-    CreateGrid(&dmGrid_staggered_x, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-    CreateGrid(&dmGrid_staggered_y, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-    CreateGrid(&dmGrid_staggered_z, 0, 1, 0, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-    CreateGrid(&dmGrid_centered, 0, 0, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
-    CreateGrid(&dmGrid_cent_rich, 0, 1, 1, nx, ny, nz, Lx_0, Lx, Ly_0, Ly, Lz_0, Lz);
+    CreateGrid(&dmGrid_staggered_x, 0, 1, 0);
+    CreateGrid(&dmGrid_staggered_y, 0, 1, 0);
+    CreateGrid(&dmGrid_staggered_z, 0, 1, 0);
+    CreateGrid(&dmGrid_centered, 0, 0, 1);
+    CreateGrid(&dmGrid_cent_rich, 0, 1, 1);
 
     //Create parallel vectors
     DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
