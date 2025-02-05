@@ -69,7 +69,7 @@
 #define FRONT_UP         DMSTAG_FRONT_UP
 
 /**
- * @brief The mathematical constant π (pi).
+ * @brief The mathematical constant pi.
  */
 PetscReal constexpr pi = 3.14159265358979323846;
 /**
