@@ -105,6 +105,9 @@ PetscErrorCode CreateAnalyticalW(DM const & dmGrid, Vec & vec, PetscReal const &
  */
 PetscErrorCode CreateGrid(DM * const dmGrid, PetscInt const & dof1, PetscInt const & dof2, PetscInt const & dof3);
 
+PetscErrorCode CreateAnalyticalP(DM const & dmGrid, Vec & vec, PetscReal const & theta);
+
+
 /**
  * @brief Prints the simulation parameters to the console.
  */

@@ -26,6 +26,9 @@
 #include "macros.hpp"
 #include "config_problem.hpp"
 #include "navier_stokes.hpp"
+#include "inviscid_euler.hpp"
+#include "advection_diffusion.hpp"
+#include "stokes.hpp"
 
 
 int main(int argc, char **argv)
@@ -51,6 +54,13 @@ int main(int argc, char **argv)
         //pbx.solve();
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
+        //stokes_problem stokes;
+        //stokes.solve();
+        //euler_problem euler;
+        //euler.solve();
+        //advection_diffusion_problem advection_diffusion;
+        //advection_diffusion.solve();
+
     }
 
     PetscFinalize();

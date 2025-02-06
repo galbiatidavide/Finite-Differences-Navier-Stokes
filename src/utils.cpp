@@ -143,7 +143,7 @@ PetscErrorCode CreateAnalyticalW(DM const & dmGrid, Vec & vec, PetscReal const &
 
     PetscFunctionReturn(0);
 }
-/*
+
 PetscErrorCode CreateAnalyticalP(DM const & dmGrid, Vec & vec, PetscReal const & theta)
 {
     PetscInt        start[3], n[3], nExtra[3], ex, ey, ez, iux, icux[3], iuy, icuy[3], iuz, icuz[3], iue, icue[3];
@@ -196,7 +196,7 @@ PetscErrorCode CreateAnalyticalP(DM const & dmGrid, Vec & vec, PetscReal const &
 
     PetscFunctionReturn(0);
 }
-*/
+
 
 PetscErrorCode CreateGrid(DM * const dmGrid, PetscInt const & dof1, PetscInt const & dof2, PetscInt const & dof3)
 {

@@ -621,14 +621,16 @@ PetscErrorCode parabolic_problem_x::solve()
     PetscFunctionBegin;
     assemble_lhs();
     for(size_t i = 0; i < iter; i++){            
-        theta = (1/Re)*(i+1)*dt*pi*pi/3;
+        theta = i*dt;
         this->solve_step(theta);
         std::cout << "Iteration: " << i << std::endl;
-        Vec bench;
-        DMCreateGlobalVector(dmGrid, &bench);
-        CreateAnalyticalU(dmGrid, bench, theta);
-        CheckSolution(U_up, bench, "U");
-        VecDestroy(&bench);
+        if(check_convergence) {
+            Vec bench;
+            DMCreateGlobalVector(dmGrid, &bench);
+            CreateAnalyticalU(dmGrid, bench, theta);
+            CheckSolution(U_up, bench, "U");
+            VecDestroy(&bench);
+        }
         exodus(i);              
     }
     PetscFunctionReturn(0);
@@ -1232,13 +1234,15 @@ PetscErrorCode parabolic_problem_y::solve()
     assemble_lhs();
 
     for(size_t i = 0; i < iter; i++){               
-        theta = (1/Re)*(i+1)*dt*pi*pi/3;
+        theta = i*dt;
         this->solve_step(theta);
-        Vec bench;
-        DMCreateGlobalVector(dmGrid, &bench);
-        CreateAnalyticalV(dmGrid, bench, theta);
-        CheckSolution(V_up, bench, "V");
-        VecDestroy(&bench);
+        if(check_convergence){
+            Vec bench;
+            DMCreateGlobalVector(dmGrid, &bench);
+            CreateAnalyticalV(dmGrid, bench, theta);
+            CheckSolution(V_up, bench, "V");
+            VecDestroy(&bench);
+        }
         exodus(i);                   
     }
     PetscFunctionReturn(0);
@@ -1859,14 +1863,15 @@ PetscErrorCode parabolic_problem_z::solve()
     assemble_lhs();
     for(size_t i = 0; i < iter; i++){
             
-            theta = (1/Re)*(i+1)*dt*pi*pi/3;
-            this->solve_step(theta);
-
+        theta = i*dt;
+        this->solve_step(theta);
+        if(check_convergence){
             Vec bench;
             DMCreateGlobalVector(dmGrid, &bench);
             CreateAnalyticalW(dmGrid, bench, theta);
             CheckSolution(W_up, bench, "W");
             VecDestroy(&bench);
+        }
             exodus(i);                 
     }
     PetscFunctionReturn(0);
