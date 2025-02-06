@@ -499,6 +499,26 @@ PetscErrorCode const navier_stokes_problem::solve()
             CreateAnalyticalW(dmGrid_staggered_z, solution_z, theta);
             CheckSolution(W_up, solution_z, "W");
             VecDestroy(&solution_z);
+
+            /*Vec solution_p;
+            DMCreateGlobalVector(dmGrid_centered, &solution_p);
+            double mean_analytical;
+            VecSum(solution_p, &mean_analytical);
+            int size;
+            VecGetSize(solution_p, &size);
+            mean_analytical /= size;
+            double mean_numerical;
+            VecSum(P, &mean_numerical);
+            mean_numerical /= size;
+            VecShift(P, -mean_numerical);
+            CreateAnalyticalP(dmGrid_centered, solution_p, theta);
+            CheckSolution(P, solution_p, "P");
+            VecDestroy(&solution_p);
+            */
+
+
+
+
         }
 
         compute_magnitude();

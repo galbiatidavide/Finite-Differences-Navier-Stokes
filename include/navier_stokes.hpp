@@ -32,9 +32,10 @@ using namespace problem_setting;
 
 /**
  * @class navier_stokes_problem
- * @brief Solves the Navier-Stokes evolutionary incompressible Navier-Stokes equations, applying a first order Chorin-Temam algorthm.
+ * @brief Solves the Navier-Stokes evolutionary incompressible Navier-Stokes equations, applying a first order Chorin-Temam algorithm.
  * It consists of a transport problem for each velocity component, a parabolic problem for each velocity component, and a Poisson problem for the pressure.
  * Current implementation allows Dirichlet bc's only. Boundary conditions are accessed from reference solution, which is a function of space and time.
+ * Current implementation allows for Brinkamn penalty method.
  */
 
 #ifndef NAVIER_STOKES_PROBLEM_HPP
@@ -57,8 +58,6 @@ Vec P_x;     ///< Pressure derivative in the x-direction.
 Vec P_y;     ///< Pressure derivative in the y-direction.
 Vec P_z;     ///< Pressure derivative in the z-direction.
 Vec Magnitude; ///< Magnitude of velocity vectors.
-
-Mat A;       ///< Matrix for the discretized Navier-Stokes equations.
 
 Vec U_up, V_up, W_up; ///< Velocity fields in the x, y, and z directions.
 
@@ -103,7 +102,6 @@ navier_stokes_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered
     DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
     DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
     DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-    DMCreateMatrix(dmGrid_centered, &A);
 
     DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
     DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
@@ -148,7 +146,6 @@ navier_stokes_problem()
     DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
     DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
     DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-    DMCreateMatrix(dmGrid_centered, &A);
 
     /*DMCreateGlobalVector(dmGrid_staggered_x, &U_prova);
     DMCreateGlobalVector(dmGrid_staggered_y, &V_prova);
@@ -189,7 +186,6 @@ PetscErrorCode const solve();
     VecDestroy(&P_y);
     VecDestroy(&P_z);
     VecDestroy(&Magnitude);
-    MatDestroy(&A);
     VecDestroy(&U_up);
     VecDestroy(&V_up);
     VecDestroy(&W_up);
