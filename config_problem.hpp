@@ -17,6 +17,11 @@
 namespace problem_setting
 {
 
+/**
+ * @brief Set the problem type. Possible values are "navier_stokes", "stokes", "euler", "advection_diffusion", "parabolic_x", "parabolic_y", "parabolic_z", "transport_x", "transport_y", "transport_z".
+ */
+constexpr const char *problem_type = "navier_stokes";
+
 
 /**
  * @brief Set this as base path to store results. Default is "results/"
@@ -108,7 +113,8 @@ constexpr PetscReal uxRef(PetscReal const & x, PetscReal const & y, PetscReal co
 {
     return -a*(exp(a*x)*sin(a*y + d*z) + exp(a*z)*cos(a*x + d*y))*exp(-d*d*theta); //navier stokes
     //quando fai test ricorda di cambiare il valore di theta e degli altri parametri e di sistemarlo
-    //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; //parabolic
+    //return sin((pi/3)*(x+y+z))*exp(-(1/Re)*theta*pi*pi/3) + x*y*z; //parabolic          
+
     //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); //transport
     //return 0;
 }
@@ -129,7 +135,7 @@ constexpr PetscReal uxRef(PetscReal const & x, PetscReal const & y, PetscReal co
 constexpr PetscReal uyRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
 {
     return -a*(exp(a*y)*sin(a*z + d*x) + exp(a*x)*cos(a*y + d*z))*exp(-d*d*theta); // navier stokes
-    //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; //parabolic
+    //return sin((pi/3)*(x+y+z))*exp(-(1/Re)*theta*pi*pi/3) + x*y*z; //parabolic
     //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); //transport
     /*if(y == 310)
     {
@@ -172,9 +178,14 @@ constexpr PetscReal uyRef(PetscReal const & x, PetscReal const & y, PetscReal co
 constexpr PetscReal uzRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
 {
     return -a*(exp(a*z)*sin(a*x + d*y) + exp(a*y)*cos(a*z + d*x))*exp(-d*d*theta); //navier stokes
-    //return sin((pi/3)*(x+y+z))*exp(-theta) + x*y*z; // parabolic
+    //return sin((pi/3)*(x+y+z))*exp(-(1/Re)*theta*pi*pi/3) + x*y*z; // parabolic
     //return cos(2*pi*x)*cos(2*pi*y)*cos(2*pi*z); // transport
     //return 0;
+}
+
+constexpr PetscReal pRef(PetscReal const & x, PetscReal const & y, PetscReal const & z, PetscReal const & theta)
+{
+    return -0.5*a*a*(exp(2*a*x) + exp(2*a*y) + exp(2*a*z) + 2*sin(a*x + d*y)*cos(a*z + d*x)*exp(a*(y + z)) +  2*sin(a*y + d*z)*cos(a*x + d*y)*exp(a*(x + z)) +  2*sin(a*z + d*x)*cos(a*y + d*z)*exp(a*(y + x)))*exp(-2*d*d*theta);
 }
 
 
