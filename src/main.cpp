@@ -23,12 +23,11 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "macros.hpp"
-#include "config_problem.hpp"
 #include "navier_stokes.hpp"
 #include "inviscid_euler.hpp"
-#include "advection_diffusion.hpp"
 #include "stokes.hpp"
+#include "advection_diffusion.hpp"
+
 
 
 int main(int argc, char **argv)
@@ -46,23 +45,74 @@ int main(int argc, char **argv)
         reader(filename, vertices, faces);
         
     }
+    
 
     auto start = std::chrono::high_resolution_clock::now();
 
+    #ifdef COMPILE_PARABOLIC
+    #ifndef COMPILE_NAVIER_STOKES
+    #ifndef COMPILE_STOKES
     {
-        //parabolic_problem_x pbx;
-        //pbx.solve();
+        parabolic_problem_x parabolic_x;
+        parabolic_x.solve();
+    }
+    #endif
+    #endif
+    #endif
+
+    #ifdef COMPILE_PARABOLIC
+    #ifndef COMPILE_NAVIER_STOKES
+    #ifndef COMPILE_STOKES
+    {
+        parabolic_problem_y parabolic_y;
+        parabolic_y.solve();
+    }
+    #endif
+    #endif
+    #endif
+
+    #ifdef COMPILE_PARABOLIC
+    #ifndef COMPILE_NAVIER_STOKES
+    #ifndef COMPILE_STOKES
+    {
+        parabolic_problem_z parabolic_z;
+        parabolic_z.solve();
+    }
+    #endif
+    #endif
+    #endif
+
+
+    #ifdef COMPILE_NAVIER_STOKES
+    {
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
-        //stokes_problem stokes;
-        //stokes.solve();
-        //euler_problem euler;
-        //euler.solve();
-        //advection_diffusion_problem advection_diffusion;
-        //advection_diffusion.solve();
-
     }
+    #endif
 
+    #ifdef COMPILE_EULER
+    {
+        euler_problem euler;
+        euler.solve();
+    }
+    #endif
+
+    #ifdef COMPILE_STOKES
+    {
+        stokes_problem stokes;
+        stokes.solve();
+    }
+    #endif
+
+    #ifdef COMPILE_ADVECTION_DIFFUSION
+    {
+        advection_diffusion_problem advection_diffusion;
+        advection_diffusion.solve();
+    }
+    #endif
+
+   
+    
     PetscFinalize();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
@@ -70,6 +120,3 @@ int main(int argc, char **argv)
     std::cout << "Test successfully completed. Ad maiora!" << std::endl;
     PetscFunctionReturn(0); 
 }
-
-
-
