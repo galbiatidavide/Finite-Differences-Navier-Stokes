@@ -77,4 +77,4 @@ These examples showcase the solver's ability to handle various flow regimes and 
 
 ---
 
-Developed by Davide Galbiati and Alessandra Gotti
+Developed by **Davide Galbiati** and **Alessandra Gotti**
