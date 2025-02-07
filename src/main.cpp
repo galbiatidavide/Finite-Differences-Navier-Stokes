@@ -71,6 +71,7 @@ int main(int argc, char **argv)
     #ifdef COMPILE_PARABOLIC
     #ifndef COMPILE_NAVIER_STOKES
     #ifndef COMPILE_STOKES
+    #ifndef COMPILE_ADVECTION_DIFFUSION
     {
         parabolic_problem_y parabolic_y;
         parabolic_y.solve();
@@ -78,10 +79,12 @@ int main(int argc, char **argv)
     #endif
     #endif
     #endif
+    #endif
 
     #ifdef COMPILE_PARABOLIC
     #ifndef COMPILE_NAVIER_STOKES
     #ifndef COMPILE_STOKES
+    #ifndef COMPILE_ADVECTION_DIFFUSION
     {
         parabolic_problem_z parabolic_z;
         parabolic_z.solve();
@@ -89,12 +92,13 @@ int main(int argc, char **argv)
     #endif
     #endif
     #endif
+    #endif
     */
 
     #ifdef COMPILE_NAVIER_STOKES
     {
-        //poisson_problem poisson;
-        //poisson.manage_pressure();
+        poisson_problem poisson;
+        poisson.manage_pressure();
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
     }
