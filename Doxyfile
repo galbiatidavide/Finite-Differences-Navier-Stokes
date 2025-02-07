@@ -17,20 +17,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 
-DOT_GRAPH_MAX_NODES = 100
-HAVE_DOT = YES
-DOT_IMAGE_FORMAT = pdf
-DOT_TRANSPARENT = NO
-DOT_MULTI_TARGETS = YES
-DOT_FONTSIZE = 12
-DOT_NODE_COLOR = "lightblue"
-DOT_EDGE_COLOR = "red"
-DOT_SHAPE = "box"
-DOT_TRANSPARENT = YES
-
-
-
-# This tag specifies the encoding used for all characters in the configuration
+# This tag specifithe encoding used for all characters in the configuration
 # file that follow. The default is UTF-8 which is also the encoding used for all
 # text before the first occurrence of this tag. Doxygen uses libiconv (or the
 # iconv built into libc) for the transcoding. See
@@ -2670,4 +2657,29 @@ GENERATE_LEGEND        = YES
 # plantuml temporary files.
 # The default value is: YES.
 
-DOT_CLEANUP            = YES
+TAB_SIZE               = 2
+
+CPP_CLI_SUPPORT        = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PRIV_VIRTUAL   = YES
+EXTRACT_PACKAGE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_METHODS  = YES
+FORCE_LOCAL_INCLUDES   = YES
+
+RECURSIVE              = YES
+SOURCE_BROWSER         = YES
+
+
+GENERATE_TREEVIEW      = YES
+GENERATE_LATEX         = NO
+HIDE_UNDOC_RELATIONS   = NO
+HAVE_DOT               = YES
+UML_LOOK               = YES
+UML_LIMIT_NUM_FIELDS   = 50
+TEMPLATE_RELATIONS     = YES
+
+DOT_GRAPH_MAX_NODES    = 100
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
