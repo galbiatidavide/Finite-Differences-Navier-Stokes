@@ -97,8 +97,6 @@ int main(int argc, char **argv)
 
     #ifdef COMPILE_NAVIER_STOKES
     {
-        poisson_problem poisson;
-        poisson.manage_pressure();
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
     }
