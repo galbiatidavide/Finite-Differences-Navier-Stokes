@@ -32,8 +32,6 @@ ifneq ($(filter $(SRC_DIR)/navier_stokes.cpp, $(SRC_SELECTED)),)
     CXXFLAGS += -DCOMPILE_NAVIER_STOKES
 endif
 
-
-
 ifneq ($(filter $(SRC_DIR)/inviscid_euler.cpp, $(SRC_SELECTED)),)
     SRC_SELECTED += $(SRC_DIR)/poisson.cpp $(SRC_DIR)/transport.cpp
     CXXFLAGS += -DCOMPILE_EULER

@@ -8,7 +8,7 @@ dmGrid(dmGrid)
     DMCreateGlobalVector(dmGrid, &rhs);
 
     DMCreateGlobalVector(dmGrid, &mask_U);
-    if(brinkmann){
+    if(brinkman){
         createMaskU(dmGrid, mask_U, vertices, faces);
     }
     else {
@@ -27,7 +27,7 @@ parabolic_problem_x::parabolic_problem_x()
     CreateAnalyticalU(dmGrid, U_up, 0);
 
     DMCreateGlobalVector(dmGrid, &mask_U);
-    if(brinkmann){
+    if(brinkman){
         createMaskU(dmGrid, mask_U, vertices, faces);
     }
     else {
@@ -687,7 +687,7 @@ dmGrid(dmGrid)
     DMCreateMatrix(dmGrid, &A);
     DMCreateGlobalVector(dmGrid, &rhs);
     DMCreateGlobalVector(dmGrid, &mask_V);
-    if(brinkmann){
+    if(brinkman){
         createMaskV(dmGrid, mask_V, vertices, faces);
     }
     else {
@@ -703,7 +703,7 @@ parabolic_problem_y::parabolic_problem_y()
     DMCreateGlobalVector(dmGrid, &V_up);
     CreateAnalyticalV(dmGrid, V_up, 0);
     DMCreateGlobalVector(dmGrid, &mask_V);
-    if(brinkmann){
+    if(brinkman){
         createMaskV(dmGrid, mask_V, vertices, faces);
     }
     else {
@@ -1355,7 +1355,7 @@ dmGrid(dmGrid)
     DMCreateMatrix(dmGrid, &A);
     DMCreateGlobalVector(dmGrid, &rhs);
     DMCreateGlobalVector(dmGrid, &mask_W);
-    if(brinkmann){
+    if(brinkman){
         createMaskW(dmGrid, mask_W, vertices, faces);
     }
     else {
@@ -1372,7 +1372,7 @@ parabolic_problem_z::parabolic_problem_z()
     DMCreateGlobalVector(dmGrid, &W_up);
     CreateAnalyticalW(dmGrid, W_up, 0);
     DMCreateGlobalVector(dmGrid, &mask_W);
-    if(brinkmann){
+    if(brinkman){
         createMaskW(dmGrid, mask_W, vertices, faces);
     }
     else {

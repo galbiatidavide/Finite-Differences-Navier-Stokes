@@ -18,26 +18,20 @@ namespace problem_setting
 {
 
 /**
- * @brief Set the problem type. Possible values are "navier_stokes", "stokes", "euler", "advection_diffusion", "parabolic_x", "parabolic_y", "parabolic_z", "transport_x", "transport_y", "transport_z".
- */
-constexpr const char *problem_type = "navier_stokes";
-
-
-/**
  * @brief Set this as base path to store results. Default is "results/"
  */
 constexpr const char *base_path = "results/";
 
 /**
- * @brief Set flag to (dis)able brinkmann penalization. Required for complex geometry handling.
+ * @brief Set flag to (dis)able brinkman penalization. Required for complex geometry handling.
  */
-constexpr bool brinkmann{false};
+constexpr bool brinkman{false};
 /**
  * @brief Set flag to (dis)able convergence error of KSP solver.
  */
 constexpr bool monitor_convergence{true};
 /**
- * @brief Set flag to (dis)able convergence error of variable. Only implemented for NAvier-Stokes and parabolic problems.
+ * @brief Set flag to (dis)able convergence error of variable. De-activate for non-analytical solutions, as results would be meaningless.
  */
 constexpr bool check_convergence{true};
 
@@ -55,13 +49,6 @@ constexpr PetscInt ny{32};
  */
 constexpr PetscInt nz{32};
 
-/*constexpr PetscReal Lx_0{253};
-constexpr PetscReal Ly_0{235};
-constexpr PetscReal Lz_0{190};
-constexpr PetscReal Lx{292};
-constexpr PetscReal Ly{310};
-constexpr PetscReal Lz{232};*/
-
 /**
  * @brief Set the domain limits in x, y and z directions.
  */
@@ -71,6 +58,12 @@ constexpr PetscReal Lz_0{-0.5};
 constexpr PetscReal Lx{0.5};
 constexpr PetscReal Ly{0.5};
 constexpr PetscReal Lz{0.5};
+/*constexpr PetscReal Lx_0{253};
+constexpr PetscReal Ly_0{235};
+constexpr PetscReal Lz_0{190};
+constexpr PetscReal Lx{292};
+constexpr PetscReal Ly{310};
+constexpr PetscReal Lz{232};*/
 
 /**
  * @brief Set time-step.

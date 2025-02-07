@@ -14,7 +14,7 @@ dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Cente
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
@@ -42,7 +42,7 @@ transport_problem_x::transport_problem_x()
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
@@ -847,7 +847,7 @@ dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Cente
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
@@ -875,7 +875,7 @@ transport_problem_y::transport_problem_y()
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
@@ -1681,7 +1681,7 @@ dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Cente
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
@@ -1709,7 +1709,7 @@ transport_problem_z::transport_problem_z()
     DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
     DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
         createMaskV(dmGrid_Staggered, mask_V, vertices, faces);

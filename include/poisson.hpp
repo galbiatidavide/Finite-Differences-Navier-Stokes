@@ -108,13 +108,10 @@ public:
  */
 poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich);
 
-
 /**
  * @brief Constructor to solve stand-alone problem
  */
 poisson_problem();
-
-
 
 /**
  * @brief Exports simulation results in .vtk format for visualization.

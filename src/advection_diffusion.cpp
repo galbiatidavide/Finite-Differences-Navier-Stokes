@@ -242,7 +242,7 @@ advection_diffusion_problem::advection_diffusion_problem(DM const & dmGrid_stagg
     DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
     DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
         createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
@@ -284,7 +284,7 @@ advection_diffusion_problem::advection_diffusion_problem()
     DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
     DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
         createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);

@@ -34,18 +34,23 @@ int main(int argc, char **argv)
 {   
 
     using namespace problem_setting;
-
-
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
 
-
-    if(argc == 2 and std::string(argv[1]) != "-objects_dump")
+    /**
+     * @brief Filename for the geometry.
+     */
+    if(argc == 2 and std::string(argv[1]) != "-objects_dump" and brinkman)
     {
         filename = argv[1];
         std::cout << "Reading geometry from " << argv[1] << std::endl;
-        reader(filename, vertices, faces);
-        
+        reader(filename, vertices, faces);        
     }
+    else if(argc == 2 and std::string(argv[1]) != "-objects_dump" and !brinkman)
+    {
+        std::cout<<"Error!. Set brinkman flag = TRUE"<<std::endl;
+        exit(1);
+    }
+    
     
     auto start = std::chrono::high_resolution_clock::now();
 

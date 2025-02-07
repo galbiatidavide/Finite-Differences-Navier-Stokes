@@ -15,7 +15,7 @@ stokes_problem::stokes_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_
     DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
     DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
         createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
@@ -55,7 +55,7 @@ stokes_problem::stokes_problem()
     DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
     DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
 
-    if(brinkmann)
+    if(brinkman)
     {
         createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
         createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);

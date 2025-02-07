@@ -57,6 +57,11 @@ private:
     PetscErrorCode assemble_rhs(PetscReal const & theta, Vec const & U_up);
 
     /**
+     * @brief Assembles the left-hand side (LHS) matrix.
+     */
+    PetscErrorCode assemble_lhs();
+
+    /**
      * @brief Exports results in .vtk format for post-processing.
      */
     PetscErrorCode exodus(size_t const & i);
@@ -72,11 +77,6 @@ public:
      * @brief Default constructor for stand-alone problem.
     */
     parabolic_problem_x();
-
-    /**
-     * @brief Assembles the left-hand side (LHS) matrix.
-     */
-    PetscErrorCode assemble_lhs();
 
     /**
      * @brief Performs a single time step of the numerical solution.
@@ -122,6 +122,12 @@ private:
      * @brief Assembles the right-hand side (RHS) vector.
      */ 
     PetscErrorCode assemble_rhs(PetscReal const & theta, Vec const & V_up);
+
+    /**
+     * @brief Assembles the left-hand side (LHS) matrix.
+     */
+    PetscErrorCode assemble_lhs();
+
     /**
      * @brief Exports results in .vtk format for post-processing.
      */
@@ -143,10 +149,6 @@ public:
 
     parabolic_problem_y();
 
-    /**
-     * @brief Assembles the left-hand side (LHS) matrix.
-     */
-    PetscErrorCode assemble_lhs();
     /**
      * @brief Performs a single time step of the numerical solution.
      */  
@@ -191,6 +193,10 @@ private:
      */ 
     PetscErrorCode assemble_rhs(PetscReal const & theta, Vec const & W_up);
     /**
+     * @brief Assembles the left-hand side (LHS) matrix.
+     */
+    PetscErrorCode assemble_lhs();
+    /**
      * @brief Exports results in .vtk format for post-processing.
      */
     PetscErrorCode exodus(size_t const & i);
@@ -207,10 +213,6 @@ public:
      */
     parabolic_problem_z();
 
-    /**
-     * @brief Assembles the left-hand side (LHS) matrix.
-     */
-    PetscErrorCode assemble_lhs();
     /**
      * @brief Performs a single time step of the numerical solution.
      */
