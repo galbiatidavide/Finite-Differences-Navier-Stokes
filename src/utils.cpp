@@ -202,6 +202,10 @@ PetscErrorCode CreateGrid(DM * const dmGrid, PetscInt const & dof1, PetscInt con
 {
     const PetscInt dof0 = 0;
     const PetscInt stencilWidth = 1;
+    if(nx < 4 or ny < 4 or nz < 4){
+        std::cout<<"Error! You can't choose a grid smaller than 4x4x4."<<std::endl;
+        exit(1);
+    }
 
     PetscFunctionBegin;
 

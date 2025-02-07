@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
 
+
     if(argc == 2 and std::string(argv[1]) != "-objects_dump")
     {
         filename = argv[1];
@@ -46,12 +47,12 @@ int main(int argc, char **argv)
         
     }
     
-
     auto start = std::chrono::high_resolution_clock::now();
 
     #ifdef COMPILE_PARABOLIC
     #ifndef COMPILE_NAVIER_STOKES
     #ifndef COMPILE_STOKES
+    #ifndef COMPILE_ADVECTION_DIFFUSION
     {
         parabolic_problem_x parabolic_x;
         parabolic_x.solve();
@@ -59,7 +60,9 @@ int main(int argc, char **argv)
     #endif
     #endif
     #endif
+    #endif
 
+    /*
     #ifdef COMPILE_PARABOLIC
     #ifndef COMPILE_NAVIER_STOKES
     #ifndef COMPILE_STOKES
@@ -81,10 +84,12 @@ int main(int argc, char **argv)
     #endif
     #endif
     #endif
-
+    */
 
     #ifdef COMPILE_NAVIER_STOKES
     {
+        //poisson_problem poisson;
+        //poisson.manage_pressure();
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
     }
@@ -111,8 +116,6 @@ int main(int argc, char **argv)
     }
     #endif
 
-   
-    
     PetscFinalize();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;

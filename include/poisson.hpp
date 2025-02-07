@@ -106,50 +106,14 @@ public:
  * @param dmGrid_centered Grid for centered formulation.
  * @param dmGrid_cent_rich Grid for refined pressure computation.
  */
-poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich)
-    : dmGrid_staggered_x(dmGrid_staggered_x), dmGrid_staggered_y(dmGrid_staggered_y), dmGrid_staggered_z(dmGrid_staggered_z), dmGrid_centered(dmGrid_centered), dmGrid_cent_rich(dmGrid_cent_rich)
+poisson_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich);
 
-{
-    DMCreateGlobalVector(dmGrid_centered, &P);
-    DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
-    DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
-    DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
-    DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
-    DMCreateGlobalVector(dmGrid_staggered_y, &V_up);
-    DMCreateGlobalVector(dmGrid_staggered_z, &W_up);
 
-    DMCreateMatrix(dmGrid_centered, &A);
-    assemble_lhs();
-}
+/**
+ * @brief Constructor to solve stand-alone problem
+ */
+poisson_problem();
 
-//sistemo questo costruttore
-
-poisson_problem()
-{
-    //Allocate the grids
-    CreateGrid(&dmGrid_staggered_x, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_y, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_z, 0, 1, 0);
-    CreateGrid(&dmGrid_centered, 0, 0, 1);
-    CreateGrid(&dmGrid_cent_rich, 0, 1, 1);
-
-    //Create parallel vectors
-    DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
-    DMCreateGlobalVector(dmGrid_staggered_y, &V_up);
-    DMCreateGlobalVector(dmGrid_staggered_z, &W_up);
-    CreateAnalyticalU(dmGrid_staggered_x, U_up, 0);
-    CreateAnalyticalV(dmGrid_staggered_y, V_up, 0);
-    CreateAnalyticalW(dmGrid_staggered_z, W_up, 0);
-
-    DMCreateGlobalVector(dmGrid_centered, &P);
-    DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
-    DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
-    DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
-    DMCreateMatrix(dmGrid_centered, &A);
-
-    assemble_lhs();
-
-};
 
 
 /**
@@ -188,23 +152,7 @@ PetscErrorCode const manage_pressure_z(std::optional<std::reference_wrapper<Vec>
 /**
  * @brief Destructor to clean up allocated resources. required by PETSc management of native objects.
  */
-~poisson_problem()
-{
-    VecDestroy(&P);
-    VecDestroy(&P_x);
-    VecDestroy(&P_y);
-    VecDestroy(&P_z);
-    VecDestroy(&U_up);
-    VecDestroy(&V_up);
-    VecDestroy(&W_up);
-    MatDestroy(&A);
-    DMDestroy(&dmGrid_staggered_x);
-    DMDestroy(&dmGrid_staggered_y);
-    DMDestroy(&dmGrid_staggered_z);
-    DMDestroy(&dmGrid_centered);
-    DMDestroy(&dmGrid_cent_rich);
-    std::cout << "Poisson Destructor Called" << std::endl;
-}
+~poisson_problem();
 
 };
 

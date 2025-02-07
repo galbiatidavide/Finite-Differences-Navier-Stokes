@@ -88,73 +88,13 @@ public:
  * This costructor has been defined for consistency and if future implementations will require solving Advection-Diffusion in a broader context.
  * For our applications only a stand-alone constructor is used.
  */
-advection_diffusion_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich, DM const & dmGrid_stag_transp, DM const dmGrid_shift_transp, Vec const & U_up, Vec const & V_up, Vec const W_up)
-    : dmGrid_staggered_x(dmGrid_staggered_x), dmGrid_staggered_y(dmGrid_staggered_y), dmGrid_staggered_z(dmGrid_staggered_z), dmGrid_centered(dmGrid_centered), dmGrid_cent_rich(dmGrid_cent_rich), dmGrid_stag_transp(dmGrid_stag_transp), dmGrid_shift_transp(dmGrid_shift_transp), U_up(U_up), V_up(V_up), W_up(W_up)
+advection_diffusion_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich, DM const & dmGrid_stag_transp, DM const dmGrid_shift_transp, Vec const & U_up, Vec const & V_up, Vec const W_up);
 
-{
-    DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-
-    DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
-    DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
-    DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
-
-    if(brinkmann)
-    {
-        createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
-        createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
-        createMaskW(dmGrid_staggered_z, mask_W, vertices, faces);
-    }
-    else {
-        VecSet(mask_U, 0.0);
-        VecSet(mask_V, 0.0);
-        VecSet(mask_W, 0.0);
-    }
-}
 /**
  * @brief Default constructor that initializes stand-alone Advection-Diffusion problem with automatically created grids.
  */
-advection_diffusion_problem()
-{
-    //Allocate the grids
-    CreateGrid(&dmGrid_staggered_x, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_y, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_z, 0, 1, 0);
-    CreateGrid(&dmGrid_centered, 0, 0, 1);
-    CreateGrid(&dmGrid_cent_rich, 0, 1, 1);
-    CreateGrid(&dmGrid_shift_transp, 1, 1, 0);
-    CreateGrid(&dmGrid_stag_transp, 0, 1, 0);
+advection_diffusion_problem();
 
-    //Create parallel vectors
-    DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
-    DMCreateGlobalVector(dmGrid_staggered_y, &V_up);
-    DMCreateGlobalVector(dmGrid_staggered_z, &W_up);
-    CreateAnalyticalU(dmGrid_staggered_x, U_up, 0);
-    CreateAnalyticalV(dmGrid_staggered_y, V_up, 0);
-    CreateAnalyticalW(dmGrid_staggered_z, W_up, 0);
-
-    DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-
-    /*DMCreateGlobalVector(dmGrid_staggered_x, &U_prova);
-    DMCreateGlobalVector(dmGrid_staggered_y, &V_prova);
-    DMCreateGlobalVector(dmGrid_staggered_z, &W_prova);*/
-
-    DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
-    DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
-    DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
-
-    if(brinkmann)
-    {
-        createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
-        createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
-        createMaskW(dmGrid_staggered_z, mask_W, vertices, faces);
-    }
-    else {
-        VecSet(mask_U, 0.0);
-        VecSet(mask_V, 0.0);
-        VecSet(mask_W, 0.0);
-    }
-
-};
 /**
  * @brief Exports simulation in .vtk format format for visualization of x,y,z-componets, pressure and magnitude.
  */
@@ -166,34 +106,7 @@ PetscErrorCode const solve();
 /**
  * @brief Destructor to clean up allocated resources. Automatically calls sub-problems destructors. After destruction, a message is printed.
  */
-~advection_diffusion_problem()
-{
-    VecDestroy(&Magnitude);
-    VecDestroy(&U_up);
-    VecDestroy(&V_up);
-    VecDestroy(&W_up);
-    DMDestroy(&dmGrid_staggered_x);
-    DMDestroy(&dmGrid_staggered_y);
-    DMDestroy(&dmGrid_staggered_z);
-    DMDestroy(&dmGrid_centered);
-    DMDestroy(&dmGrid_cent_rich);
-    DMDestroy(&dmGrid_shift_transp);
-    DMDestroy(&dmGrid_stag_transp);
-    VecDestroy(&mask_U);
-    VecDestroy(&mask_V);
-    VecDestroy(&mask_W);
-
-
-    /*VecDestroy(&U_prova);
-    VecDestroy(&V_prova);
-    VecDestroy(&W_prova);*/
-    // NO NEED TO CALL: HO STAMPATO QUANDO ENTRA NEL DISTRUTTORE DI PARABOLIC_PROBLEM E LO FA DOPO cout << "Destructor called" << std::endl;
-    /*pb_x.~parabolic_problem_x();
-    pb_y.~parabolic_problem_y();
-    pb_z.~parabolic_problem_z();*/
-    std::cout << "Advection-Diffusion Destructor Called" << std::endl;
-
-}
+~advection_diffusion_problem();
 
 };
 

@@ -1,6 +1,44 @@
 #include "parabolic.hpp"
 
-const PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta, Vec const & U_up)
+parabolic_problem_x::parabolic_problem_x(DM const & dmGrid) :
+dmGrid(dmGrid)
+{   
+    DMCreateGlobalVector(dmGrid, &U_up);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+
+    DMCreateGlobalVector(dmGrid, &mask_U);
+    if(brinkmann){
+        createMaskU(dmGrid, mask_U, vertices, faces);
+    }
+    else {
+        VecSet(mask_U, 0.0);
+    }
+
+    this->assemble_lhs();
+}
+
+parabolic_problem_x::parabolic_problem_x()
+{   
+    CreateGrid(&dmGrid, 0, 1, 0);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+    DMCreateGlobalVector(dmGrid, &U_up);
+    CreateAnalyticalU(dmGrid, U_up, 0);
+
+    DMCreateGlobalVector(dmGrid, &mask_U);
+    if(brinkmann){
+        createMaskU(dmGrid, mask_U, vertices, faces);
+    }
+    else {
+        VecSet(mask_U, 0.0);
+    }
+    this->assemble_lhs();
+
+}
+
+
+PetscErrorCode parabolic_problem_x::assemble_rhs(PetscReal const & theta, Vec const & U_up)
 {
     PetscFunctionBegin;
     PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
@@ -160,9 +198,6 @@ PetscErrorCode parabolic_problem_x::exodus(size_t const & i)
     PetscFunctionReturn(0);
 }
 
-Vec parabolic_problem_x::get_U() { return U_up; }
-
-void parabolic_problem_x::set_U(Vec const & U) { VecCopy(U, U_up); }
 
 PetscErrorCode parabolic_problem_x::assemble_lhs() 
 {
@@ -619,7 +654,6 @@ PetscErrorCode parabolic_problem_x::solve_step(PetscReal const & theta, std::opt
 PetscErrorCode parabolic_problem_x::solve()
 {
     PetscFunctionBegin;
-    assemble_lhs();
     for(size_t i = 0; i < iter; i++){            
         theta = i*dt;
         this->solve_step(theta);
@@ -636,9 +670,51 @@ PetscErrorCode parabolic_problem_x::solve()
     PetscFunctionReturn(0);
 }
 
+parabolic_problem_x::~parabolic_problem_x()
+{
+    MatDestroy(&A);
+    VecDestroy(&rhs);
+    VecDestroy(&U_up);
+    DMDestroy(&dmGrid);
+    VecDestroy(&mask_U);
+    std::cout << "Parabolic_x Destructor Called" << std::endl;
+}
+
+parabolic_problem_y::parabolic_problem_y(DM const & dmGrid) :
+dmGrid(dmGrid)
+{
+    DMCreateGlobalVector(dmGrid, &V_up);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+    DMCreateGlobalVector(dmGrid, &mask_V);
+    if(brinkmann){
+        createMaskV(dmGrid, mask_V, vertices, faces);
+    }
+    else {
+        VecSet(mask_V, 0.0);
+    }
+    this->assemble_lhs();
+}
+
+parabolic_problem_y::parabolic_problem_y()
+{   CreateGrid(&dmGrid, 0, 1, 0);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+    DMCreateGlobalVector(dmGrid, &V_up);
+    CreateAnalyticalV(dmGrid, V_up, 0);
+    DMCreateGlobalVector(dmGrid, &mask_V);
+    if(brinkmann){
+        createMaskV(dmGrid, mask_V, vertices, faces);
+    }
+    else {
+        VecSet(mask_V, 0.0);
+    }
+    this->assemble_lhs();
+
+}
 
 
-const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta, Vec const & V_up)
+PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta, Vec const & V_up)
 {
     PetscFunctionBegin;
     PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
@@ -775,10 +851,6 @@ const PetscErrorCode parabolic_problem_y::assemble_rhs(PetscReal const & theta, 
     PetscFunctionReturn(0);  
 
 }
-
-Vec parabolic_problem_y::get_V() { return V_up; }
-
-void parabolic_problem_y::set_V(Vec const & V) { VecCopy(V, V_up);}
 
 PetscErrorCode parabolic_problem_y::assemble_lhs()
 {
@@ -1231,8 +1303,6 @@ PetscErrorCode parabolic_problem_y::solve_step(PetscReal const & theta, std::opt
 PetscErrorCode parabolic_problem_y::solve()
 {
     PetscFunctionBegin;
-    assemble_lhs();
-
     for(size_t i = 0; i < iter; i++){               
         theta = i*dt;
         this->solve_step(theta);
@@ -1267,9 +1337,52 @@ PetscErrorCode parabolic_problem_y::exodus(size_t const & i)
     PetscFunctionReturn(0);
 }
 
+parabolic_problem_y::~parabolic_problem_y()
+{
+    MatDestroy(&A);
+    VecDestroy(&rhs);
+    VecDestroy(&V_up);
+    DMDestroy(&dmGrid);
+    VecDestroy(&mask_V);
+    std::cout << "Parabolic_y Destructor Called" << std::endl;
 
+}
 
-PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta, Vec const & W_up)
+parabolic_problem_z::parabolic_problem_z(DM const & dmGrid) :
+dmGrid(dmGrid)
+{
+    DMCreateGlobalVector(dmGrid, &W_up);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+    DMCreateGlobalVector(dmGrid, &mask_W);
+    if(brinkmann){
+        createMaskW(dmGrid, mask_W, vertices, faces);
+    }
+    else {
+        VecSet(mask_W, 0.0);
+    }
+    this->assemble_lhs();
+
+}
+
+parabolic_problem_z::parabolic_problem_z()
+{   CreateGrid(&dmGrid, 0, 1, 0);
+    DMCreateMatrix(dmGrid, &A);
+    DMCreateGlobalVector(dmGrid, &rhs);
+    DMCreateGlobalVector(dmGrid, &W_up);
+    CreateAnalyticalW(dmGrid, W_up, 0);
+    DMCreateGlobalVector(dmGrid, &mask_W);
+    if(brinkmann){
+        createMaskW(dmGrid, mask_W, vertices, faces);
+    }
+    else {
+        VecSet(mask_W, 0.0);
+    }
+    this->assemble_lhs();
+
+}
+
+PetscErrorCode parabolic_problem_z::assemble_rhs(PetscReal const & theta, Vec const & W_up)
 {
     PetscFunctionBegin;
     PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez, d;
@@ -1405,9 +1518,6 @@ PetscErrorCode const parabolic_problem_z::assemble_rhs(PetscReal const & theta, 
     PetscFunctionReturn(0); 
 }
 
-Vec parabolic_problem_z::get_W() { return W_up; }
-
-void parabolic_problem_z::set_W(Vec const & W) { VecCopy(W, W_up); }
 
 PetscErrorCode parabolic_problem_z::assemble_lhs() 
 {
@@ -1860,7 +1970,6 @@ PetscErrorCode parabolic_problem_z::solve_step(PetscReal const & theta, std::opt
 PetscErrorCode parabolic_problem_z::solve()
 {
     PetscFunctionBegin;
-    assemble_lhs();
     for(size_t i = 0; i < iter; i++){
             
         theta = i*dt;
@@ -1894,4 +2003,14 @@ PetscErrorCode parabolic_problem_z::exodus(size_t const & i)
     DMDestroy(&DM_w);
     PetscViewerDestroy(&viewer_w);
     PetscFunctionReturn(0);
+}
+
+parabolic_problem_z::~parabolic_problem_z()
+{
+    MatDestroy(&A);
+    VecDestroy(&rhs);
+    VecDestroy(&W_up);
+    DMDestroy(&dmGrid);
+    VecDestroy(&mask_W);
+    std::cout << "Parabolic_z Destructor Called" << std::endl;
 }

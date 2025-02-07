@@ -85,78 +85,13 @@ public:
  * This costructor has been defined for consistency and if future implementations will require solving Stokes in a broader context.
  * For our applications only a stand-alone constructor is used.
  */
-stokes_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich, Vec const & U_up, Vec const & V_up, Vec const W_up)
-    : dmGrid_staggered_x(dmGrid_staggered_x), dmGrid_staggered_y(dmGrid_staggered_y), dmGrid_staggered_z(dmGrid_staggered_z), dmGrid_centered(dmGrid_centered), dmGrid_cent_rich(dmGrid_cent_rich), U_up(U_up), V_up(V_up), W_up(W_up)
+stokes_problem(DM const & dmGrid_staggered_x, DM const & dmGrid_staggered_y, DM const & dmGrid_staggered_z, DM const & dmGrid_centered, DM const & dmGrid_cent_rich, Vec const & U_up, Vec const & V_up, Vec const W_up);
 
-{
-    DMCreateGlobalVector(dmGrid_centered, &P);
-    DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
-    DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
-    DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
-    DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-
-    DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
-    DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
-    DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
-
-    if(brinkmann)
-    {
-        createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
-        createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
-        createMaskW(dmGrid_staggered_z, mask_W, vertices, faces);
-    }
-    else {
-        VecSet(mask_U, 0.0);
-        VecSet(mask_V, 0.0);
-        VecSet(mask_W, 0.0);
-    }
-}
 /**
- * @brief Default constructor that initializes stand-alone Stokes problem with automatically created grids.
+ * @brief Constructor for stand-alone problem.
  */
-stokes_problem()
-{
-    //Allocate the grids
-    CreateGrid(&dmGrid_staggered_x, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_y, 0, 1, 0);
-    CreateGrid(&dmGrid_staggered_z, 0, 1, 0);
-    CreateGrid(&dmGrid_centered, 0, 0, 1);
-    CreateGrid(&dmGrid_cent_rich, 0, 1, 1);
+stokes_problem();
 
-    //Create parallel vectors
-    DMCreateGlobalVector(dmGrid_staggered_x, &U_up);
-    DMCreateGlobalVector(dmGrid_staggered_y, &V_up);
-    DMCreateGlobalVector(dmGrid_staggered_z, &W_up);
-    CreateAnalyticalU(dmGrid_staggered_x, U_up, 0);
-    CreateAnalyticalV(dmGrid_staggered_y, V_up, 0);
-    CreateAnalyticalW(dmGrid_staggered_z, W_up, 0);
-
-    DMCreateGlobalVector(dmGrid_centered, &P);
-    DMCreateGlobalVector(dmGrid_staggered_x, &P_x);
-    DMCreateGlobalVector(dmGrid_staggered_y, &P_y);
-    DMCreateGlobalVector(dmGrid_staggered_z, &P_z);
-    DMCreateGlobalVector(dmGrid_centered, &Magnitude);
-
-    DMCreateGlobalVector(dmGrid_staggered_x, &mask_U);
-    DMCreateGlobalVector(dmGrid_staggered_y, &mask_V);
-    DMCreateGlobalVector(dmGrid_staggered_z, &mask_W);
-
-    if(brinkmann)
-    {
-        createMaskU(dmGrid_staggered_x, mask_U, vertices, faces);
-        createMaskV(dmGrid_staggered_y, mask_V, vertices, faces);
-        createMaskW(dmGrid_staggered_z, mask_W, vertices, faces);
-    }
-    else {
-        VecSet(mask_U, 0.0);
-        VecSet(mask_V, 0.0);
-        VecSet(mask_W, 0.0);
-    }
-
-};
-/**
- * @brief Exports simulation in .vtk format format for visualization of x,y,z-componets, pressure and magnitude.
- */
 PetscErrorCode exodus(size_t i);
 /**
  * @brief Solves the Stokes equations leveraging parabolic_problem_x, y, z, transport_problem_x, y, z, and poisson_problem classes.
@@ -165,27 +100,8 @@ PetscErrorCode const solve();
 /**
  * @brief Destructor to clean up allocated resources. Automatically calls sub-problems destructors. After destruction, a message is printed.
  */
-~stokes_problem()
-{
-    VecDestroy(&P);
-    VecDestroy(&P_x);
-    VecDestroy(&P_y);
-    VecDestroy(&P_z);
-    VecDestroy(&Magnitude);
-    VecDestroy(&U_up);
-    VecDestroy(&V_up);
-    VecDestroy(&W_up);
-    DMDestroy(&dmGrid_staggered_x);
-    DMDestroy(&dmGrid_staggered_y);
-    DMDestroy(&dmGrid_staggered_z);
-    DMDestroy(&dmGrid_centered);
-    DMDestroy(&dmGrid_cent_rich);
-    VecDestroy(&mask_U);
-    VecDestroy(&mask_V);
-    VecDestroy(&mask_W);
-    std::cout << "Stokes Destructor Called" << std::endl;
+~stokes_problem();
 
-}
 
 };
 

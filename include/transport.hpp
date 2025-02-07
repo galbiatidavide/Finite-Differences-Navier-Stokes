@@ -40,7 +40,7 @@ using namespace problem_setting;
 
 class transport_problem_x {
 
-protected:
+private:
 
     DM dmGrid_Shifted;   ///< DMGrid with dofs on faces and edges.
     DM dmGrid_Staggered; ///< DMGrid with dofs of faces.
@@ -87,62 +87,13 @@ public:
     /**
      * @brief Constructor initializing the transport problem with given grids.
      */
-    transport_problem_x(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered) :
-    dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Centered(dmGrid_Centered)
-    {
-        //DMCreateGlobalVector(dmGrid_Staggered, &U_int);
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        /*VecCopy(U_0_, U_0);
-        VecCopy(V_0_, V_0);
-        VecCopy(W_0_, W_0);*/
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
+    transport_problem_x(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered); 
 
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
     /**
      * @brief Default constructor for stand-alone transport problem.
      */
-    transport_problem_x()
-    {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1);
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        CreateAnalyticalU(dmGrid_Staggered, U_n, 0);
-        CreateAnalyticalV(dmGrid_Staggered, V_n, 0);
-        CreateAnalyticalW(dmGrid_Staggered, W_n, 0);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
-
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
+    transport_problem_x();
+  
 
     /**
      * @brief Performs a single time step for solving the transport equation.
@@ -172,22 +123,8 @@ public:
     /**
      * @brief Destructor to clean up allocated resources.
      */
-    ~transport_problem_x()
-    {
-        /*VecDestroy(&U_0);
-        VecDestroy(&V_0);
-        VecDestroy(&W_0);*/
-        //VecDestroy(&U_int);
-        VecDestroy(&U_n);
-        VecDestroy(&V_n);
-        VecDestroy(&W_n);
-        DMDestroy(&dmGrid_Shifted);
-        DMDestroy(&dmGrid_Staggered);
-        DMDestroy(&dmGrid_Centered);
-        VecDestroy(&mask_U);
-        VecDestroy(&mask_V);
-        VecDestroy(&mask_W);
-   }
+    ~transport_problem_x();
+
 
 };
 
@@ -205,7 +142,7 @@ public:
 #define TRANSPORT_PROBLEM_Y_HPP
 
 class transport_problem_y {
-protected:
+private:
 
     DM dmGrid_Shifted;   ///< DMGrid with dofs on faces and edges.
     DM dmGrid_Staggered; ///< DMGrid with dofs of faces.
@@ -252,64 +189,13 @@ public:
     /**
      * @brief Constructor initializing the transport problem with given grids.
      */
-    transport_problem_y(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered) :
-    dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Centered(dmGrid_Centered)
-    {
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        /*DMCreateGlobalVector(dmGrid_Staggered, &V_0);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_0);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_int);
-        VecCopy(U_0_, U_0);
-        VecCopy(V_0_, V_0);
-        VecCopy(W_0_, W_0);*/
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
-
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
+    transport_problem_y(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered); 
+   
     /**
      * @brief Default constructor for stand-alone transport problem.
      */
-    transport_problem_y()
-    {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1);
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        CreateAnalyticalU(dmGrid_Staggered, U_n, 0);
-        CreateAnalyticalV(dmGrid_Staggered, V_n, 0);
-        CreateAnalyticalW(dmGrid_Staggered, W_n, 0);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
+    transport_problem_y();
 
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
     /**
      * @brief Performs a single time step for solving the transport equation.
      */
@@ -327,19 +213,7 @@ public:
     /**
      * @brief Destructor to clean up allocated resources.
      */
-    ~transport_problem_y()
-    {
-        VecDestroy(&U_n);
-        VecDestroy(&V_n);
-        VecDestroy(&W_n);
-        DMDestroy(&dmGrid_Shifted);
-        DMDestroy(&dmGrid_Staggered);
-        DMDestroy(&dmGrid_Centered);
-        //VecDestroy(&V_int);
-        VecDestroy(&mask_U);
-        VecDestroy(&mask_V);
-        VecDestroy(&mask_W);
-    }
+    ~transport_problem_y();
 
 };
 
@@ -358,7 +232,7 @@ public:
 
 class transport_problem_z {
 
-protected:
+private:
 
     DM dmGrid_Shifted;   ///< DMGrid with dofs on faces and edges.
     DM dmGrid_Staggered; ///< DMGrid with dofs of faces.
@@ -405,64 +279,12 @@ public:
     /**
      * @brief Constructor initializing the transport problem with given grids.
      */
-    transport_problem_z(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered) :
-    dmGrid_Shifted(dmGrid_Shifted), dmGrid_Staggered(dmGrid_Staggered), dmGrid_Centered(dmGrid_Centered)
-    {
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        /*DMCreateGlobalVector(dmGrid_Staggered, &V_0);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_0);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_int);
-        VecCopy(U_0_, U_0);
-        VecCopy(V_0_, V_0);
-        VecCopy(W_0_, W_0);*/
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
-
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
+    transport_problem_z(DM const & dmGrid_Shifted, DM const & dmGrid_Staggered, DM const & dmGrid_Centered); 
     /**
      * @brief Default constructor for stand-alone transport problem.
      */
-    transport_problem_z()
-    {
-        CreateGrid(&dmGrid_Shifted, 1, 1, 0);
-        CreateGrid(&dmGrid_Staggered, 0, 1, 0);
-        CreateGrid(&dmGrid_Centered, 0, 1, 1);
-        DMCreateGlobalVector(dmGrid_Staggered, &U_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &V_n);
-        DMCreateGlobalVector(dmGrid_Staggered, &W_n);
-        CreateAnalyticalU(dmGrid_Staggered, U_n, 0);
-        CreateAnalyticalV(dmGrid_Staggered, V_n, 0);
-        CreateAnalyticalW(dmGrid_Staggered, W_n, 0);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_U);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_V);
-        DMCreateGlobalVector(dmGrid_Staggered, &mask_W);
+    transport_problem_z();
 
-        if(brinkmann)
-        {
-            createMaskU(dmGrid_Staggered, mask_U, vertices, faces);
-            createMaskV(dmGrid_Staggered, mask_V, vertices, faces);
-            createMaskW(dmGrid_Staggered, mask_W, vertices, faces);
-        }
-        else {
-            VecSet(mask_U, 0.0);
-            VecSet(mask_V, 0.0);
-            VecSet(mask_W, 0.0);
-        }
-    }
     /**
      * @brief Performs a single time step for solving the transport equation.
      */
@@ -480,18 +302,7 @@ public:
     /**
      * @brief Destructor to clean up allocated resources.
      */
-    ~transport_problem_z()
-    {
-        VecDestroy(&U_n);
-        VecDestroy(&V_n);
-        VecDestroy(&W_n);
-        DMDestroy(&dmGrid_Shifted);
-        DMDestroy(&dmGrid_Staggered);
-        DMDestroy(&dmGrid_Centered);
-        VecDestroy(&mask_U);
-        VecDestroy(&mask_V);
-        VecDestroy(&mask_W);
-    }
+    ~transport_problem_z();
 
 };
 
