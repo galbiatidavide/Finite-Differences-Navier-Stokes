@@ -31,6 +31,7 @@ To compile and run the project, make sure you have the following tools and libra
 2. **Compile the project**:
     After loading the modules, compile the project according to the chosen by running:
     ```bash
+    make clean
     make FILES="navier_stokes.cpp" #for Navier-Stokes and Brinkman problem
     make FILES="stokes.cpp" #for Navier-Stokes and Brinkman problem
     make FILES="inviscid_euler.cpp" #for Navier-Stokes and Brinkman problem
