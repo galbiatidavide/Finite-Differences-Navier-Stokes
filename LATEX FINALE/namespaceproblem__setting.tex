@@ -1,0 +1,322 @@
+\hypertarget{namespaceproblem__setting}{}\doxysection{problem\+\_\+setting Namespace Reference}
+\label{namespaceproblem__setting}\index{problem\_setting@{problem\_setting}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a86ac8a519624a046f80e10d3c8287e0c}{ux\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&\mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{theta}})
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the x-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_ae5b0f91e0a35c9411f79a6c818904fb0}{uy\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&\mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{theta}})
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the y-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_ad95b7053842cacce71e9b7f7916781cf}{uz\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&\mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{theta}})
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the z-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a17fe845a4250b74d5ca1dd4f89fcf890}{p\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&\mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{theta}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr const char $\ast$ \mbox{\hyperlink{namespaceproblem__setting_a453670604e9b7a04a8e1e886ebb612ea}{problem\+\_\+type}} = \char`\"{}navier\+\_\+stokes\char`\"{}
+\begin{DoxyCompactList}\small\item\em Set the problem type. Possible values are \char`\"{}navier\+\_\+stokes\char`\"{}, \char`\"{}stokes\char`\"{}, \char`\"{}euler\char`\"{}, \char`\"{}advection\+\_\+diffusion\char`\"{}, \char`\"{}parabolic\+\_\+x\char`\"{}, \char`\"{}parabolic\+\_\+y\char`\"{}, \char`\"{}parabolic\+\_\+z\char`\"{}, \char`\"{}transport\+\_\+x\char`\"{}, \char`\"{}transport\+\_\+y\char`\"{}, \char`\"{}transport\+\_\+z\char`\"{}. \end{DoxyCompactList}\item 
+constexpr const char $\ast$ \mbox{\hyperlink{namespaceproblem__setting_a80f54d06d21f3ea0f87bee9042f8a42d}{base\+\_\+path}} = \char`\"{}results/\char`\"{}
+\begin{DoxyCompactList}\small\item\em Set this as base path to store results. Default is \char`\"{}results/\char`\"{}. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_abaea14d2a52e5312a5cdbd443513d654}{brinkman}} \{false\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able brinkman penalization. Required for complex geometry handling. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_a3852e643ce10c3b8c933ccf7ca924515}{monitor\+\_\+convergence}} \{true\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able convergence error of KSP solver. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_ac24bf0d907f9ffe8e6422fbc739454f9}{check\+\_\+convergence}} \{true\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able convergence error of variable. Only implemented for NAvier-\/\+Stokes and parabolic problems. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a319b9446225ac251ae39142b114f4e9c}{nx}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in x-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a9d0024d7b6c35d844a0df25148f99018}{ny}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in y-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a1caf6b64779835e98aa65982cd98d0f1}{nz}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in z-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a12cfd50edfdc34bdafafcfbdba03b2d1}{Lx\+\_\+0}} \{-\/0.\+5\}
+\begin{DoxyCompactList}\small\item\em Set the domain limits in x, y and z directions. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a086fc1323b907d1bd82d818652cefd20}{Ly\+\_\+0}} \{-\/0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a021b2b278762aee1b5e07a91ee34f517}{Lz\+\_\+0}} \{-\/0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a6d15cb6884b824c299bc54b04a19648d}{Lx}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a8f915bf3e051df2a6685b59baa67481b}{Ly}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_aab579aed581f2931423f0c68329ce993}{Lz}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_aa7f0103575ede89273ca8a5332216cfb}{dt}} \{0.\+00625/2\}
+\begin{DoxyCompactList}\small\item\em Set time-\/step. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a73ffc9fc8c137f4ed82fa33754f5b991}{iter}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set final time. \end{DoxyCompactList}\item 
+Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{theta}}
+\begin{DoxyCompactList}\small\item\em Set starting time. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_abb6dddfee64136113b4940b55044f29b}{Re}} \{1\}
+\begin{DoxyCompactList}\small\item\em Set Reynolds number. For non advective problems, set mu = 1/\+Re (adimensional framework) \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a6465c0b80e73dcd25ac9ff1ff22e0d58}{a}} = \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}} / 4
+\begin{DoxyCompactList}\small\item\em Set flow parameters. You can declare as many constexpr variables as you need. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a4823318fb5aef382d87ccef348f64880}{d}} = 1.\+5 $\ast$ \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceproblem__setting_a17fe845a4250b74d5ca1dd4f89fcf890}\label{namespaceproblem__setting_a17fe845a4250b74d5ca1dd4f89fcf890}} 
+\index{problem\_setting@{problem\_setting}!pRef@{pRef}}
+\index{pRef@{pRef}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{pRef()}{pRef()}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::p\+Ref (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{x,  }\item[{Petsc\+Real const \&}]{y,  }\item[{Petsc\+Real const \&}]{z,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_a86ac8a519624a046f80e10d3c8287e0c}\label{namespaceproblem__setting_a86ac8a519624a046f80e10d3c8287e0c}} 
+\index{problem\_setting@{problem\_setting}!uxRef@{uxRef}}
+\index{uxRef@{uxRef}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{uxRef()}{uxRef()}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::ux\+Ref (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{x,  }\item[{Petsc\+Real const \&}]{y,  }\item[{Petsc\+Real const \&}]{z,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Computes the reference solution for the problem in the x-\/direction. 
+
+This function provides an analytical reference solution for the given problem in the x-\/direction. It is time-\/dependent and useful for benchmarking numerical methods.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & X-\/coordinate. \\
+\hline
+{\em y} & Y-\/coordinate. \\
+\hline
+{\em z} & Z-\/coordinate. \\
+\hline
+{\em theta} & Time-\/dependent parameter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Computed reference solution in the x-\/direction. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceproblem__setting_ae5b0f91e0a35c9411f79a6c818904fb0}\label{namespaceproblem__setting_ae5b0f91e0a35c9411f79a6c818904fb0}} 
+\index{problem\_setting@{problem\_setting}!uyRef@{uyRef}}
+\index{uyRef@{uyRef}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{uyRef()}{uyRef()}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::uy\+Ref (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{x,  }\item[{Petsc\+Real const \&}]{y,  }\item[{Petsc\+Real const \&}]{z,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Computes the reference solution for the problem in the y-\/direction. 
+
+This function provides an analytical reference solution for the given problem in the y-\/direction. It is used for validation and testing of numerical simulations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & X-\/coordinate. \\
+\hline
+{\em y} & Y-\/coordinate. \\
+\hline
+{\em z} & Z-\/coordinate. \\
+\hline
+{\em theta} & Time-\/dependent parameter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Computed reference solution in the y-\/direction. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespaceproblem__setting_ad95b7053842cacce71e9b7f7916781cf}\label{namespaceproblem__setting_ad95b7053842cacce71e9b7f7916781cf}} 
+\index{problem\_setting@{problem\_setting}!uzRef@{uzRef}}
+\index{uzRef@{uzRef}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{uzRef()}{uzRef()}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::uz\+Ref (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{x,  }\item[{Petsc\+Real const \&}]{y,  }\item[{Petsc\+Real const \&}]{z,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Computes the reference solution for the problem in the z-\/direction. 
+
+This function provides an analytical reference solution for the given problem in the z-\/direction. It is useful for testing the consistency of numerical solvers.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & X-\/coordinate. \\
+\hline
+{\em y} & Y-\/coordinate. \\
+\hline
+{\em z} & Z-\/coordinate. \\
+\hline
+{\em theta} & Time-\/dependent parameter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Computed reference solution in the z-\/direction. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceproblem__setting_a6465c0b80e73dcd25ac9ff1ff22e0d58}\label{namespaceproblem__setting_a6465c0b80e73dcd25ac9ff1ff22e0d58}} 
+\index{problem\_setting@{problem\_setting}!a@{a}}
+\index{a@{a}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{a}{a}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::a = \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}} / 4\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set flow parameters. You can declare as many constexpr variables as you need. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a80f54d06d21f3ea0f87bee9042f8a42d}\label{namespaceproblem__setting_a80f54d06d21f3ea0f87bee9042f8a42d}} 
+\index{problem\_setting@{problem\_setting}!base\_path@{base\_path}}
+\index{base\_path@{base\_path}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{base\_path}{base\_path}}
+{\footnotesize\ttfamily constexpr const char$\ast$ problem\+\_\+setting\+::base\+\_\+path = \char`\"{}results/\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set this as base path to store results. Default is \char`\"{}results/\char`\"{}. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_abaea14d2a52e5312a5cdbd443513d654}\label{namespaceproblem__setting_abaea14d2a52e5312a5cdbd443513d654}} 
+\index{problem\_setting@{problem\_setting}!brinkman@{brinkman}}
+\index{brinkman@{brinkman}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{brinkman}{brinkman}}
+{\footnotesize\ttfamily constexpr bool problem\+\_\+setting\+::brinkman \{false\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set flag to (dis)able brinkman penalization. Required for complex geometry handling. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_ac24bf0d907f9ffe8e6422fbc739454f9}\label{namespaceproblem__setting_ac24bf0d907f9ffe8e6422fbc739454f9}} 
+\index{problem\_setting@{problem\_setting}!check\_convergence@{check\_convergence}}
+\index{check\_convergence@{check\_convergence}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{check\_convergence}{check\_convergence}}
+{\footnotesize\ttfamily constexpr bool problem\+\_\+setting\+::check\+\_\+convergence \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set flag to (dis)able convergence error of variable. Only implemented for NAvier-\/\+Stokes and parabolic problems. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a4823318fb5aef382d87ccef348f64880}\label{namespaceproblem__setting_a4823318fb5aef382d87ccef348f64880}} 
+\index{problem\_setting@{problem\_setting}!d@{d}}
+\index{d@{d}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{d}{d}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::d = 1.\+5 $\ast$ \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_aa7f0103575ede89273ca8a5332216cfb}\label{namespaceproblem__setting_aa7f0103575ede89273ca8a5332216cfb}} 
+\index{problem\_setting@{problem\_setting}!dt@{dt}}
+\index{dt@{dt}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{dt}{dt}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::dt \{0.\+00625/2\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set time-\/step. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a73ffc9fc8c137f4ed82fa33754f5b991}\label{namespaceproblem__setting_a73ffc9fc8c137f4ed82fa33754f5b991}} 
+\index{problem\_setting@{problem\_setting}!iter@{iter}}
+\index{iter@{iter}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{iter}{iter}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::iter \{32\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set final time. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a6d15cb6884b824c299bc54b04a19648d}\label{namespaceproblem__setting_a6d15cb6884b824c299bc54b04a19648d}} 
+\index{problem\_setting@{problem\_setting}!Lx@{Lx}}
+\index{Lx@{Lx}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Lx}{Lx}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Lx \{0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_a12cfd50edfdc34bdafafcfbdba03b2d1}\label{namespaceproblem__setting_a12cfd50edfdc34bdafafcfbdba03b2d1}} 
+\index{problem\_setting@{problem\_setting}!Lx\_0@{Lx\_0}}
+\index{Lx\_0@{Lx\_0}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Lx\_0}{Lx\_0}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Lx\+\_\+0 \{-\/0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set the domain limits in x, y and z directions. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a8f915bf3e051df2a6685b59baa67481b}\label{namespaceproblem__setting_a8f915bf3e051df2a6685b59baa67481b}} 
+\index{problem\_setting@{problem\_setting}!Ly@{Ly}}
+\index{Ly@{Ly}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Ly}{Ly}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Ly \{0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_a086fc1323b907d1bd82d818652cefd20}\label{namespaceproblem__setting_a086fc1323b907d1bd82d818652cefd20}} 
+\index{problem\_setting@{problem\_setting}!Ly\_0@{Ly\_0}}
+\index{Ly\_0@{Ly\_0}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Ly\_0}{Ly\_0}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Ly\+\_\+0 \{-\/0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_aab579aed581f2931423f0c68329ce993}\label{namespaceproblem__setting_aab579aed581f2931423f0c68329ce993}} 
+\index{problem\_setting@{problem\_setting}!Lz@{Lz}}
+\index{Lz@{Lz}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Lz}{Lz}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Lz \{0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_a021b2b278762aee1b5e07a91ee34f517}\label{namespaceproblem__setting_a021b2b278762aee1b5e07a91ee34f517}} 
+\index{problem\_setting@{problem\_setting}!Lz\_0@{Lz\_0}}
+\index{Lz\_0@{Lz\_0}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Lz\_0}{Lz\_0}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Lz\+\_\+0 \{-\/0.\+5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+\mbox{\Hypertarget{namespaceproblem__setting_a3852e643ce10c3b8c933ccf7ca924515}\label{namespaceproblem__setting_a3852e643ce10c3b8c933ccf7ca924515}} 
+\index{problem\_setting@{problem\_setting}!monitor\_convergence@{monitor\_convergence}}
+\index{monitor\_convergence@{monitor\_convergence}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{monitor\_convergence}{monitor\_convergence}}
+{\footnotesize\ttfamily constexpr bool problem\+\_\+setting\+::monitor\+\_\+convergence \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set flag to (dis)able convergence error of KSP solver. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a319b9446225ac251ae39142b114f4e9c}\label{namespaceproblem__setting_a319b9446225ac251ae39142b114f4e9c}} 
+\index{problem\_setting@{problem\_setting}!nx@{nx}}
+\index{nx@{nx}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{nx}{nx}}
+{\footnotesize\ttfamily constexpr Petsc\+Int problem\+\_\+setting\+::nx \{32\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set the number of elements in x-\/direction. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a9d0024d7b6c35d844a0df25148f99018}\label{namespaceproblem__setting_a9d0024d7b6c35d844a0df25148f99018}} 
+\index{problem\_setting@{problem\_setting}!ny@{ny}}
+\index{ny@{ny}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{ny}{ny}}
+{\footnotesize\ttfamily constexpr Petsc\+Int problem\+\_\+setting\+::ny \{32\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set the number of elements in y-\/direction. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a1caf6b64779835e98aa65982cd98d0f1}\label{namespaceproblem__setting_a1caf6b64779835e98aa65982cd98d0f1}} 
+\index{problem\_setting@{problem\_setting}!nz@{nz}}
+\index{nz@{nz}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{nz}{nz}}
+{\footnotesize\ttfamily constexpr Petsc\+Int problem\+\_\+setting\+::nz \{32\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set the number of elements in z-\/direction. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_a453670604e9b7a04a8e1e886ebb612ea}\label{namespaceproblem__setting_a453670604e9b7a04a8e1e886ebb612ea}} 
+\index{problem\_setting@{problem\_setting}!problem\_type@{problem\_type}}
+\index{problem\_type@{problem\_type}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{problem\_type}{problem\_type}}
+{\footnotesize\ttfamily constexpr const char$\ast$ problem\+\_\+setting\+::problem\+\_\+type = \char`\"{}navier\+\_\+stokes\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set the problem type. Possible values are \char`\"{}navier\+\_\+stokes\char`\"{}, \char`\"{}stokes\char`\"{}, \char`\"{}euler\char`\"{}, \char`\"{}advection\+\_\+diffusion\char`\"{}, \char`\"{}parabolic\+\_\+x\char`\"{}, \char`\"{}parabolic\+\_\+y\char`\"{}, \char`\"{}parabolic\+\_\+z\char`\"{}, \char`\"{}transport\+\_\+x\char`\"{}, \char`\"{}transport\+\_\+y\char`\"{}, \char`\"{}transport\+\_\+z\char`\"{}. 
+
+\mbox{\Hypertarget{namespaceproblem__setting_abb6dddfee64136113b4940b55044f29b}\label{namespaceproblem__setting_abb6dddfee64136113b4940b55044f29b}} 
+\index{problem\_setting@{problem\_setting}!Re@{Re}}
+\index{Re@{Re}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{Re}{Re}}
+{\footnotesize\ttfamily constexpr Petsc\+Real problem\+\_\+setting\+::\+Re \{1\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Set Reynolds number. For non advective problems, set mu = 1/\+Re (adimensional framework) 
+
+\mbox{\Hypertarget{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}\label{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}} 
+\index{problem\_setting@{problem\_setting}!theta@{theta}}
+\index{theta@{theta}!problem\_setting@{problem\_setting}}
+\doxysubsubsection{\texorpdfstring{theta}{theta}}
+{\footnotesize\ttfamily Petsc\+Real problem\+\_\+setting\+::theta\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set starting time. 
+

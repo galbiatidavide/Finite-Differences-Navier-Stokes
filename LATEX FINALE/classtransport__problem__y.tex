@@ -1,0 +1,286 @@
+\hypertarget{classtransport__problem__y}{}\doxysection{transport\+\_\+problem\+\_\+y Class Reference}
+\label{classtransport__problem__y}\index{transport\_problem\_y@{transport\_problem\_y}}
+
+
+Represents a transport problem in the y-\/direction.  
+
+
+
+
+{\ttfamily \#include $<$transport.\+hpp$>$}
+
+
+
+Collaboration diagram for transport\+\_\+problem\+\_\+y\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classtransport__problem__y__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtransport__problem__y_a51b9d11117eb6d37b97ce6397a63350c}{transport\+\_\+problem\+\_\+y}} (DM const \&\mbox{\hyperlink{classtransport__problem__y_a1ad0daa64af417610f7a37837e32f039}{dm\+Grid\+\_\+\+Shifted}}, DM const \&\mbox{\hyperlink{classtransport__problem__y_a4fb97c82377a7c2c64d3e1a8eea0e039}{dm\+Grid\+\_\+\+Staggered}}, DM const \&\mbox{\hyperlink{classtransport__problem__y_a50f5510040197b1163faa303c2a2061d}{dm\+Grid\+\_\+\+Centered}})
+\begin{DoxyCompactList}\small\item\em Constructor initializing the transport problem with given grids. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtransport__problem__y_a026801c6870b06f67871c5c2e1bc9b87}{transport\+\_\+problem\+\_\+y}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for stand-\/alone transport problem. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classtransport__problem__y_a3ac894dbc163e17190671865d79c30ba}{solve\+\_\+step\+\_\+y}} (Petsc\+Scalar const \&theta, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ U\+\_\+n\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ V\+\_\+n\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ W\+\_\+n\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Performs a single time step for solving the transport equation. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtransport__problem__y_ac9adff70cc4a39b3c3843bc4cd7551b3}{$\sim$transport\+\_\+problem\+\_\+y}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_a54d361bc9e16ae4467ded7baf930658d}{First\+Shift\+U\+\_\+y}} (Vec \&UShifted, Vec const \&vec, Petsc\+Scalar const \&theta)
+\begin{DoxyCompactList}\small\item\em Performs the shift for x-\/component in a 3D transport non-\/linear problem in the y-\/direction. Interpolates velocity component on edges. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_ac8b678e182136e7aea13e3624b20923f}{First\+Shift\+V\+\_\+y}} (Vec \&VShifted, Vec const \&vec, Petsc\+Scalar const \&theta)
+\begin{DoxyCompactList}\small\item\em Performs the shift for y-\/component in a 3D transport non-\/linear problem in the y-\/direction. Interpolates velocity component on edges. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_a4a8a45330c32122ba036ff12f0ae7221}{Second\+Shift\+V\+\_\+z}} (Vec \&VShifted, Vec const \&vec, Petsc\+Scalar const \&theta)
+\begin{DoxyCompactList}\small\item\em Performs the shift for y-\/component in a 3D transport non-\/linear problem in the z-\/direction. Interpolates velocity component on edges. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_a1d451d63c8ccb51e4f79f37843dcb682}{Second\+Shift\+W\+\_\+z}} (Vec \&WShifted, Vec const \&vec, Petsc\+Scalar const \&theta)
+\begin{DoxyCompactList}\small\item\em Performs the shift for z-\/component in a 3D transport non-\/linear problem in the z-\/direction. Interpolates velocity component on edges. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_aec961a151b0a1642b441204c15b9f8cd}{Second\+Derive\+\_\+x}} (Vec \&AB\+\_\+x, Vec const \&AB)
+\begin{DoxyCompactList}\small\item\em Computes the first derivative in the x-\/direction, placing the result on faces. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_a48788a77c2c15f3021d193632248fbd3}{Second\+Derive\+\_\+z}} (Vec \&AB\+\_\+z, Vec const \&AB)
+\begin{DoxyCompactList}\small\item\em Computes the first derivative in the z-\/direction, placing the result on faces. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_ae9756b3ff22e11cd15ef2c55564fb7dc}{CenterV}} (Vec \&VCenter, Vec const \&vec, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Centers the y-\/velocity component in cell-\/centers. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classtransport__problem__y_ab5b4429b69162d85c7cf98c376dc44d5}{Derive\+\_\+y}} (Vec \&V2\+\_\+y, Vec const \&vec, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Computes the first derivative in the y-\/direction, placing the result on faces. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classtransport__problem__y_a1ad0daa64af417610f7a37837e32f039}{dm\+Grid\+\_\+\+Shifted}}
+\begin{DoxyCompactList}\small\item\em DMGrid with dofs on faces and edges. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classtransport__problem__y_a4fb97c82377a7c2c64d3e1a8eea0e039}{dm\+Grid\+\_\+\+Staggered}}
+\begin{DoxyCompactList}\small\item\em DMGrid with dofs of faces. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classtransport__problem__y_a50f5510040197b1163faa303c2a2061d}{dm\+Grid\+\_\+\+Centered}}
+\begin{DoxyCompactList}\small\item\em DMGrid with dofs of faces and centers. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_a4f29edad89c66ad79fad9cd68aea3ae9}{U\+\_\+n}}
+\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_a9e2465d2cf8bc4c0d2bc22bc588b17c4}{V\+\_\+n}}
+\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_ae33512207926820cedce911548e4f2bb}{W\+\_\+n}}
+\begin{DoxyCompactList}\small\item\em Velocity fields at the current time step. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_a7ad254be22120841f9abf2477f1b9bab}{mask\+\_\+U}}
+\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_a7aada5527c2a102e560848845c360137}{mask\+\_\+V}}
+\item 
+Vec \mbox{\hyperlink{classtransport__problem__y_aadd962063ae87abf69ba6706b8bdaf76}{mask\+\_\+W}}
+\begin{DoxyCompactList}\small\item\em Mask vectors for boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a transport problem in the y-\/direction. 
+
+This class solves an advection-\/transport problem in the y-\/direction using 2nd order centered differences and a fully explicit approach. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtransport__problem__y_a51b9d11117eb6d37b97ce6397a63350c}\label{classtransport__problem__y_a51b9d11117eb6d37b97ce6397a63350c}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\index{transport\_problem\_y@{transport\_problem\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{transport\_problem\_y()}{transport\_problem\_y()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily transport\+\_\+problem\+\_\+y\+::transport\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+\+Shifted,  }\item[{DM const \&}]{dm\+Grid\+\_\+\+Staggered,  }\item[{DM const \&}]{dm\+Grid\+\_\+\+Centered }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor initializing the transport problem with given grids. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a026801c6870b06f67871c5c2e1bc9b87}\label{classtransport__problem__y_a026801c6870b06f67871c5c2e1bc9b87}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\index{transport\_problem\_y@{transport\_problem\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{transport\_problem\_y()}{transport\_problem\_y()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily transport\+\_\+problem\+\_\+y\+::transport\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor for stand-\/alone transport problem. 
+
+\mbox{\Hypertarget{classtransport__problem__y_ac9adff70cc4a39b3c3843bc4cd7551b3}\label{classtransport__problem__y_ac9adff70cc4a39b3c3843bc4cd7551b3}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!````~transport\_problem\_y@{$\sim$transport\_problem\_y}}
+\index{````~transport\_problem\_y@{$\sim$transport\_problem\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{$\sim$transport\_problem\_y()}{~transport\_problem\_y()}}
+{\footnotesize\ttfamily transport\+\_\+problem\+\_\+y\+::$\sim$transport\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtransport__problem__y_ae9756b3ff22e11cd15ef2c55564fb7dc}\label{classtransport__problem__y_ae9756b3ff22e11cd15ef2c55564fb7dc}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!CenterV@{CenterV}}
+\index{CenterV@{CenterV}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{CenterV()}{CenterV()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+CenterV (\begin{DoxyParamCaption}\item[{Vec \&}]{VCenter,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Centers the y-\/velocity component in cell-\/centers. 
+
+\mbox{\Hypertarget{classtransport__problem__y_ab5b4429b69162d85c7cf98c376dc44d5}\label{classtransport__problem__y_ab5b4429b69162d85c7cf98c376dc44d5}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!Derive\_y@{Derive\_y}}
+\index{Derive\_y@{Derive\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{Derive\_y()}{Derive\_y()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+Derive\+\_\+y (\begin{DoxyParamCaption}\item[{Vec \&}]{V2\+\_\+y,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Computes the first derivative in the y-\/direction, placing the result on faces. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a54d361bc9e16ae4467ded7baf930658d}\label{classtransport__problem__y_a54d361bc9e16ae4467ded7baf930658d}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!FirstShiftU\_y@{FirstShiftU\_y}}
+\index{FirstShiftU\_y@{FirstShiftU\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{FirstShiftU\_y()}{FirstShiftU\_y()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+First\+Shift\+U\+\_\+y (\begin{DoxyParamCaption}\item[{Vec \&}]{UShifted,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Scalar const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Performs the shift for x-\/component in a 3D transport non-\/linear problem in the y-\/direction. Interpolates velocity component on edges. 
+
+\mbox{\Hypertarget{classtransport__problem__y_ac8b678e182136e7aea13e3624b20923f}\label{classtransport__problem__y_ac8b678e182136e7aea13e3624b20923f}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!FirstShiftV\_y@{FirstShiftV\_y}}
+\index{FirstShiftV\_y@{FirstShiftV\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{FirstShiftV\_y()}{FirstShiftV\_y()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+First\+Shift\+V\+\_\+y (\begin{DoxyParamCaption}\item[{Vec \&}]{VShifted,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Scalar const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Performs the shift for y-\/component in a 3D transport non-\/linear problem in the y-\/direction. Interpolates velocity component on edges. 
+
+\mbox{\Hypertarget{classtransport__problem__y_aec961a151b0a1642b441204c15b9f8cd}\label{classtransport__problem__y_aec961a151b0a1642b441204c15b9f8cd}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!SecondDerive\_x@{SecondDerive\_x}}
+\index{SecondDerive\_x@{SecondDerive\_x}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{SecondDerive\_x()}{SecondDerive\_x()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+Second\+Derive\+\_\+x (\begin{DoxyParamCaption}\item[{Vec \&}]{AB\+\_\+x,  }\item[{Vec const \&}]{AB }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Computes the first derivative in the x-\/direction, placing the result on faces. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a48788a77c2c15f3021d193632248fbd3}\label{classtransport__problem__y_a48788a77c2c15f3021d193632248fbd3}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!SecondDerive\_z@{SecondDerive\_z}}
+\index{SecondDerive\_z@{SecondDerive\_z}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{SecondDerive\_z()}{SecondDerive\_z()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+Second\+Derive\+\_\+z (\begin{DoxyParamCaption}\item[{Vec \&}]{AB\+\_\+z,  }\item[{Vec const \&}]{AB }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Computes the first derivative in the z-\/direction, placing the result on faces. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a4a8a45330c32122ba036ff12f0ae7221}\label{classtransport__problem__y_a4a8a45330c32122ba036ff12f0ae7221}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!SecondShiftV\_z@{SecondShiftV\_z}}
+\index{SecondShiftV\_z@{SecondShiftV\_z}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{SecondShiftV\_z()}{SecondShiftV\_z()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+Second\+Shift\+V\+\_\+z (\begin{DoxyParamCaption}\item[{Vec \&}]{VShifted,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Scalar const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Performs the shift for y-\/component in a 3D transport non-\/linear problem in the z-\/direction. Interpolates velocity component on edges. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a1d451d63c8ccb51e4f79f37843dcb682}\label{classtransport__problem__y_a1d451d63c8ccb51e4f79f37843dcb682}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!SecondShiftW\_z@{SecondShiftW\_z}}
+\index{SecondShiftW\_z@{SecondShiftW\_z}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{SecondShiftW\_z()}{SecondShiftW\_z()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code transport\+\_\+problem\+\_\+y\+::\+Second\+Shift\+W\+\_\+z (\begin{DoxyParamCaption}\item[{Vec \&}]{WShifted,  }\item[{Vec const \&}]{vec,  }\item[{Petsc\+Scalar const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Performs the shift for z-\/component in a 3D transport non-\/linear problem in the z-\/direction. Interpolates velocity component on edges. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a3ac894dbc163e17190671865d79c30ba}\label{classtransport__problem__y_a3ac894dbc163e17190671865d79c30ba}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!solve\_step\_y@{solve\_step\_y}}
+\index{solve\_step\_y@{solve\_step\_y}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{solve\_step\_y()}{solve\_step\_y()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const transport\+\_\+problem\+\_\+y\+::solve\+\_\+step\+\_\+y (\begin{DoxyParamCaption}\item[{Petsc\+Scalar const \&}]{theta,  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{U\+\_\+n\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{V\+\_\+n\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{W\+\_\+n\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Performs a single time step for solving the transport equation. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtransport__problem__y_a50f5510040197b1163faa303c2a2061d}\label{classtransport__problem__y_a50f5510040197b1163faa303c2a2061d}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!dmGrid\_Centered@{dmGrid\_Centered}}
+\index{dmGrid\_Centered@{dmGrid\_Centered}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_Centered}{dmGrid\_Centered}}
+{\footnotesize\ttfamily DM transport\+\_\+problem\+\_\+y\+::dm\+Grid\+\_\+\+Centered\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+DMGrid with dofs of faces and centers. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a1ad0daa64af417610f7a37837e32f039}\label{classtransport__problem__y_a1ad0daa64af417610f7a37837e32f039}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!dmGrid\_Shifted@{dmGrid\_Shifted}}
+\index{dmGrid\_Shifted@{dmGrid\_Shifted}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_Shifted}{dmGrid\_Shifted}}
+{\footnotesize\ttfamily DM transport\+\_\+problem\+\_\+y\+::dm\+Grid\+\_\+\+Shifted\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+DMGrid with dofs on faces and edges. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a4fb97c82377a7c2c64d3e1a8eea0e039}\label{classtransport__problem__y_a4fb97c82377a7c2c64d3e1a8eea0e039}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!dmGrid\_Staggered@{dmGrid\_Staggered}}
+\index{dmGrid\_Staggered@{dmGrid\_Staggered}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_Staggered}{dmGrid\_Staggered}}
+{\footnotesize\ttfamily DM transport\+\_\+problem\+\_\+y\+::dm\+Grid\+\_\+\+Staggered\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+DMGrid with dofs of faces. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a7ad254be22120841f9abf2477f1b9bab}\label{classtransport__problem__y_a7ad254be22120841f9abf2477f1b9bab}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!mask\_U@{mask\_U}}
+\index{mask\_U@{mask\_U}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{mask\_U}{mask\_U}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::mask\+\_\+U\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classtransport__problem__y_a7aada5527c2a102e560848845c360137}\label{classtransport__problem__y_a7aada5527c2a102e560848845c360137}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classtransport__problem__y_aadd962063ae87abf69ba6706b8bdaf76}\label{classtransport__problem__y_aadd962063ae87abf69ba6706b8bdaf76}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!mask\_W@{mask\_W}}
+\index{mask\_W@{mask\_W}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{mask\_W}{mask\_W}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::mask\+\_\+W\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Mask vectors for boundary conditions. 
+
+\mbox{\Hypertarget{classtransport__problem__y_a4f29edad89c66ad79fad9cd68aea3ae9}\label{classtransport__problem__y_a4f29edad89c66ad79fad9cd68aea3ae9}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!U\_n@{U\_n}}
+\index{U\_n@{U\_n}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{U\_n}{U\_n}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::\+U\+\_\+n\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classtransport__problem__y_a9e2465d2cf8bc4c0d2bc22bc588b17c4}\label{classtransport__problem__y_a9e2465d2cf8bc4c0d2bc22bc588b17c4}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!V\_n@{V\_n}}
+\index{V\_n@{V\_n}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{V\_n}{V\_n}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::\+V\+\_\+n\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classtransport__problem__y_ae33512207926820cedce911548e4f2bb}\label{classtransport__problem__y_ae33512207926820cedce911548e4f2bb}} 
+\index{transport\_problem\_y@{transport\_problem\_y}!W\_n@{W\_n}}
+\index{W\_n@{W\_n}!transport\_problem\_y@{transport\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{W\_n}{W\_n}}
+{\footnotesize\ttfamily Vec transport\+\_\+problem\+\_\+y\+::\+W\+\_\+n\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Velocity fields at the current time step. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{transport_8hpp}{transport.\+hpp}}\item 
+src/\mbox{\hyperlink{transport_8cpp}{transport.\+cpp}}\end{DoxyCompactItemize}

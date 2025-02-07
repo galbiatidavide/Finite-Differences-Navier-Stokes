@@ -1,0 +1,331 @@
+\hypertarget{classstokes__problem}{}\doxysection{stokes\+\_\+problem Class Reference}
+\label{classstokes__problem}\index{stokes\_problem@{stokes\_problem}}
+
+
+Solves the Stokes evolutionary incompressible Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method.  
+
+
+
+
+{\ttfamily \#include $<$stokes.\+hpp$>$}
+
+
+
+Collaboration diagram for stokes\+\_\+problem\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classstokes__problem__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classstokes__problem_a9acf5d077b95b34a14c7356a1ceba36b}{stokes\+\_\+problem}} (DM const \&\mbox{\hyperlink{classstokes__problem_af770f3af2a846d08b183ae62da57e469}{dm\+Grid\+\_\+staggered\+\_\+x}}, DM const \&\mbox{\hyperlink{classstokes__problem_ac27285d03b8343ff84593d7b3fbbbaf8}{dm\+Grid\+\_\+staggered\+\_\+y}}, DM const \&\mbox{\hyperlink{classstokes__problem_ac24affb96dfa1c693d41449e2f3bfff4}{dm\+Grid\+\_\+staggered\+\_\+z}}, DM const \&\mbox{\hyperlink{classstokes__problem_a3c7953a5fdbb8121e83e003e83052c86}{dm\+Grid\+\_\+centered}}, DM const \&\mbox{\hyperlink{classstokes__problem_a958743e3664203ac5fd6beb669e3f4f9}{dm\+Grid\+\_\+cent\+\_\+rich}}, Vec const \&\mbox{\hyperlink{classstokes__problem_a2765d5a27b0b2c78faabf65768c385ce}{U\+\_\+up}}, Vec const \&\mbox{\hyperlink{classstokes__problem_a3b8e97707a137bd96bd777077d790e4c}{V\+\_\+up}}, Vec const \mbox{\hyperlink{classstokes__problem_a7c2ec29db0692f3ab16842a45002fae5}{W\+\_\+up}})
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the Stokes problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Stokes in a broader context. For our applications only a stand-\/alone constructor is used. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classstokes__problem_a4b15caa8117f000b7668f870b7fb65d5}{stokes\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes stand-\/alone Stokes problem with automatically created grids. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classstokes__problem_a7448206665d8b008138969facda91c38}{exodus}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classstokes__problem_acf8ec922004ca3c4d563240219a2a374}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Stokes equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classstokes__problem_ad443950e38e86c9f77c272e47b5886bd}{$\sim$stokes\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classstokes__problem_a674a2f4aebd7cb17a0ae96ce305e15fe}{update\+\_\+velocity}} (Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Updates the velocity field, opearating final pressure correction for CT scheme. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classstokes__problem_afe73973d62580e38d00104320c50d542}{assemble\+\_\+magnitude}} (Vec \&Magnitude\+\_\+\+Shifted, Vec const \&U, Vec const \&V, Vec const \&W)
+\begin{DoxyCompactList}\small\item\em Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classstokes__problem_a2afa94d4fb13c581baef1b1a16ef9b36}{compute\+\_\+magnitude}} ()
+\begin{DoxyCompactList}\small\item\em Final assembly of magnitude vector on cell-\/centers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classstokes__problem_af770f3af2a846d08b183ae62da57e469}{dm\+Grid\+\_\+staggered\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered x-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classstokes__problem_ac27285d03b8343ff84593d7b3fbbbaf8}{dm\+Grid\+\_\+staggered\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered y-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classstokes__problem_ac24affb96dfa1c693d41449e2f3bfff4}{dm\+Grid\+\_\+staggered\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered z-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classstokes__problem_a3c7953a5fdbb8121e83e003e83052c86}{dm\+Grid\+\_\+centered}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the centered formulation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classstokes__problem_a958743e3664203ac5fd6beb669e3f4f9}{dm\+Grid\+\_\+cent\+\_\+rich}}
+\begin{DoxyCompactList}\small\item\em Refined centered grid for pressure computation. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_a4689ecb15fcdae7b955ad212c6451d3b}{P}}
+\begin{DoxyCompactList}\small\item\em Pressure field. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_a02ec1711219ced7d82bdfab7a5cfccfc}{P\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the x-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_ad795f81f8d6c3ec2a3f4b453ecf6e797}{P\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the y-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_a3e21477f718356ccd727ba3864e3c34c}{P\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the z-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_ad985e76fb7eb26727a3d53b39afd6f68}{Magnitude}}
+\begin{DoxyCompactList}\small\item\em Magnitude of velocity vectors. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_a2765d5a27b0b2c78faabf65768c385ce}{U\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classstokes__problem_a3b8e97707a137bd96bd777077d790e4c}{V\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classstokes__problem_a7c2ec29db0692f3ab16842a45002fae5}{W\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity fields in the x, y, and z directions. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classstokes__problem_a8f943b9bf631ed71605268f53c42dbca}{mask\+\_\+U}}
+\item 
+Vec \mbox{\hyperlink{classstokes__problem_aae6e8f0161b421b27c7668c776671f9a}{mask\+\_\+V}}
+\item 
+Vec \mbox{\hyperlink{classstokes__problem_afb1a1bc02307a1c30fed83d2de3808d4}{mask\+\_\+W}}
+\begin{DoxyCompactList}\small\item\em Mask vectors for boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Solves the Stokes evolutionary incompressible Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classstokes__problem_a9acf5d077b95b34a14c7356a1ceba36b}\label{classstokes__problem_a9acf5d077b95b34a14c7356a1ceba36b}} 
+\index{stokes\_problem@{stokes\_problem}!stokes\_problem@{stokes\_problem}}
+\index{stokes\_problem@{stokes\_problem}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{stokes\_problem()}{stokes\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily stokes\+\_\+problem\+::stokes\+\_\+problem (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+x,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+y,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+z,  }\item[{DM const \&}]{dm\+Grid\+\_\+centered,  }\item[{DM const \&}]{dm\+Grid\+\_\+cent\+\_\+rich,  }\item[{Vec const \&}]{U\+\_\+up,  }\item[{Vec const \&}]{V\+\_\+up,  }\item[{Vec const}]{W\+\_\+up }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the Stokes problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Stokes in a broader context. For our applications only a stand-\/alone constructor is used. 
+
+\mbox{\Hypertarget{classstokes__problem_a4b15caa8117f000b7668f870b7fb65d5}\label{classstokes__problem_a4b15caa8117f000b7668f870b7fb65d5}} 
+\index{stokes\_problem@{stokes\_problem}!stokes\_problem@{stokes\_problem}}
+\index{stokes\_problem@{stokes\_problem}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{stokes\_problem()}{stokes\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily stokes\+\_\+problem\+::stokes\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor that initializes stand-\/alone Stokes problem with automatically created grids. 
+
+\mbox{\Hypertarget{classstokes__problem_ad443950e38e86c9f77c272e47b5886bd}\label{classstokes__problem_ad443950e38e86c9f77c272e47b5886bd}} 
+\index{stokes\_problem@{stokes\_problem}!````~stokes\_problem@{$\sim$stokes\_problem}}
+\index{````~stokes\_problem@{$\sim$stokes\_problem}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{$\sim$stokes\_problem()}{~stokes\_problem()}}
+{\footnotesize\ttfamily stokes\+\_\+problem\+::$\sim$stokes\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classstokes__problem_afe73973d62580e38d00104320c50d542}\label{classstokes__problem_afe73973d62580e38d00104320c50d542}} 
+\index{stokes\_problem@{stokes\_problem}!assemble\_magnitude@{assemble\_magnitude}}
+\index{assemble\_magnitude@{assemble\_magnitude}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_magnitude()}{assemble\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const stokes\+\_\+problem\+::assemble\+\_\+magnitude (\begin{DoxyParamCaption}\item[{Vec \&}]{Magnitude\+\_\+\+Shifted,  }\item[{Vec const \&}]{U,  }\item[{Vec const \&}]{V,  }\item[{Vec const \&}]{W }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Magnitude\+\_\+\+Shifted} & Output shifted magnitude vector on dm\+Grid\+\_\+cent\+\_\+rich (dofs on faces and cell=centers.) \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classstokes__problem_a2afa94d4fb13c581baef1b1a16ef9b36}\label{classstokes__problem_a2afa94d4fb13c581baef1b1a16ef9b36}} 
+\index{stokes\_problem@{stokes\_problem}!compute\_magnitude@{compute\_magnitude}}
+\index{compute\_magnitude@{compute\_magnitude}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{compute\_magnitude()}{compute\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const stokes\+\_\+problem\+::compute\+\_\+magnitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Final assembly of magnitude vector on cell-\/centers. 
+
+\mbox{\Hypertarget{classstokes__problem_a7448206665d8b008138969facda91c38}\label{classstokes__problem_a7448206665d8b008138969facda91c38}} 
+\index{stokes\_problem@{stokes\_problem}!exodus@{exodus}}
+\index{exodus@{exodus}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code stokes\+\_\+problem\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})}
+
+
+
+Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. 
+
+\mbox{\Hypertarget{classstokes__problem_acf8ec922004ca3c4d563240219a2a374}\label{classstokes__problem_acf8ec922004ca3c4d563240219a2a374}} 
+\index{stokes\_problem@{stokes\_problem}!solve@{solve}}
+\index{solve@{solve}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const stokes\+\_\+problem\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the Stokes equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. 
+
+\mbox{\Hypertarget{classstokes__problem_a674a2f4aebd7cb17a0ae96ce305e15fe}\label{classstokes__problem_a674a2f4aebd7cb17a0ae96ce305e15fe}} 
+\index{stokes\_problem@{stokes\_problem}!update\_velocity@{update\_velocity}}
+\index{update\_velocity@{update\_velocity}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{update\_velocity()}{update\_velocity()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const stokes\+\_\+problem\+::update\+\_\+velocity (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates the velocity field, opearating final pressure correction for CT scheme. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classstokes__problem_a958743e3664203ac5fd6beb669e3f4f9}\label{classstokes__problem_a958743e3664203ac5fd6beb669e3f4f9}} 
+\index{stokes\_problem@{stokes\_problem}!dmGrid\_cent\_rich@{dmGrid\_cent\_rich}}
+\index{dmGrid\_cent\_rich@{dmGrid\_cent\_rich}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_cent\_rich}{dmGrid\_cent\_rich}}
+{\footnotesize\ttfamily DM stokes\+\_\+problem\+::dm\+Grid\+\_\+cent\+\_\+rich\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Refined centered grid for pressure computation. 
+
+\mbox{\Hypertarget{classstokes__problem_a3c7953a5fdbb8121e83e003e83052c86}\label{classstokes__problem_a3c7953a5fdbb8121e83e003e83052c86}} 
+\index{stokes\_problem@{stokes\_problem}!dmGrid\_centered@{dmGrid\_centered}}
+\index{dmGrid\_centered@{dmGrid\_centered}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_centered}{dmGrid\_centered}}
+{\footnotesize\ttfamily DM stokes\+\_\+problem\+::dm\+Grid\+\_\+centered\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the centered formulation. 
+
+\mbox{\Hypertarget{classstokes__problem_af770f3af2a846d08b183ae62da57e469}\label{classstokes__problem_af770f3af2a846d08b183ae62da57e469}} 
+\index{stokes\_problem@{stokes\_problem}!dmGrid\_staggered\_x@{dmGrid\_staggered\_x}}
+\index{dmGrid\_staggered\_x@{dmGrid\_staggered\_x}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_x}{dmGrid\_staggered\_x}}
+{\footnotesize\ttfamily DM stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered x-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_ac27285d03b8343ff84593d7b3fbbbaf8}\label{classstokes__problem_ac27285d03b8343ff84593d7b3fbbbaf8}} 
+\index{stokes\_problem@{stokes\_problem}!dmGrid\_staggered\_y@{dmGrid\_staggered\_y}}
+\index{dmGrid\_staggered\_y@{dmGrid\_staggered\_y}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_y}{dmGrid\_staggered\_y}}
+{\footnotesize\ttfamily DM stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered y-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_ac24affb96dfa1c693d41449e2f3bfff4}\label{classstokes__problem_ac24affb96dfa1c693d41449e2f3bfff4}} 
+\index{stokes\_problem@{stokes\_problem}!dmGrid\_staggered\_z@{dmGrid\_staggered\_z}}
+\index{dmGrid\_staggered\_z@{dmGrid\_staggered\_z}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_z}{dmGrid\_staggered\_z}}
+{\footnotesize\ttfamily DM stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered z-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_ad985e76fb7eb26727a3d53b39afd6f68}\label{classstokes__problem_ad985e76fb7eb26727a3d53b39afd6f68}} 
+\index{stokes\_problem@{stokes\_problem}!Magnitude@{Magnitude}}
+\index{Magnitude@{Magnitude}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{Magnitude}{Magnitude}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+Magnitude\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Magnitude of velocity vectors. 
+
+\mbox{\Hypertarget{classstokes__problem_a8f943b9bf631ed71605268f53c42dbca}\label{classstokes__problem_a8f943b9bf631ed71605268f53c42dbca}} 
+\index{stokes\_problem@{stokes\_problem}!mask\_U@{mask\_U}}
+\index{mask\_U@{mask\_U}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_U}{mask\_U}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::mask\+\_\+U\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classstokes__problem_aae6e8f0161b421b27c7668c776671f9a}\label{classstokes__problem_aae6e8f0161b421b27c7668c776671f9a}} 
+\index{stokes\_problem@{stokes\_problem}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classstokes__problem_afb1a1bc02307a1c30fed83d2de3808d4}\label{classstokes__problem_afb1a1bc02307a1c30fed83d2de3808d4}} 
+\index{stokes\_problem@{stokes\_problem}!mask\_W@{mask\_W}}
+\index{mask\_W@{mask\_W}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_W}{mask\_W}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::mask\+\_\+W\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mask vectors for boundary conditions. 
+
+\mbox{\Hypertarget{classstokes__problem_a4689ecb15fcdae7b955ad212c6451d3b}\label{classstokes__problem_a4689ecb15fcdae7b955ad212c6451d3b}} 
+\index{stokes\_problem@{stokes\_problem}!P@{P}}
+\index{P@{P}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::P\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure field. 
+
+\mbox{\Hypertarget{classstokes__problem_a02ec1711219ced7d82bdfab7a5cfccfc}\label{classstokes__problem_a02ec1711219ced7d82bdfab7a5cfccfc}} 
+\index{stokes\_problem@{stokes\_problem}!P\_x@{P\_x}}
+\index{P\_x@{P\_x}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_x}{P\_x}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+P\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the x-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_ad795f81f8d6c3ec2a3f4b453ecf6e797}\label{classstokes__problem_ad795f81f8d6c3ec2a3f4b453ecf6e797}} 
+\index{stokes\_problem@{stokes\_problem}!P\_y@{P\_y}}
+\index{P\_y@{P\_y}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_y}{P\_y}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+P\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the y-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_a3e21477f718356ccd727ba3864e3c34c}\label{classstokes__problem_a3e21477f718356ccd727ba3864e3c34c}} 
+\index{stokes\_problem@{stokes\_problem}!P\_z@{P\_z}}
+\index{P\_z@{P\_z}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_z}{P\_z}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+P\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the z-\/direction. 
+
+\mbox{\Hypertarget{classstokes__problem_a2765d5a27b0b2c78faabf65768c385ce}\label{classstokes__problem_a2765d5a27b0b2c78faabf65768c385ce}} 
+\index{stokes\_problem@{stokes\_problem}!U\_up@{U\_up}}
+\index{U\_up@{U\_up}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{U\_up}{U\_up}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+U\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classstokes__problem_a3b8e97707a137bd96bd777077d790e4c}\label{classstokes__problem_a3b8e97707a137bd96bd777077d790e4c}} 
+\index{stokes\_problem@{stokes\_problem}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classstokes__problem_a7c2ec29db0692f3ab16842a45002fae5}\label{classstokes__problem_a7c2ec29db0692f3ab16842a45002fae5}} 
+\index{stokes\_problem@{stokes\_problem}!W\_up@{W\_up}}
+\index{W\_up@{W\_up}!stokes\_problem@{stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{W\_up}{W\_up}}
+{\footnotesize\ttfamily Vec stokes\+\_\+problem\+::\+W\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity fields in the x, y, and z directions. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{stokes_8hpp}{stokes.\+hpp}}\item 
+src/\mbox{\hyperlink{stokes_8cpp}{stokes.\+cpp}}\end{DoxyCompactItemize}

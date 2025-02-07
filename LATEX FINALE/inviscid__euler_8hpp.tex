@@ -1,0 +1,39 @@
+\hypertarget{inviscid__euler_8hpp}{}\doxysection{include/inviscid\+\_\+euler.hpp File Reference}
+\label{inviscid__euler_8hpp}\index{include/inviscid\_euler.hpp@{include/inviscid\_euler.hpp}}
+{\ttfamily \#include \char`\"{}transport.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}poisson.\+hpp\char`\"{}}\newline
+Include dependency graph for inviscid\+\_\+euler.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{inviscid__euler_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{inviscid__euler_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classeuler__problem}{euler\+\_\+problem}}
+\begin{DoxyCompactList}\small\item\em Solves the Euler evolutionary incompressible equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation DOES NOT ALLOW for Brinkamn penalty method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{inviscid__euler_8hpp_a618752c0221c14e52128ca718dcbdb9c}{EULER\+\_\+\+PROBLEM\+\_\+\+HPP}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{inviscid__euler_8hpp_a618752c0221c14e52128ca718dcbdb9c}\label{inviscid__euler_8hpp_a618752c0221c14e52128ca718dcbdb9c}} 
+\index{inviscid\_euler.hpp@{inviscid\_euler.hpp}!EULER\_PROBLEM\_HPP@{EULER\_PROBLEM\_HPP}}
+\index{EULER\_PROBLEM\_HPP@{EULER\_PROBLEM\_HPP}!inviscid\_euler.hpp@{inviscid\_euler.hpp}}
+\doxysubsubsection{\texorpdfstring{EULER\_PROBLEM\_HPP}{EULER\_PROBLEM\_HPP}}
+{\footnotesize\ttfamily \#define EULER\+\_\+\+PROBLEM\+\_\+\+HPP}
+

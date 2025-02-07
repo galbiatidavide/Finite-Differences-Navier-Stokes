@@ -1,0 +1,458 @@
+\hypertarget{classpoisson__problem}{}\doxysection{poisson\+\_\+problem Class Reference}
+\label{classpoisson__problem}\index{poisson\_problem@{poisson\_problem}}
+
+
+Represents a Poisson equation solver for pressure correction in fluid simulations.  
+
+
+
+
+{\ttfamily \#include $<$poisson.\+hpp$>$}
+
+
+
+Collaboration diagram for poisson\+\_\+problem\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=298pt]{classpoisson__problem__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classpoisson__problem_a59e33acece5cdce58a65652a3dcb295b}{poisson\+\_\+problem}} (DM const \&\mbox{\hyperlink{classpoisson__problem_ae77890b86c687ac84bb2b125e8f75586}{dm\+Grid\+\_\+staggered\+\_\+x}}, DM const \&\mbox{\hyperlink{classpoisson__problem_a07415284dcd52ff967d4fa14a6ddb904}{dm\+Grid\+\_\+staggered\+\_\+y}}, DM const \&\mbox{\hyperlink{classpoisson__problem_a773639ff33e0a62dc92d7f7ec4b1c514}{dm\+Grid\+\_\+staggered\+\_\+z}}, DM const \&\mbox{\hyperlink{classpoisson__problem_a7d53f871a24ac32c57e115fb2ffc933e}{dm\+Grid\+\_\+centered}}, DM const \&\mbox{\hyperlink{classpoisson__problem_a52a4d8cea9941c7a908c7ca094b150fa}{dm\+Grid\+\_\+cent\+\_\+rich}})
+\begin{DoxyCompactList}\small\item\em Constructor to initialize the Poisson problem with pre-\/allocated grids. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classpoisson__problem_ac77f126b7aa1aa426ed5b4a8831e4819}{poisson\+\_\+problem}} ()
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_ad94410deb1c24e3a9a6341b38540c1ab}{exodus}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Exports simulation results in .vtk format for visualization. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_ac7024cdf04c9a0b95880c275dd15e348}{manage\+\_\+pressure}} (std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ U\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ V\+\_\+up\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ W\+\_\+up\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Solves the elliptic Poisson equation with GMRES and multigrid preconditioner. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a406aeb7aebc5e721a691d0baf07ed52b}{manage\+\_\+pressure\+\_\+x}} (std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+x\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Assembles the pressure derivative in the x-\/direction on the staggered grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a05b85ddd24252ae65730482b9b39a748}{manage\+\_\+pressure\+\_\+y}} (std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+y\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Assembles the pressure derivative in the y-\/direction on the staggered grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a4ebbd20da3d070f2c5313135b6f5fd99}{manage\+\_\+pressure\+\_\+z}} (std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+opt=std\+::nullopt, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ P\+\_\+z\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Assembles the pressure derivative in the z-\/direction on the staggered grid. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classpoisson__problem_acfd61e578fdbfb47023d0f8efb417157}{$\sim$poisson\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. required by PETSc management of native objects. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a2e8dcc62341e311f8aa6275627a0e487}{assemble\+\_\+lhs}} ()
+\begin{DoxyCompactList}\small\item\em Assembles the left-\/hand side (LHS) matrix for the Poisson problem. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a6c644119d05d2605c2ca0a5af65065e0}{assemble\+\_\+divergence}} (Vec \&div, Vec const \&U, Vec const \&V, Vec const \&W)
+\begin{DoxyCompactList}\small\item\em Computes the divergence term for velocity fields and outputs on dm\+Grid\+\_\+centered\+\_\+rich grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_acbecfaf6ad6c8aeadf2bc5cf06545d43}{compute\+\_\+divergence}} (Vec \&div, Vec const \&U\+\_\+n, Vec const \&V\+\_\+n, Vec const \&W\+\_\+n)
+\begin{DoxyCompactList}\small\item\em Assemble routines for a previously found divergence of the given velocity field and migrates it on the correct dm\+Grid\+\_\+centered grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_aec7542d64db394cea33d51bc71f58c97}{derive\+\_\+x\+\_\+P}} (Vec \&P\+\_\+x\+\_\+shifted, Vec const \&vec)
+\begin{DoxyCompactList}\small\item\em Computes the derivative of the pressure field in the x-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a28a14cd6ccded4564f54fc4142a82b5e}{derive\+\_\+y\+\_\+P}} (Vec \&P\+\_\+y\+\_\+shifted, Vec const \&vec)
+\begin{DoxyCompactList}\small\item\em Computes the derivative of the pressure field in the y-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classpoisson__problem_a16fac27b5043d356fb24e3ed1cc91b4b}{derive\+\_\+z\+\_\+P}} (Vec \&P\+\_\+z\+\_\+shifted, Vec const \&vec)
+\begin{DoxyCompactList}\small\item\em Computes the derivative of the pressure field in the z-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classpoisson__problem_ae77890b86c687ac84bb2b125e8f75586}{dm\+Grid\+\_\+staggered\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for staggered x-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classpoisson__problem_a07415284dcd52ff967d4fa14a6ddb904}{dm\+Grid\+\_\+staggered\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for staggered y-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classpoisson__problem_a773639ff33e0a62dc92d7f7ec4b1c514}{dm\+Grid\+\_\+staggered\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for staggered z-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classpoisson__problem_a7d53f871a24ac32c57e115fb2ffc933e}{dm\+Grid\+\_\+centered}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for centered formulation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classpoisson__problem_a52a4d8cea9941c7a908c7ca094b150fa}{dm\+Grid\+\_\+cent\+\_\+rich}}
+\begin{DoxyCompactList}\small\item\em Refined centered grid for pressure computation. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_ae03f8e8988ee6fabbd8d5ebe49172021}{P}}
+\begin{DoxyCompactList}\small\item\em Pressure field. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a95317205e103a98f2ea5ee09fa4bde2f}{P\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in x-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a5950e151b108df01d8478014c3a56950}{P\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in y-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a0b344f3e641316b77c35a668a5df4d46}{P\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in z-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a48af4560217c7cac4b24e2c6812c673a}{U\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity component in the x-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a834fe4581617ce59a016d4a1dec3b091}{V\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity component in the y-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classpoisson__problem_a764af6e2b54dc93a5dc07938f9d2f908}{W\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity component in the z-\/direction. \end{DoxyCompactList}\item 
+Mat \mbox{\hyperlink{classpoisson__problem_a05a6c231d3fd9c2eb63727319a7d0127}{A}}
+\begin{DoxyCompactList}\small\item\em Matrix for the discretized Poisson equation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a Poisson equation solver for pressure correction in fluid simulations. 
+
+This class solves the Poisson equation for a variabble like pressure, with homogeneous Neumann boundary conditions. It manages the assembly of matrices, calculation of divergence. In our framework, it is used to solve the pressure correction in the Navier-\/\+Stokes equations. For our purposes, enforcing compatibility condition was not required. Beware that for a stand-\/alone problem, compatible-\/to-\/null-\/bc\textquotesingle{}s source must be provided. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classpoisson__problem_a59e33acece5cdce58a65652a3dcb295b}\label{classpoisson__problem_a59e33acece5cdce58a65652a3dcb295b}} 
+\index{poisson\_problem@{poisson\_problem}!poisson\_problem@{poisson\_problem}}
+\index{poisson\_problem@{poisson\_problem}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{poisson\_problem()}{poisson\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily poisson\+\_\+problem\+::poisson\+\_\+problem (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+x,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+y,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+z,  }\item[{DM const \&}]{dm\+Grid\+\_\+centered,  }\item[{DM const \&}]{dm\+Grid\+\_\+cent\+\_\+rich }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor to initialize the Poisson problem with pre-\/allocated grids. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid\+\_\+staggered\+\_\+x} & Grid for staggered x-\/direction. \\
+\hline
+{\em dm\+Grid\+\_\+staggered\+\_\+y} & Grid for staggered y-\/direction. \\
+\hline
+{\em dm\+Grid\+\_\+staggered\+\_\+z} & Grid for staggered z-\/direction. \\
+\hline
+{\em dm\+Grid\+\_\+centered} & Grid for centered formulation. \\
+\hline
+{\em dm\+Grid\+\_\+cent\+\_\+rich} & Grid for refined pressure computation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_ac77f126b7aa1aa426ed5b4a8831e4819}\label{classpoisson__problem_ac77f126b7aa1aa426ed5b4a8831e4819}} 
+\index{poisson\_problem@{poisson\_problem}!poisson\_problem@{poisson\_problem}}
+\index{poisson\_problem@{poisson\_problem}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{poisson\_problem()}{poisson\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily poisson\+\_\+problem\+::poisson\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classpoisson__problem_acfd61e578fdbfb47023d0f8efb417157}\label{classpoisson__problem_acfd61e578fdbfb47023d0f8efb417157}} 
+\index{poisson\_problem@{poisson\_problem}!````~poisson\_problem@{$\sim$poisson\_problem}}
+\index{````~poisson\_problem@{$\sim$poisson\_problem}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{$\sim$poisson\_problem()}{~poisson\_problem()}}
+{\footnotesize\ttfamily poisson\+\_\+problem\+::$\sim$poisson\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. required by PETSc management of native objects. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classpoisson__problem_a6c644119d05d2605c2ca0a5af65065e0}\label{classpoisson__problem_a6c644119d05d2605c2ca0a5af65065e0}} 
+\index{poisson\_problem@{poisson\_problem}!assemble\_divergence@{assemble\_divergence}}
+\index{assemble\_divergence@{assemble\_divergence}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_divergence()}{assemble\_divergence()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::assemble\+\_\+divergence (\begin{DoxyParamCaption}\item[{Vec \&}]{div,  }\item[{Vec const \&}]{U,  }\item[{Vec const \&}]{V,  }\item[{Vec const \&}]{W }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the divergence term for velocity fields and outputs on dm\+Grid\+\_\+centered\+\_\+rich grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em div} & Output divergence vector. \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a2e8dcc62341e311f8aa6275627a0e487}\label{classpoisson__problem_a2e8dcc62341e311f8aa6275627a0e487}} 
+\index{poisson\_problem@{poisson\_problem}!assemble\_lhs@{assemble\_lhs}}
+\index{assemble\_lhs@{assemble\_lhs}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_lhs()}{assemble\_lhs()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::assemble\+\_\+lhs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Assembles the left-\/hand side (LHS) matrix for the Poisson problem. 
+
+\mbox{\Hypertarget{classpoisson__problem_acbecfaf6ad6c8aeadf2bc5cf06545d43}\label{classpoisson__problem_acbecfaf6ad6c8aeadf2bc5cf06545d43}} 
+\index{poisson\_problem@{poisson\_problem}!compute\_divergence@{compute\_divergence}}
+\index{compute\_divergence@{compute\_divergence}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{compute\_divergence()}{compute\_divergence()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::compute\+\_\+divergence (\begin{DoxyParamCaption}\item[{Vec \&}]{div,  }\item[{Vec const \&}]{U\+\_\+n,  }\item[{Vec const \&}]{V\+\_\+n,  }\item[{Vec const \&}]{W\+\_\+n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Assemble routines for a previously found divergence of the given velocity field and migrates it on the correct dm\+Grid\+\_\+centered grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em div} & Output divergence vector. \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_aec7542d64db394cea33d51bc71f58c97}\label{classpoisson__problem_aec7542d64db394cea33d51bc71f58c97}} 
+\index{poisson\_problem@{poisson\_problem}!derive\_x\_P@{derive\_x\_P}}
+\index{derive\_x\_P@{derive\_x\_P}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{derive\_x\_P()}{derive\_x\_P()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::derive\+\_\+x\+\_\+P (\begin{DoxyParamCaption}\item[{Vec \&}]{P\+\_\+x\+\_\+shifted,  }\item[{Vec const \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the derivative of the pressure field in the x-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P\+\_\+x\+\_\+shifted} & Output shifted pressure derivative. \\
+\hline
+{\em vec} & Input pressure field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a28a14cd6ccded4564f54fc4142a82b5e}\label{classpoisson__problem_a28a14cd6ccded4564f54fc4142a82b5e}} 
+\index{poisson\_problem@{poisson\_problem}!derive\_y\_P@{derive\_y\_P}}
+\index{derive\_y\_P@{derive\_y\_P}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{derive\_y\_P()}{derive\_y\_P()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::derive\+\_\+y\+\_\+P (\begin{DoxyParamCaption}\item[{Vec \&}]{P\+\_\+y\+\_\+shifted,  }\item[{Vec const \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the derivative of the pressure field in the y-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P\+\_\+y\+\_\+shifted} & Output shifted pressure derivative. \\
+\hline
+{\em vec} & Input pressure field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a16fac27b5043d356fb24e3ed1cc91b4b}\label{classpoisson__problem_a16fac27b5043d356fb24e3ed1cc91b4b}} 
+\index{poisson\_problem@{poisson\_problem}!derive\_z\_P@{derive\_z\_P}}
+\index{derive\_z\_P@{derive\_z\_P}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{derive\_z\_P()}{derive\_z\_P()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::derive\+\_\+z\+\_\+P (\begin{DoxyParamCaption}\item[{Vec \&}]{P\+\_\+z\+\_\+shifted,  }\item[{Vec const \&}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the derivative of the pressure field in the z-\/direction and outputes on dm\+Grid\+\_\+centered\+\_\+rich grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P\+\_\+z\+\_\+shifted} & Output shifted pressure derivative. \\
+\hline
+{\em vec} & Input vector. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_ad94410deb1c24e3a9a6341b38540c1ab}\label{classpoisson__problem_ad94410deb1c24e3a9a6341b38540c1ab}} 
+\index{poisson\_problem@{poisson\_problem}!exodus@{exodus}}
+\index{exodus@{exodus}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})}
+
+
+
+Exports simulation results in .vtk format for visualization. 
+
+\mbox{\Hypertarget{classpoisson__problem_ac7024cdf04c9a0b95880c275dd15e348}\label{classpoisson__problem_ac7024cdf04c9a0b95880c275dd15e348}} 
+\index{poisson\_problem@{poisson\_problem}!manage\_pressure@{manage\_pressure}}
+\index{manage\_pressure@{manage\_pressure}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{manage\_pressure()}{manage\_pressure()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::manage\+\_\+pressure (\begin{DoxyParamCaption}\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{U\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{V\+\_\+up\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{W\+\_\+up\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Solves the elliptic Poisson equation with GMRES and multigrid preconditioner. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em U\+\_\+up} & Velocity field in the x-\/direction. \\
+\hline
+{\em V\+\_\+up} & Velocity field in the y-\/direction. \\
+\hline
+{\em W\+\_\+up} & Velocity field in the z-\/direction. \\
+\hline
+{\em P} & Pressure field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a406aeb7aebc5e721a691d0baf07ed52b}\label{classpoisson__problem_a406aeb7aebc5e721a691d0baf07ed52b}} 
+\index{poisson\_problem@{poisson\_problem}!manage\_pressure\_x@{manage\_pressure\_x}}
+\index{manage\_pressure\_x@{manage\_pressure\_x}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{manage\_pressure\_x()}{manage\_pressure\_x()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::manage\+\_\+pressure\+\_\+x (\begin{DoxyParamCaption}\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+x\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Assembles the pressure derivative in the x-\/direction on the staggered grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & Pressure field. \\
+\hline
+{\em P\+\_\+x} & Updated pressure derivative in the x-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a05b85ddd24252ae65730482b9b39a748}\label{classpoisson__problem_a05b85ddd24252ae65730482b9b39a748}} 
+\index{poisson\_problem@{poisson\_problem}!manage\_pressure\_y@{manage\_pressure\_y}}
+\index{manage\_pressure\_y@{manage\_pressure\_y}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{manage\_pressure\_y()}{manage\_pressure\_y()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::manage\+\_\+pressure\+\_\+y (\begin{DoxyParamCaption}\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+y\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Assembles the pressure derivative in the y-\/direction on the staggered grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & Pressure field. \\
+\hline
+{\em P\+\_\+y} & Updated pressure derivative in the y-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classpoisson__problem_a4ebbd20da3d070f2c5313135b6f5fd99}\label{classpoisson__problem_a4ebbd20da3d070f2c5313135b6f5fd99}} 
+\index{poisson\_problem@{poisson\_problem}!manage\_pressure\_z@{manage\_pressure\_z}}
+\index{manage\_pressure\_z@{manage\_pressure\_z}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{manage\_pressure\_z()}{manage\_pressure\_z()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const poisson\+\_\+problem\+::manage\+\_\+pressure\+\_\+z (\begin{DoxyParamCaption}\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+opt = {\ttfamily std\+:\+:nullopt},  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{P\+\_\+z\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Assembles the pressure derivative in the z-\/direction on the staggered grid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em P} & Pressure field. \\
+\hline
+{\em P\+\_\+z} & Updated pressure derivative in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classpoisson__problem_a05a6c231d3fd9c2eb63727319a7d0127}\label{classpoisson__problem_a05a6c231d3fd9c2eb63727319a7d0127}} 
+\index{poisson\_problem@{poisson\_problem}!A@{A}}
+\index{A@{A}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{A}{A}}
+{\footnotesize\ttfamily Mat poisson\+\_\+problem\+::A\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Matrix for the discretized Poisson equation. 
+
+\mbox{\Hypertarget{classpoisson__problem_a52a4d8cea9941c7a908c7ca094b150fa}\label{classpoisson__problem_a52a4d8cea9941c7a908c7ca094b150fa}} 
+\index{poisson\_problem@{poisson\_problem}!dmGrid\_cent\_rich@{dmGrid\_cent\_rich}}
+\index{dmGrid\_cent\_rich@{dmGrid\_cent\_rich}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_cent\_rich}{dmGrid\_cent\_rich}}
+{\footnotesize\ttfamily DM poisson\+\_\+problem\+::dm\+Grid\+\_\+cent\+\_\+rich\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Refined centered grid for pressure computation. 
+
+\mbox{\Hypertarget{classpoisson__problem_a7d53f871a24ac32c57e115fb2ffc933e}\label{classpoisson__problem_a7d53f871a24ac32c57e115fb2ffc933e}} 
+\index{poisson\_problem@{poisson\_problem}!dmGrid\_centered@{dmGrid\_centered}}
+\index{dmGrid\_centered@{dmGrid\_centered}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_centered}{dmGrid\_centered}}
+{\footnotesize\ttfamily DM poisson\+\_\+problem\+::dm\+Grid\+\_\+centered\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for centered formulation. 
+
+\mbox{\Hypertarget{classpoisson__problem_ae77890b86c687ac84bb2b125e8f75586}\label{classpoisson__problem_ae77890b86c687ac84bb2b125e8f75586}} 
+\index{poisson\_problem@{poisson\_problem}!dmGrid\_staggered\_x@{dmGrid\_staggered\_x}}
+\index{dmGrid\_staggered\_x@{dmGrid\_staggered\_x}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_x}{dmGrid\_staggered\_x}}
+{\footnotesize\ttfamily DM poisson\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for staggered x-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a07415284dcd52ff967d4fa14a6ddb904}\label{classpoisson__problem_a07415284dcd52ff967d4fa14a6ddb904}} 
+\index{poisson\_problem@{poisson\_problem}!dmGrid\_staggered\_y@{dmGrid\_staggered\_y}}
+\index{dmGrid\_staggered\_y@{dmGrid\_staggered\_y}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_y}{dmGrid\_staggered\_y}}
+{\footnotesize\ttfamily DM poisson\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for staggered y-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a773639ff33e0a62dc92d7f7ec4b1c514}\label{classpoisson__problem_a773639ff33e0a62dc92d7f7ec4b1c514}} 
+\index{poisson\_problem@{poisson\_problem}!dmGrid\_staggered\_z@{dmGrid\_staggered\_z}}
+\index{dmGrid\_staggered\_z@{dmGrid\_staggered\_z}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_z}{dmGrid\_staggered\_z}}
+{\footnotesize\ttfamily DM poisson\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for staggered z-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_ae03f8e8988ee6fabbd8d5ebe49172021}\label{classpoisson__problem_ae03f8e8988ee6fabbd8d5ebe49172021}} 
+\index{poisson\_problem@{poisson\_problem}!P@{P}}
+\index{P@{P}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::P\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure field. 
+
+\mbox{\Hypertarget{classpoisson__problem_a95317205e103a98f2ea5ee09fa4bde2f}\label{classpoisson__problem_a95317205e103a98f2ea5ee09fa4bde2f}} 
+\index{poisson\_problem@{poisson\_problem}!P\_x@{P\_x}}
+\index{P\_x@{P\_x}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_x}{P\_x}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+P\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in x-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a5950e151b108df01d8478014c3a56950}\label{classpoisson__problem_a5950e151b108df01d8478014c3a56950}} 
+\index{poisson\_problem@{poisson\_problem}!P\_y@{P\_y}}
+\index{P\_y@{P\_y}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_y}{P\_y}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+P\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in y-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a0b344f3e641316b77c35a668a5df4d46}\label{classpoisson__problem_a0b344f3e641316b77c35a668a5df4d46}} 
+\index{poisson\_problem@{poisson\_problem}!P\_z@{P\_z}}
+\index{P\_z@{P\_z}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_z}{P\_z}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+P\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in z-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a48af4560217c7cac4b24e2c6812c673a}\label{classpoisson__problem_a48af4560217c7cac4b24e2c6812c673a}} 
+\index{poisson\_problem@{poisson\_problem}!U\_up@{U\_up}}
+\index{U\_up@{U\_up}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{U\_up}{U\_up}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+U\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity component in the x-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a834fe4581617ce59a016d4a1dec3b091}\label{classpoisson__problem_a834fe4581617ce59a016d4a1dec3b091}} 
+\index{poisson\_problem@{poisson\_problem}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity component in the y-\/direction. 
+
+\mbox{\Hypertarget{classpoisson__problem_a764af6e2b54dc93a5dc07938f9d2f908}\label{classpoisson__problem_a764af6e2b54dc93a5dc07938f9d2f908}} 
+\index{poisson\_problem@{poisson\_problem}!W\_up@{W\_up}}
+\index{W\_up@{W\_up}!poisson\_problem@{poisson\_problem}}
+\doxysubsubsection{\texorpdfstring{W\_up}{W\_up}}
+{\footnotesize\ttfamily Vec poisson\+\_\+problem\+::\+W\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity component in the z-\/direction. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{poisson_8hpp}{poisson.\+hpp}}\item 
+src/\mbox{\hyperlink{poisson_8cpp}{poisson.\+cpp}}\end{DoxyCompactItemize}

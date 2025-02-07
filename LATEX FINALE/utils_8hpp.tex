@@ -1,0 +1,380 @@
+\hypertarget{utils_8hpp}{}\doxysection{include/utils.hpp File Reference}
+\label{utils_8hpp}\index{include/utils.hpp@{include/utils.hpp}}
+
+
+Utility functions for grid creation, analytical solutions, and geometric operations.  
+
+
+{\ttfamily \#include \char`\"{}config\+\_\+problem.\+hpp\char`\"{}}\newline
+Include dependency graph for utils.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{utils_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{utils_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_af14ae95652874ec7b1264804905a18c2}{Check\+Solution}} (Vec const \&sol, Vec const \&sol\+Ref, std\+::string const \&comp)
+\begin{DoxyCompactList}\small\item\em Checks the difference between a computed solution and a reference solution and evaulates L2-\/norm. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_ad73ffd745818be15cd4470c04e664727}{Create\+AnalyticalU}} (DM const \&dm\+Grid, Vec \&vec, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Creates an analytical solution on a staggered grid in the x-\/direction (dofs in position LEFT and RIGHT) \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_aaa8fcc0cf23daa4b2c0fc6eacb737e04}{Create\+AnalyticalV}} (DM const \&dm\+Grid, Vec \&vec, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Creates an analytical solution on a staggered grid in the y-\/direction (dofs in position DOWN and UP) \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_a9792d9126ed1f0b03956db6fbcc64327}{Create\+AnalyticalW}} (DM const \&dm\+Grid, Vec \&vec, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Creates an analytical solution on a staggered grid in the z-\/direction (dofs in position BACK and FRONT) \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_a41c8fdd73c3f44e0e8e5dd2c42a708f6}{Create\+Grid}} (DM $\ast$const dm\+Grid, Petsc\+Int const \&dof1, Petsc\+Int const \&dof2, Petsc\+Int const \&dof3)
+\begin{DoxyCompactList}\small\item\em Creates a computational grid for simulation. Allows to specify dofs ONLY on edges, faces and cell-\/cenetrs. Pass 0 to not allow dofs in some position, 1 allocate dofs. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_a90cc53d49889b5ae481991843cc03a4a}{Create\+AnalyticalP}} (DM const \&dm\+Grid, Vec \&vec, Petsc\+Real const \&theta)
+\item 
+void \mbox{\hyperlink{utils_8hpp_ab5e9d4c03b159f2fb8aba44accedee94}{Print\+Simulation\+Parameters}} ()
+\begin{DoxyCompactList}\small\item\em Prints the simulation parameters to the console. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{utils_8hpp_a10eccd2f0f627f0fcc86f107aa9efb46}{ray\+Intersects\+Triangle}} (const std\+::array$<$ double, 3 $>$ \&ray\+Origin, const std\+::array$<$ double, 3 $>$ \&ray\+Vector, const std\+::array$<$ double, 3 $>$ \&v0, const std\+::array$<$ double, 3 $>$ \&v1, const std\+::array$<$ double, 3 $>$ \&v2)
+\begin{DoxyCompactList}\small\item\em Checks if a ray intersects with a triangle in 3D space (part of ray-\/casting algorithm to create Brinkman masks) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{utils_8hpp_a0dcb908e63e2b86344be93bc499fab5a}{is\+Point\+Inside\+Mesh}} (const std\+::array$<$ double, 3 $>$ \&point, const std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ \&\mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}, const std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ \&\mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}})
+\begin{DoxyCompactList}\small\item\em Determines if a point is inside a 3D mesh. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{utils_8hpp_ad7cdeb8633b9fa9d08789162bbcfea63}{reader}} (const std\+::string \&\mbox{\hyperlink{utils_8hpp_ae80f820219e45772366a2a68de6a54c4}{filename}}, std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ \&\mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}, std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ \&\mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}})
+\begin{DoxyCompactList}\small\item\em Reads a mesh file and extracts vertices and faces. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_ae6aff412600d046ea4e0ddc82a4d75e9}{create\+MaskU}} (DM const \&dm\+Grid, Vec \&vec\+\_\+stag, std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}, std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}})
+\begin{DoxyCompactList}\small\item\em Creates a mask for the x-\/component component. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_a4cb4bb9e74e06e3762732a8c9ee6b202}{create\+MaskV}} (DM const \&dm\+Grid, Vec \&vec\+\_\+stag, std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}, std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}})
+\begin{DoxyCompactList}\small\item\em Creates a mask for the y-\/component component. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{utils_8hpp_ada1c742e642166ab1aeafaa8b5b7a394}{create\+MaskW}} (DM const \&dm\+Grid, Vec \&vec\+\_\+stag, std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}, std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&\mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}})
+\begin{DoxyCompactList}\small\item\em Creates a mask for the z-\/component component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{utils_8hpp_ae103cbe746aa8ec0cf5aae0302b49932}{D\+\_\+x}} \{Lx -\/ Lx\+\_\+0\}
+\begin{DoxyCompactList}\small\item\em Domain length in the x-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{utils_8hpp_a3f4bfb149c027447c4d9afda8a4aa384}{D\+\_\+y}} \{Ly -\/ Ly\+\_\+0\}
+\begin{DoxyCompactList}\small\item\em Domain length in the y-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{utils_8hpp_afb1fb5ad684713fca0de132e05fc1b57}{D\+\_\+z}} \{Lz -\/ Lz\+\_\+0\}
+\begin{DoxyCompactList}\small\item\em Domain length in the z-\/direction. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::array$<$ double, 3 $>$ $>$ \mbox{\hyperlink{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}{vertices}}
+\begin{DoxyCompactList}\small\item\em List of mesh vertices. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::array$<$ int, 3 $>$ $>$ \mbox{\hyperlink{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}{faces}}
+\begin{DoxyCompactList}\small\item\em List of mesh faces. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{utils_8hpp_ae80f820219e45772366a2a68de6a54c4}{filename}}
+\begin{DoxyCompactList}\small\item\em Filename of the geometry file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Utility functions for grid creation, analytical solutions, and geometric operations. 
+
+This file contains various utility functions used in numerical simulations, including\+:
+\begin{DoxyItemize}
+\item Functions for generating analytical velocity solutions.
+\item Grid creation and setup.
+\item Mesh operations such as point-\/in-\/mesh checks and ray-\/triangle intersections.
+\item Functions for creating Brinkman masks. 
+\end{DoxyItemize}
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{utils_8hpp_af14ae95652874ec7b1264804905a18c2}\label{utils_8hpp_af14ae95652874ec7b1264804905a18c2}} 
+\index{utils.hpp@{utils.hpp}!CheckSolution@{CheckSolution}}
+\index{CheckSolution@{CheckSolution}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CheckSolution()}{CheckSolution()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Check\+Solution (\begin{DoxyParamCaption}\item[{Vec const \&}]{sol,  }\item[{Vec const \&}]{sol\+Ref,  }\item[{std\+::string const \&}]{comp }\end{DoxyParamCaption})}
+
+
+
+Checks the difference between a computed solution and a reference solution and evaulates L2-\/norm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sol} & Computed solution vector. \\
+\hline
+{\em sol\+Ref} & Reference solution vector. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_a90cc53d49889b5ae481991843cc03a4a}\label{utils_8hpp_a90cc53d49889b5ae481991843cc03a4a}} 
+\index{utils.hpp@{utils.hpp}!CreateAnalyticalP@{CreateAnalyticalP}}
+\index{CreateAnalyticalP@{CreateAnalyticalP}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CreateAnalyticalP()}{CreateAnalyticalP()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Create\+AnalyticalP (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{utils_8hpp_ad73ffd745818be15cd4470c04e664727}\label{utils_8hpp_ad73ffd745818be15cd4470c04e664727}} 
+\index{utils.hpp@{utils.hpp}!CreateAnalyticalU@{CreateAnalyticalU}}
+\index{CreateAnalyticalU@{CreateAnalyticalU}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CreateAnalyticalU()}{CreateAnalyticalU()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Create\+AnalyticalU (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})}
+
+
+
+Creates an analytical solution on a staggered grid in the x-\/direction (dofs in position LEFT and RIGHT) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec} & Output velocity field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_aaa8fcc0cf23daa4b2c0fc6eacb737e04}\label{utils_8hpp_aaa8fcc0cf23daa4b2c0fc6eacb737e04}} 
+\index{utils.hpp@{utils.hpp}!CreateAnalyticalV@{CreateAnalyticalV}}
+\index{CreateAnalyticalV@{CreateAnalyticalV}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CreateAnalyticalV()}{CreateAnalyticalV()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Create\+AnalyticalV (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})}
+
+
+
+Creates an analytical solution on a staggered grid in the y-\/direction (dofs in position DOWN and UP) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec} & Output velocity field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_a9792d9126ed1f0b03956db6fbcc64327}\label{utils_8hpp_a9792d9126ed1f0b03956db6fbcc64327}} 
+\index{utils.hpp@{utils.hpp}!CreateAnalyticalW@{CreateAnalyticalW}}
+\index{CreateAnalyticalW@{CreateAnalyticalW}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CreateAnalyticalW()}{CreateAnalyticalW()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Create\+AnalyticalW (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec,  }\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})}
+
+
+
+Creates an analytical solution on a staggered grid in the z-\/direction (dofs in position BACK and FRONT) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec} & Output velocity field. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_a41c8fdd73c3f44e0e8e5dd2c42a708f6}\label{utils_8hpp_a41c8fdd73c3f44e0e8e5dd2c42a708f6}} 
+\index{utils.hpp@{utils.hpp}!CreateGrid@{CreateGrid}}
+\index{CreateGrid@{CreateGrid}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{CreateGrid()}{CreateGrid()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code Create\+Grid (\begin{DoxyParamCaption}\item[{DM $\ast$const}]{dm\+Grid,  }\item[{Petsc\+Int const \&}]{dof1,  }\item[{Petsc\+Int const \&}]{dof2,  }\item[{Petsc\+Int const \&}]{dof3 }\end{DoxyParamCaption})}
+
+
+
+Creates a computational grid for simulation. Allows to specify dofs ONLY on edges, faces and cell-\/cenetrs. Pass 0 to not allow dofs in some position, 1 allocate dofs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Pointer to the grid. \\
+\hline
+{\em dof1} & Degrees of freedom on edges. \\
+\hline
+{\em dof2} & Degrees of freedom of faces. \\
+\hline
+{\em dof3} & Degrees of freedom at cell-\/ceneters. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_ae6aff412600d046ea4e0ddc82a4d75e9}\label{utils_8hpp_ae6aff412600d046ea4e0ddc82a4d75e9}} 
+\index{utils.hpp@{utils.hpp}!createMaskU@{createMaskU}}
+\index{createMaskU@{createMaskU}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{createMaskU()}{createMaskU()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code create\+MaskU (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec\+\_\+stag,  }\item[{std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&}]{vertices,  }\item[{std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&}]{faces }\end{DoxyParamCaption})}
+
+
+
+Creates a mask for the x-\/component component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec\+\_\+stag} & Output mask vector. \\
+\hline
+{\em vertices} & List of mesh vertices. \\
+\hline
+{\em faces} & List of mesh faces. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_a4cb4bb9e74e06e3762732a8c9ee6b202}\label{utils_8hpp_a4cb4bb9e74e06e3762732a8c9ee6b202}} 
+\index{utils.hpp@{utils.hpp}!createMaskV@{createMaskV}}
+\index{createMaskV@{createMaskV}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{createMaskV()}{createMaskV()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code create\+MaskV (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec\+\_\+stag,  }\item[{std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&}]{vertices,  }\item[{std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&}]{faces }\end{DoxyParamCaption})}
+
+
+
+Creates a mask for the y-\/component component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec\+\_\+stag} & Output mask vector. \\
+\hline
+{\em vertices} & List of mesh vertices. \\
+\hline
+{\em faces} & List of mesh faces. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_ada1c742e642166ab1aeafaa8b5b7a394}\label{utils_8hpp_ada1c742e642166ab1aeafaa8b5b7a394}} 
+\index{utils.hpp@{utils.hpp}!createMaskW@{createMaskW}}
+\index{createMaskW@{createMaskW}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{createMaskW()}{createMaskW()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code create\+MaskW (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid,  }\item[{Vec \&}]{vec\+\_\+stag,  }\item[{std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ const \&}]{vertices,  }\item[{std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ const \&}]{faces }\end{DoxyParamCaption})}
+
+
+
+Creates a mask for the z-\/component component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & Discretized grid. \\
+\hline
+{\em vec\+\_\+stag} & Output mask vector. \\
+\hline
+{\em vertices} & List of mesh vertices. \\
+\hline
+{\em faces} & List of mesh faces. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8hpp_a0dcb908e63e2b86344be93bc499fab5a}\label{utils_8hpp_a0dcb908e63e2b86344be93bc499fab5a}} 
+\index{utils.hpp@{utils.hpp}!isPointInsideMesh@{isPointInsideMesh}}
+\index{isPointInsideMesh@{isPointInsideMesh}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{isPointInsideMesh()}{isPointInsideMesh()}}
+{\footnotesize\ttfamily bool is\+Point\+Inside\+Mesh (\begin{DoxyParamCaption}\item[{const std\+::array$<$ double, 3 $>$ \&}]{point,  }\item[{const std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ \&}]{vertices,  }\item[{const std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ \&}]{faces }\end{DoxyParamCaption})}
+
+
+
+Determines if a point is inside a 3D mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em point} & The point to be checked. \\
+\hline
+{\em vertices} & List of vertices of the mesh. \\
+\hline
+{\em faces} & List of faces of the mesh. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the point is inside the mesh, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{utils_8hpp_ab5e9d4c03b159f2fb8aba44accedee94}\label{utils_8hpp_ab5e9d4c03b159f2fb8aba44accedee94}} 
+\index{utils.hpp@{utils.hpp}!PrintSimulationParameters@{PrintSimulationParameters}}
+\index{PrintSimulationParameters@{PrintSimulationParameters}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{PrintSimulationParameters()}{PrintSimulationParameters()}}
+{\footnotesize\ttfamily void Print\+Simulation\+Parameters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prints the simulation parameters to the console. 
+
+\mbox{\Hypertarget{utils_8hpp_a10eccd2f0f627f0fcc86f107aa9efb46}\label{utils_8hpp_a10eccd2f0f627f0fcc86f107aa9efb46}} 
+\index{utils.hpp@{utils.hpp}!rayIntersectsTriangle@{rayIntersectsTriangle}}
+\index{rayIntersectsTriangle@{rayIntersectsTriangle}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{rayIntersectsTriangle()}{rayIntersectsTriangle()}}
+{\footnotesize\ttfamily bool ray\+Intersects\+Triangle (\begin{DoxyParamCaption}\item[{const std\+::array$<$ double, 3 $>$ \&}]{ray\+Origin,  }\item[{const std\+::array$<$ double, 3 $>$ \&}]{ray\+Vector,  }\item[{const std\+::array$<$ double, 3 $>$ \&}]{v0,  }\item[{const std\+::array$<$ double, 3 $>$ \&}]{v1,  }\item[{const std\+::array$<$ double, 3 $>$ \&}]{v2 }\end{DoxyParamCaption})}
+
+
+
+Checks if a ray intersects with a triangle in 3D space (part of ray-\/casting algorithm to create Brinkman masks) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ray\+Origin} & Starting point of the ray. \\
+\hline
+{\em ray\+Vector} & Direction of the ray. \\
+\hline
+{\em v0} & First vertex of the triangle. \\
+\hline
+{\em v1} & Second vertex of the triangle. \\
+\hline
+{\em v2} & Third vertex of the triangle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the ray intersects the triangle, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{utils_8hpp_ad7cdeb8633b9fa9d08789162bbcfea63}\label{utils_8hpp_ad7cdeb8633b9fa9d08789162bbcfea63}} 
+\index{utils.hpp@{utils.hpp}!reader@{reader}}
+\index{reader@{reader}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{reader()}{reader()}}
+{\footnotesize\ttfamily void reader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename,  }\item[{std\+::vector$<$ std\+::array$<$ double, 3 $>$$>$ \&}]{vertices,  }\item[{std\+::vector$<$ std\+::array$<$ int, 3 $>$$>$ \&}]{faces }\end{DoxyParamCaption})}
+
+
+
+Reads a mesh file and extracts vertices and faces. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the mesh file. \\
+\hline
+{\em vertices} & Output list of vertices. \\
+\hline
+{\em faces} & Output list of faces. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{utils_8hpp_ae103cbe746aa8ec0cf5aae0302b49932}\label{utils_8hpp_ae103cbe746aa8ec0cf5aae0302b49932}} 
+\index{utils.hpp@{utils.hpp}!D\_x@{D\_x}}
+\index{D\_x@{D\_x}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{D\_x}{D\_x}}
+{\footnotesize\ttfamily constexpr Petsc\+Real D\+\_\+x \{Lx -\/ Lx\+\_\+0\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Domain length in the x-\/direction. 
+
+\mbox{\Hypertarget{utils_8hpp_a3f4bfb149c027447c4d9afda8a4aa384}\label{utils_8hpp_a3f4bfb149c027447c4d9afda8a4aa384}} 
+\index{utils.hpp@{utils.hpp}!D\_y@{D\_y}}
+\index{D\_y@{D\_y}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{D\_y}{D\_y}}
+{\footnotesize\ttfamily constexpr Petsc\+Real D\+\_\+y \{Ly -\/ Ly\+\_\+0\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Domain length in the y-\/direction. 
+
+\mbox{\Hypertarget{utils_8hpp_afb1fb5ad684713fca0de132e05fc1b57}\label{utils_8hpp_afb1fb5ad684713fca0de132e05fc1b57}} 
+\index{utils.hpp@{utils.hpp}!D\_z@{D\_z}}
+\index{D\_z@{D\_z}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{D\_z}{D\_z}}
+{\footnotesize\ttfamily constexpr Petsc\+Real D\+\_\+z \{Lz -\/ Lz\+\_\+0\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Domain length in the z-\/direction. 
+
+\mbox{\Hypertarget{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}\label{utils_8hpp_ada3ad1641c8c69d910e98a7765b548d9}} 
+\index{utils.hpp@{utils.hpp}!faces@{faces}}
+\index{faces@{faces}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{faces}{faces}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::array$<$int, 3$>$ $>$ faces\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+List of mesh faces. 
+
+\mbox{\Hypertarget{utils_8hpp_ae80f820219e45772366a2a68de6a54c4}\label{utils_8hpp_ae80f820219e45772366a2a68de6a54c4}} 
+\index{utils.hpp@{utils.hpp}!filename@{filename}}
+\index{filename@{filename}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{filename}{filename}}
+{\footnotesize\ttfamily std\+::string filename\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Filename of the geometry file. 
+
+\mbox{\Hypertarget{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}\label{utils_8hpp_a6e88022cc52bfacecbf0ee86eb9efbab}} 
+\index{utils.hpp@{utils.hpp}!vertices@{vertices}}
+\index{vertices@{vertices}!utils.hpp@{utils.hpp}}
+\doxysubsubsection{\texorpdfstring{vertices}{vertices}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::array$<$double, 3$>$ $>$ vertices\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+List of mesh vertices. 
+

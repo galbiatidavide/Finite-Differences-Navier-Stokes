@@ -1,0 +1,355 @@
+\hypertarget{classeuler__problem}{}\doxysection{euler\+\_\+problem Class Reference}
+\label{classeuler__problem}\index{euler\_problem@{euler\_problem}}
+
+
+Solves the Euler evolutionary incompressible equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation DOES NOT ALLOW for Brinkamn penalty method.  
+
+
+
+
+{\ttfamily \#include $<$inviscid\+\_\+euler.\+hpp$>$}
+
+
+
+Collaboration diagram for euler\+\_\+problem\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classeuler__problem__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classeuler__problem_ac602d2df43bf7337210eaa71bf6408f1}{euler\+\_\+problem}} (DM const \&\mbox{\hyperlink{classeuler__problem_a5ca548a1002d1ee8229252622ba7f723}{dm\+Grid\+\_\+staggered\+\_\+x}}, DM const \&\mbox{\hyperlink{classeuler__problem_ab94d3506567c153df35eff1557478576}{dm\+Grid\+\_\+staggered\+\_\+y}}, DM const \&\mbox{\hyperlink{classeuler__problem_acdb5c84ca472e773f3cf041444bd4143}{dm\+Grid\+\_\+staggered\+\_\+z}}, DM const \&\mbox{\hyperlink{classeuler__problem_a6c791f1d57430a2a82f6a20bdc78dcfc}{dm\+Grid\+\_\+centered}}, DM const \&\mbox{\hyperlink{classeuler__problem_a4c13c9ae4c6cf84e777dda4852942916}{dm\+Grid\+\_\+cent\+\_\+rich}}, DM const \&\mbox{\hyperlink{classeuler__problem_a6117caae67e82798173d36747105675d}{dm\+Grid\+\_\+stag\+\_\+transp}}, DM const \mbox{\hyperlink{classeuler__problem_a2573f67254e6d3d9f6eb0381aed2cfcd}{dm\+Grid\+\_\+shift\+\_\+transp}}, Vec const \&\mbox{\hyperlink{classeuler__problem_ad5780216d10d200f6ba91b199fe78183}{U\+\_\+up}}, Vec const \&\mbox{\hyperlink{classeuler__problem_a2494c12c74353d2f3469554ee17b1d2d}{V\+\_\+up}}, Vec const \mbox{\hyperlink{classeuler__problem_a959e7e9dba8f6c9d20c164c2d08b5c44}{W\+\_\+up}})
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the Euler problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Euler in a broader context. For our applications only a stand-\/alone constructor is used. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classeuler__problem_aa5c62a13666da533bfb9d684c2682a41}{euler\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes stand-\/alone Euler problem with automatically created grids. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classeuler__problem_a82a18be2b3aac912dba53d214e323e4e}{exodus}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classeuler__problem_ad01122e2dc67eda46dfa16e76f310298}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Euler equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classeuler__problem_aecbb0e39b37d6accd6985a6bca4e8571}{$\sim$euler\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classeuler__problem_abc85281efef33a8de72fcaa70d921b3a}{update\+\_\+velocity}} (Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Updates the velocity field, opearating final pressure correction for CT scheme. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classeuler__problem_a90957f96aac3f9e9352ab076f2f7cd65}{assemble\+\_\+magnitude}} (Vec \&Magnitude\+\_\+\+Shifted, Vec const \&U, Vec const \&V, Vec const \&W)
+\begin{DoxyCompactList}\small\item\em Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classeuler__problem_a5bf2c51ca11f1f90ca9f34d3b21305d5}{compute\+\_\+magnitude}} ()
+\begin{DoxyCompactList}\small\item\em Final assembly of magnitude vector on cell-\/centers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classeuler__problem_a5ca548a1002d1ee8229252622ba7f723}{dm\+Grid\+\_\+staggered\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered x-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_ab94d3506567c153df35eff1557478576}{dm\+Grid\+\_\+staggered\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered y-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_acdb5c84ca472e773f3cf041444bd4143}{dm\+Grid\+\_\+staggered\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered z-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_a6c791f1d57430a2a82f6a20bdc78dcfc}{dm\+Grid\+\_\+centered}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the centered formulation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_a4c13c9ae4c6cf84e777dda4852942916}{dm\+Grid\+\_\+cent\+\_\+rich}}
+\begin{DoxyCompactList}\small\item\em Refined centered grid for pressure computation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_a6117caae67e82798173d36747105675d}{dm\+Grid\+\_\+stag\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Staggered grid for transport equations. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classeuler__problem_a2573f67254e6d3d9f6eb0381aed2cfcd}{dm\+Grid\+\_\+shift\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Shifted grid for transport computations. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_af79f7f8e6d2a2918cec6dfadd68909b7}{P}}
+\begin{DoxyCompactList}\small\item\em Pressure field. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_ad920e614d516a829a0d1f76320917fcc}{P\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the x-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_af375a04fec6e42c747b0d78c63a1484e}{P\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the y-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_a36d5154f093bec173d7d287f0bc54bc5}{P\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the z-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_a0480c5ee007eabc843e903b4489c024d}{Magnitude}}
+\begin{DoxyCompactList}\small\item\em Magnitude of velocity vectors. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_ad5780216d10d200f6ba91b199fe78183}{U\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classeuler__problem_a2494c12c74353d2f3469554ee17b1d2d}{V\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classeuler__problem_a959e7e9dba8f6c9d20c164c2d08b5c44}{W\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity fields in the x, y, and z directions. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classeuler__problem_ab6dd046e6575c24d4660a55ddb6da2b1}{mask\+\_\+U}}
+\item 
+Vec \mbox{\hyperlink{classeuler__problem_a4f8b8b35df38d6e6ba86f72e1a57fe43}{mask\+\_\+V}}
+\item 
+Vec \mbox{\hyperlink{classeuler__problem_a06bd11690a86025358b87dd674e452cc}{mask\+\_\+W}}
+\begin{DoxyCompactList}\small\item\em Mask vectors for boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Solves the Euler evolutionary incompressible equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation DOES NOT ALLOW for Brinkamn penalty method. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classeuler__problem_ac602d2df43bf7337210eaa71bf6408f1}\label{classeuler__problem_ac602d2df43bf7337210eaa71bf6408f1}} 
+\index{euler\_problem@{euler\_problem}!euler\_problem@{euler\_problem}}
+\index{euler\_problem@{euler\_problem}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{euler\_problem()}{euler\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily euler\+\_\+problem\+::euler\+\_\+problem (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+x,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+y,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+z,  }\item[{DM const \&}]{dm\+Grid\+\_\+centered,  }\item[{DM const \&}]{dm\+Grid\+\_\+cent\+\_\+rich,  }\item[{DM const \&}]{dm\+Grid\+\_\+stag\+\_\+transp,  }\item[{DM const}]{dm\+Grid\+\_\+shift\+\_\+transp,  }\item[{Vec const \&}]{U\+\_\+up,  }\item[{Vec const \&}]{V\+\_\+up,  }\item[{Vec const}]{W\+\_\+up }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the Euler problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Euler in a broader context. For our applications only a stand-\/alone constructor is used. 
+
+\mbox{\Hypertarget{classeuler__problem_aa5c62a13666da533bfb9d684c2682a41}\label{classeuler__problem_aa5c62a13666da533bfb9d684c2682a41}} 
+\index{euler\_problem@{euler\_problem}!euler\_problem@{euler\_problem}}
+\index{euler\_problem@{euler\_problem}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{euler\_problem()}{euler\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily euler\+\_\+problem\+::euler\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor that initializes stand-\/alone Euler problem with automatically created grids. 
+
+\mbox{\Hypertarget{classeuler__problem_aecbb0e39b37d6accd6985a6bca4e8571}\label{classeuler__problem_aecbb0e39b37d6accd6985a6bca4e8571}} 
+\index{euler\_problem@{euler\_problem}!````~euler\_problem@{$\sim$euler\_problem}}
+\index{````~euler\_problem@{$\sim$euler\_problem}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{$\sim$euler\_problem()}{~euler\_problem()}}
+{\footnotesize\ttfamily euler\+\_\+problem\+::$\sim$euler\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classeuler__problem_a90957f96aac3f9e9352ab076f2f7cd65}\label{classeuler__problem_a90957f96aac3f9e9352ab076f2f7cd65}} 
+\index{euler\_problem@{euler\_problem}!assemble\_magnitude@{assemble\_magnitude}}
+\index{assemble\_magnitude@{assemble\_magnitude}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_magnitude()}{assemble\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const euler\+\_\+problem\+::assemble\+\_\+magnitude (\begin{DoxyParamCaption}\item[{Vec \&}]{Magnitude\+\_\+\+Shifted,  }\item[{Vec const \&}]{U,  }\item[{Vec const \&}]{V,  }\item[{Vec const \&}]{W }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Magnitude\+\_\+\+Shifted} & Output shifted magnitude vector on dm\+Grid\+\_\+cent\+\_\+rich (dofs on faces and cell=centers.) \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classeuler__problem_a5bf2c51ca11f1f90ca9f34d3b21305d5}\label{classeuler__problem_a5bf2c51ca11f1f90ca9f34d3b21305d5}} 
+\index{euler\_problem@{euler\_problem}!compute\_magnitude@{compute\_magnitude}}
+\index{compute\_magnitude@{compute\_magnitude}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{compute\_magnitude()}{compute\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const euler\+\_\+problem\+::compute\+\_\+magnitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Final assembly of magnitude vector on cell-\/centers. 
+
+\mbox{\Hypertarget{classeuler__problem_a82a18be2b3aac912dba53d214e323e4e}\label{classeuler__problem_a82a18be2b3aac912dba53d214e323e4e}} 
+\index{euler\_problem@{euler\_problem}!exodus@{exodus}}
+\index{exodus@{exodus}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code euler\+\_\+problem\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})}
+
+
+
+Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. 
+
+\mbox{\Hypertarget{classeuler__problem_ad01122e2dc67eda46dfa16e76f310298}\label{classeuler__problem_ad01122e2dc67eda46dfa16e76f310298}} 
+\index{euler\_problem@{euler\_problem}!solve@{solve}}
+\index{solve@{solve}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const euler\+\_\+problem\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the Euler equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. 
+
+\mbox{\Hypertarget{classeuler__problem_abc85281efef33a8de72fcaa70d921b3a}\label{classeuler__problem_abc85281efef33a8de72fcaa70d921b3a}} 
+\index{euler\_problem@{euler\_problem}!update\_velocity@{update\_velocity}}
+\index{update\_velocity@{update\_velocity}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{update\_velocity()}{update\_velocity()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const euler\+\_\+problem\+::update\+\_\+velocity (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates the velocity field, opearating final pressure correction for CT scheme. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classeuler__problem_a4c13c9ae4c6cf84e777dda4852942916}\label{classeuler__problem_a4c13c9ae4c6cf84e777dda4852942916}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_cent\_rich@{dmGrid\_cent\_rich}}
+\index{dmGrid\_cent\_rich@{dmGrid\_cent\_rich}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_cent\_rich}{dmGrid\_cent\_rich}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+cent\+\_\+rich\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Refined centered grid for pressure computation. 
+
+\mbox{\Hypertarget{classeuler__problem_a6c791f1d57430a2a82f6a20bdc78dcfc}\label{classeuler__problem_a6c791f1d57430a2a82f6a20bdc78dcfc}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_centered@{dmGrid\_centered}}
+\index{dmGrid\_centered@{dmGrid\_centered}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_centered}{dmGrid\_centered}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+centered\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the centered formulation. 
+
+\mbox{\Hypertarget{classeuler__problem_a2573f67254e6d3d9f6eb0381aed2cfcd}\label{classeuler__problem_a2573f67254e6d3d9f6eb0381aed2cfcd}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_shift\_transp@{dmGrid\_shift\_transp}}
+\index{dmGrid\_shift\_transp@{dmGrid\_shift\_transp}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_shift\_transp}{dmGrid\_shift\_transp}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+shift\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Shifted grid for transport computations. 
+
+\mbox{\Hypertarget{classeuler__problem_a6117caae67e82798173d36747105675d}\label{classeuler__problem_a6117caae67e82798173d36747105675d}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_stag\_transp@{dmGrid\_stag\_transp}}
+\index{dmGrid\_stag\_transp@{dmGrid\_stag\_transp}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_stag\_transp}{dmGrid\_stag\_transp}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+stag\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Staggered grid for transport equations. 
+
+\mbox{\Hypertarget{classeuler__problem_a5ca548a1002d1ee8229252622ba7f723}\label{classeuler__problem_a5ca548a1002d1ee8229252622ba7f723}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_staggered\_x@{dmGrid\_staggered\_x}}
+\index{dmGrid\_staggered\_x@{dmGrid\_staggered\_x}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_x}{dmGrid\_staggered\_x}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered x-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_ab94d3506567c153df35eff1557478576}\label{classeuler__problem_ab94d3506567c153df35eff1557478576}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_staggered\_y@{dmGrid\_staggered\_y}}
+\index{dmGrid\_staggered\_y@{dmGrid\_staggered\_y}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_y}{dmGrid\_staggered\_y}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered y-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_acdb5c84ca472e773f3cf041444bd4143}\label{classeuler__problem_acdb5c84ca472e773f3cf041444bd4143}} 
+\index{euler\_problem@{euler\_problem}!dmGrid\_staggered\_z@{dmGrid\_staggered\_z}}
+\index{dmGrid\_staggered\_z@{dmGrid\_staggered\_z}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_z}{dmGrid\_staggered\_z}}
+{\footnotesize\ttfamily DM euler\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered z-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_a0480c5ee007eabc843e903b4489c024d}\label{classeuler__problem_a0480c5ee007eabc843e903b4489c024d}} 
+\index{euler\_problem@{euler\_problem}!Magnitude@{Magnitude}}
+\index{Magnitude@{Magnitude}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{Magnitude}{Magnitude}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+Magnitude\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Magnitude of velocity vectors. 
+
+\mbox{\Hypertarget{classeuler__problem_ab6dd046e6575c24d4660a55ddb6da2b1}\label{classeuler__problem_ab6dd046e6575c24d4660a55ddb6da2b1}} 
+\index{euler\_problem@{euler\_problem}!mask\_U@{mask\_U}}
+\index{mask\_U@{mask\_U}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_U}{mask\_U}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::mask\+\_\+U\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classeuler__problem_a4f8b8b35df38d6e6ba86f72e1a57fe43}\label{classeuler__problem_a4f8b8b35df38d6e6ba86f72e1a57fe43}} 
+\index{euler\_problem@{euler\_problem}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classeuler__problem_a06bd11690a86025358b87dd674e452cc}\label{classeuler__problem_a06bd11690a86025358b87dd674e452cc}} 
+\index{euler\_problem@{euler\_problem}!mask\_W@{mask\_W}}
+\index{mask\_W@{mask\_W}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_W}{mask\_W}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::mask\+\_\+W\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mask vectors for boundary conditions. 
+
+\mbox{\Hypertarget{classeuler__problem_af79f7f8e6d2a2918cec6dfadd68909b7}\label{classeuler__problem_af79f7f8e6d2a2918cec6dfadd68909b7}} 
+\index{euler\_problem@{euler\_problem}!P@{P}}
+\index{P@{P}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::P\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure field. 
+
+\mbox{\Hypertarget{classeuler__problem_ad920e614d516a829a0d1f76320917fcc}\label{classeuler__problem_ad920e614d516a829a0d1f76320917fcc}} 
+\index{euler\_problem@{euler\_problem}!P\_x@{P\_x}}
+\index{P\_x@{P\_x}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_x}{P\_x}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+P\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the x-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_af375a04fec6e42c747b0d78c63a1484e}\label{classeuler__problem_af375a04fec6e42c747b0d78c63a1484e}} 
+\index{euler\_problem@{euler\_problem}!P\_y@{P\_y}}
+\index{P\_y@{P\_y}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_y}{P\_y}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+P\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the y-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_a36d5154f093bec173d7d287f0bc54bc5}\label{classeuler__problem_a36d5154f093bec173d7d287f0bc54bc5}} 
+\index{euler\_problem@{euler\_problem}!P\_z@{P\_z}}
+\index{P\_z@{P\_z}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_z}{P\_z}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+P\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the z-\/direction. 
+
+\mbox{\Hypertarget{classeuler__problem_ad5780216d10d200f6ba91b199fe78183}\label{classeuler__problem_ad5780216d10d200f6ba91b199fe78183}} 
+\index{euler\_problem@{euler\_problem}!U\_up@{U\_up}}
+\index{U\_up@{U\_up}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{U\_up}{U\_up}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+U\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classeuler__problem_a2494c12c74353d2f3469554ee17b1d2d}\label{classeuler__problem_a2494c12c74353d2f3469554ee17b1d2d}} 
+\index{euler\_problem@{euler\_problem}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classeuler__problem_a959e7e9dba8f6c9d20c164c2d08b5c44}\label{classeuler__problem_a959e7e9dba8f6c9d20c164c2d08b5c44}} 
+\index{euler\_problem@{euler\_problem}!W\_up@{W\_up}}
+\index{W\_up@{W\_up}!euler\_problem@{euler\_problem}}
+\doxysubsubsection{\texorpdfstring{W\_up}{W\_up}}
+{\footnotesize\ttfamily Vec euler\+\_\+problem\+::\+W\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity fields in the x, y, and z directions. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{inviscid__euler_8hpp}{inviscid\+\_\+euler.\+hpp}}\item 
+src/\mbox{\hyperlink{inviscid__euler_8cpp}{inviscid\+\_\+euler.\+cpp}}\end{DoxyCompactItemize}

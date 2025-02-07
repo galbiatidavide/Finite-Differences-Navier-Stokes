@@ -1,0 +1,25 @@
+\hypertarget{stokes_8hpp}{}\doxysection{include/stokes.hpp File Reference}
+\label{stokes_8hpp}\index{include/stokes.hpp@{include/stokes.hpp}}
+{\ttfamily \#include \char`\"{}parabolic.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}poisson.\+hpp\char`\"{}}\newline
+Include dependency graph for stokes.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{stokes_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{stokes_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classstokes__problem}{stokes\+\_\+problem}}
+\begin{DoxyCompactList}\small\item\em Solves the Stokes evolutionary incompressible Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method. \end{DoxyCompactList}\end{DoxyCompactItemize}

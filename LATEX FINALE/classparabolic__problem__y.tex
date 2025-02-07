@@ -1,0 +1,227 @@
+\hypertarget{classparabolic__problem__y}{}\doxysection{parabolic\+\_\+problem\+\_\+y Class Reference}
+\label{classparabolic__problem__y}\index{parabolic\_problem\_y@{parabolic\_problem\_y}}
+
+
+Represents a parabolic problem in the y-\/direction.  
+
+
+
+
+{\ttfamily \#include $<$parabolic.\+hpp$>$}
+
+
+
+Collaboration diagram for parabolic\+\_\+problem\+\_\+y\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classparabolic__problem__y__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classparabolic__problem__y_a0dbcad6c256b36e6ae810b6f8896adf8}{parabolic\+\_\+problem\+\_\+y}} (DM const \&\mbox{\hyperlink{classparabolic__problem__y_ad1e6edad78be9acfc26c879a7ae6b14a}{dm\+Grid}})
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the problem with a given grid. Use when parabolic problem is just a step of a bigger problem, like in Chorin-\/\+Temam method. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classparabolic__problem__y_a6fcdaf58acd4ad88accd77a6aa6e09b0}{parabolic\+\_\+problem\+\_\+y}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for stand-\/alone problem. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classparabolic__problem__y_aad5ae9ff73c3478cd4fc94a9c8d4327a}{get\+\_\+V}} ()
+\item 
+void \mbox{\hyperlink{classparabolic__problem__y_a3675723ce0fca72a100b2a701ce29b29}{set\+\_\+V}} (Vec const \&V)
+\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classparabolic__problem__y_a05cbed7378ca8dfeee250ae92e84cb5d}{assemble\+\_\+lhs}} ()
+\begin{DoxyCompactList}\small\item\em Assembles the left-\/hand side (LHS) matrix. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classparabolic__problem__y_a785ef2c50a98e365d63cc6adc3838fcb}{solve\+\_\+step}} (Petsc\+Real const \&theta, std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$ V\+\_\+up\+\_\+opt=std\+::nullopt)
+\begin{DoxyCompactList}\small\item\em Performs a single time step of the numerical solution. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classparabolic__problem__y_a6168de0160c8286ecd20d52a5eaefbb3}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Solves the entire parabolic problem in the Y-\/direction. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classparabolic__problem__y_ac2f0b6aa0a1e27b9a1e816f70896b266}{$\sim$parabolic\+\_\+problem\+\_\+y}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. Fundamental in PETSc implementation lo avoid leaks and unexpected RAM overhead. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const Petsc\+Error\+Code \mbox{\hyperlink{classparabolic__problem__y_a7dcc7f2af81bfb76a149f1f2ffe07280}{assemble\+\_\+rhs}} (Petsc\+Real const \&theta, Vec const \&\mbox{\hyperlink{classparabolic__problem__y_a01565ea98f03117e85c0cb525e210edb}{V\+\_\+up}})
+\begin{DoxyCompactList}\small\item\em Assembles the right-\/hand side (RHS) vector. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classparabolic__problem__y_ad75eaae6d56fcd233786bfd899e1942d}{exodus}} (size\+\_\+t const \&i)
+\begin{DoxyCompactList}\small\item\em Exports results in .vtk format for post-\/processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classparabolic__problem__y_ad1e6edad78be9acfc26c879a7ae6b14a}{dm\+Grid}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the problem. \end{DoxyCompactList}\item 
+Mat \mbox{\hyperlink{classparabolic__problem__y_a302f3edadb10a8d9cc43d9dca337e3bb}{A}}
+\begin{DoxyCompactList}\small\item\em Matrix representing the left-\/hand side of the system. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classparabolic__problem__y_aaae0571c844dcdee11a12f9cb13e0652}{rhs}}
+\begin{DoxyCompactList}\small\item\em Right-\/hand side vector. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classparabolic__problem__y_a01565ea98f03117e85c0cb525e210edb}{V\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Solution vector for the y-\/direction. If not provided, it must be passed as reference in solve\+\_\+step(...) \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classparabolic__problem__y_a24732c93e9e35814461239d9f44bfd53}{mask\+\_\+V}}
+\begin{DoxyCompactList}\small\item\em Mask vector used for Brinkman flow. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a parabolic problem in the y-\/direction. 
+
+This class solves a generic evolutionary diffusive problem in the y-\/direction with fully Dirichlet bc\textquotesingle{}s. Boundary conditions are imposed by means of a reference solution. Discretization is performed on a staggered grid and in x-\/direction only, meaning that variables are located in position DOWN and UP. Linear problem is solved by means of a PETSc KSP solver, with GMRES and Jacobi preconditioner. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classparabolic__problem__y_a0dbcad6c256b36e6ae810b6f8896adf8}\label{classparabolic__problem__y_a0dbcad6c256b36e6ae810b6f8896adf8}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{parabolic\_problem\_y()}{parabolic\_problem\_y()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily parabolic\+\_\+problem\+\_\+y\+::parabolic\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the problem with a given grid. Use when parabolic problem is just a step of a bigger problem, like in Chorin-\/\+Temam method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm\+Grid} & staggered grid petsc-\/object must be already be defined. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classparabolic__problem__y_a6fcdaf58acd4ad88accd77a6aa6e09b0}\label{classparabolic__problem__y_a6fcdaf58acd4ad88accd77a6aa6e09b0}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{parabolic\_problem\_y()}{parabolic\_problem\_y()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily parabolic\+\_\+problem\+\_\+y\+::parabolic\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor for stand-\/alone problem. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_ac2f0b6aa0a1e27b9a1e816f70896b266}\label{classparabolic__problem__y_ac2f0b6aa0a1e27b9a1e816f70896b266}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!````~parabolic\_problem\_y@{$\sim$parabolic\_problem\_y}}
+\index{````~parabolic\_problem\_y@{$\sim$parabolic\_problem\_y}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{$\sim$parabolic\_problem\_y()}{~parabolic\_problem\_y()}}
+{\footnotesize\ttfamily parabolic\+\_\+problem\+\_\+y\+::$\sim$parabolic\+\_\+problem\+\_\+y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. Fundamental in PETSc implementation lo avoid leaks and unexpected RAM overhead. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classparabolic__problem__y_a05cbed7378ca8dfeee250ae92e84cb5d}\label{classparabolic__problem__y_a05cbed7378ca8dfeee250ae92e84cb5d}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!assemble\_lhs@{assemble\_lhs}}
+\index{assemble\_lhs@{assemble\_lhs}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{assemble\_lhs()}{assemble\_lhs()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code parabolic\+\_\+problem\+\_\+y\+::assemble\+\_\+lhs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Assembles the left-\/hand side (LHS) matrix. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_a7dcc7f2af81bfb76a149f1f2ffe07280}\label{classparabolic__problem__y_a7dcc7f2af81bfb76a149f1f2ffe07280}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!assemble\_rhs@{assemble\_rhs}}
+\index{assemble\_rhs@{assemble\_rhs}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{assemble\_rhs()}{assemble\_rhs()}}
+{\footnotesize\ttfamily const Petsc\+Error\+Code parabolic\+\_\+problem\+\_\+y\+::assemble\+\_\+rhs (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta,  }\item[{Vec const \&}]{V\+\_\+up }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Assembles the right-\/hand side (RHS) vector. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_ad75eaae6d56fcd233786bfd899e1942d}\label{classparabolic__problem__y_ad75eaae6d56fcd233786bfd899e1942d}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!exodus@{exodus}}
+\index{exodus@{exodus}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code parabolic\+\_\+problem\+\_\+y\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t const \&}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Exports results in .vtk format for post-\/processing. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_aad5ae9ff73c3478cd4fc94a9c8d4327a}\label{classparabolic__problem__y_aad5ae9ff73c3478cd4fc94a9c8d4327a}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!get\_V@{get\_V}}
+\index{get\_V@{get\_V}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{get\_V()}{get\_V()}}
+{\footnotesize\ttfamily Vec parabolic\+\_\+problem\+\_\+y\+::get\+\_\+V (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classparabolic__problem__y_a3675723ce0fca72a100b2a701ce29b29}\label{classparabolic__problem__y_a3675723ce0fca72a100b2a701ce29b29}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!set\_V@{set\_V}}
+\index{set\_V@{set\_V}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{set\_V()}{set\_V()}}
+{\footnotesize\ttfamily void parabolic\+\_\+problem\+\_\+y\+::set\+\_\+V (\begin{DoxyParamCaption}\item[{Vec const \&}]{V }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classparabolic__problem__y_a6168de0160c8286ecd20d52a5eaefbb3}\label{classparabolic__problem__y_a6168de0160c8286ecd20d52a5eaefbb3}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!solve@{solve}}
+\index{solve@{solve}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code parabolic\+\_\+problem\+\_\+y\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the entire parabolic problem in the Y-\/direction. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_a785ef2c50a98e365d63cc6adc3838fcb}\label{classparabolic__problem__y_a785ef2c50a98e365d63cc6adc3838fcb}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!solve\_step@{solve\_step}}
+\index{solve\_step@{solve\_step}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{solve\_step()}{solve\_step()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code parabolic\+\_\+problem\+\_\+y\+::solve\+\_\+step (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta,  }\item[{std\+::optional$<$ std\+::reference\+\_\+wrapper$<$ Vec $>$$>$}]{V\+\_\+up\+\_\+opt = {\ttfamily std\+:\+:nullopt} }\end{DoxyParamCaption})}
+
+
+
+Performs a single time step of the numerical solution. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classparabolic__problem__y_a302f3edadb10a8d9cc43d9dca337e3bb}\label{classparabolic__problem__y_a302f3edadb10a8d9cc43d9dca337e3bb}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!A@{A}}
+\index{A@{A}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{A}{A}}
+{\footnotesize\ttfamily Mat parabolic\+\_\+problem\+\_\+y\+::A\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Matrix representing the left-\/hand side of the system. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_ad1e6edad78be9acfc26c879a7ae6b14a}\label{classparabolic__problem__y_ad1e6edad78be9acfc26c879a7ae6b14a}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!dmGrid@{dmGrid}}
+\index{dmGrid@{dmGrid}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{dmGrid}{dmGrid}}
+{\footnotesize\ttfamily DM parabolic\+\_\+problem\+\_\+y\+::dm\+Grid\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the problem. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_a24732c93e9e35814461239d9f44bfd53}\label{classparabolic__problem__y_a24732c93e9e35814461239d9f44bfd53}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec parabolic\+\_\+problem\+\_\+y\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mask vector used for Brinkman flow. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_aaae0571c844dcdee11a12f9cb13e0652}\label{classparabolic__problem__y_aaae0571c844dcdee11a12f9cb13e0652}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!rhs@{rhs}}
+\index{rhs@{rhs}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{rhs}{rhs}}
+{\footnotesize\ttfamily Vec parabolic\+\_\+problem\+\_\+y\+::rhs\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Right-\/hand side vector. 
+
+\mbox{\Hypertarget{classparabolic__problem__y_a01565ea98f03117e85c0cb525e210edb}\label{classparabolic__problem__y_a01565ea98f03117e85c0cb525e210edb}} 
+\index{parabolic\_problem\_y@{parabolic\_problem\_y}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!parabolic\_problem\_y@{parabolic\_problem\_y}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec parabolic\+\_\+problem\+\_\+y\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solution vector for the y-\/direction. If not provided, it must be passed as reference in solve\+\_\+step(...) 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{parabolic_8hpp}{parabolic.\+hpp}}\item 
+src/\mbox{\hyperlink{parabolic_8cpp}{parabolic.\+cpp}}\end{DoxyCompactItemize}

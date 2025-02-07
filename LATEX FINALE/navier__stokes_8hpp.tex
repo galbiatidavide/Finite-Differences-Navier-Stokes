@@ -1,0 +1,26 @@
+\hypertarget{navier__stokes_8hpp}{}\doxysection{include/navier\+\_\+stokes.hpp File Reference}
+\label{navier__stokes_8hpp}\index{include/navier\_stokes.hpp@{include/navier\_stokes.hpp}}
+{\ttfamily \#include \char`\"{}parabolic.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}transport.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}poisson.\+hpp\char`\"{}}\newline
+Include dependency graph for navier\+\_\+stokes.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{navier__stokes_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{navier__stokes_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classnavier__stokes__problem}{navier\+\_\+stokes\+\_\+problem}}
+\begin{DoxyCompactList}\small\item\em Solves the Navier-\/\+Stokes evolutionary incompressible Navier-\/\+Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component, a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method. \end{DoxyCompactList}\end{DoxyCompactItemize}

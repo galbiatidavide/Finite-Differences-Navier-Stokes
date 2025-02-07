@@ -1,0 +1,40 @@
+This project implements a solver based on finite differences for the Navier-\/\+Stokes equations. The solver can be used both on a default cubic domain as well as on an input original mesh which exploits the brinkman penalization method.\hypertarget{md_README_autotoc_md1}{}\doxysection{$<$strong$>$\+Requirements$<$/strong$>$}\label{md_README_autotoc_md1}
+To compile and run the project, make sure you have the following tools and libraries installed and configured\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Compiler}}\+: GCC with C++20 support
+\item {\bfseries{Libraries}}\+:
+\begin{DoxyItemize}
+\item PETSc
+\item VTK
+\item Eigen
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md_README_autotoc_md3}{}\doxysection{$<$strong$>$\+Installation$<$/strong$>$}\label{md_README_autotoc_md3}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Load the required modules}}\+: ~\newline
+ Before compiling or running the program, load the necessary modules. Ensure that your environment is correctly set up by running\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{   source /u/sw/etc/bash.bashrc}
+\DoxyCodeLine{   module load gcc-\/glibc}
+\DoxyCodeLine{   module load eigen}
+\DoxyCodeLine{   module load vtk}
+\DoxyCodeLine{   module load petsc}
+\DoxyCodeLine{}
+\DoxyCodeLine{2. **Compile the project**:}
+\DoxyCodeLine{    After loading the modules, compile the project by running:}
+\DoxyCodeLine{    ```bash}
+\DoxyCodeLine{    make }
+\DoxyCodeLine{}
+\DoxyCodeLine{3. **Usage**}
+\DoxyCodeLine{    To run the solver, execute the following command:}
+\DoxyCodeLine{    ```bash}
+\DoxyCodeLine{    ./bin/main }
+
+\end{DoxyCode}
+ For the brinkman solver the name of the .stl has to be indicated. An Example one is given, to run the solver on the example mesh execute the following command\+: \`{}\`{}\`{}bash ./bin/main caroitd.\+stl \`{}\`{}\`{} The program will compute the solution and store the results in the results directory 
+\end{DoxyEnumerate}

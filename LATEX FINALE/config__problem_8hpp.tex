@@ -1,0 +1,89 @@
+\hypertarget{config__problem_8hpp}{}\doxysection{config\+\_\+problem.\+hpp File Reference}
+\label{config__problem_8hpp}\index{config\_problem.hpp@{config\_problem.hpp}}
+
+
+Configuration file for setting up problem parameters.  
+
+
+{\ttfamily \#include \char`\"{}macros.\+hpp\char`\"{}}\newline
+Include dependency graph for config\+\_\+problem.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{config__problem_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{config__problem_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceproblem__setting}{problem\+\_\+setting}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a86ac8a519624a046f80e10d3c8287e0c}{problem\+\_\+setting\+::ux\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the x-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_ae5b0f91e0a35c9411f79a6c818904fb0}{problem\+\_\+setting\+::uy\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the y-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_ad95b7053842cacce71e9b7f7916781cf}{problem\+\_\+setting\+::uz\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Computes the reference solution for the problem in the z-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a17fe845a4250b74d5ca1dd4f89fcf890}{problem\+\_\+setting\+::p\+Ref}} (Petsc\+Real const \&x, Petsc\+Real const \&y, Petsc\+Real const \&z, Petsc\+Real const \&theta)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr const char $\ast$ \mbox{\hyperlink{namespaceproblem__setting_a453670604e9b7a04a8e1e886ebb612ea}{problem\+\_\+setting\+::problem\+\_\+type}} = \char`\"{}navier\+\_\+stokes\char`\"{}
+\begin{DoxyCompactList}\small\item\em Set the problem type. Possible values are \char`\"{}navier\+\_\+stokes\char`\"{}, \char`\"{}stokes\char`\"{}, \char`\"{}euler\char`\"{}, \char`\"{}advection\+\_\+diffusion\char`\"{}, \char`\"{}parabolic\+\_\+x\char`\"{}, \char`\"{}parabolic\+\_\+y\char`\"{}, \char`\"{}parabolic\+\_\+z\char`\"{}, \char`\"{}transport\+\_\+x\char`\"{}, \char`\"{}transport\+\_\+y\char`\"{}, \char`\"{}transport\+\_\+z\char`\"{}. \end{DoxyCompactList}\item 
+constexpr const char $\ast$ \mbox{\hyperlink{namespaceproblem__setting_a80f54d06d21f3ea0f87bee9042f8a42d}{problem\+\_\+setting\+::base\+\_\+path}} = \char`\"{}results/\char`\"{}
+\begin{DoxyCompactList}\small\item\em Set this as base path to store results. Default is \char`\"{}results/\char`\"{}. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_abaea14d2a52e5312a5cdbd443513d654}{problem\+\_\+setting\+::brinkman}} \{false\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able brinkman penalization. Required for complex geometry handling. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_a3852e643ce10c3b8c933ccf7ca924515}{problem\+\_\+setting\+::monitor\+\_\+convergence}} \{true\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able convergence error of KSP solver. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespaceproblem__setting_ac24bf0d907f9ffe8e6422fbc739454f9}{problem\+\_\+setting\+::check\+\_\+convergence}} \{true\}
+\begin{DoxyCompactList}\small\item\em Set flag to (dis)able convergence error of variable. Only implemented for NAvier-\/\+Stokes and parabolic problems. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a319b9446225ac251ae39142b114f4e9c}{problem\+\_\+setting\+::nx}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in x-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a9d0024d7b6c35d844a0df25148f99018}{problem\+\_\+setting\+::ny}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in y-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Int \mbox{\hyperlink{namespaceproblem__setting_a1caf6b64779835e98aa65982cd98d0f1}{problem\+\_\+setting\+::nz}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set the number of elements in z-\/direction. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a12cfd50edfdc34bdafafcfbdba03b2d1}{problem\+\_\+setting\+::\+Lx\+\_\+0}} \{-\/0.\+5\}
+\begin{DoxyCompactList}\small\item\em Set the domain limits in x, y and z directions. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a086fc1323b907d1bd82d818652cefd20}{problem\+\_\+setting\+::\+Ly\+\_\+0}} \{-\/0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a021b2b278762aee1b5e07a91ee34f517}{problem\+\_\+setting\+::\+Lz\+\_\+0}} \{-\/0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a6d15cb6884b824c299bc54b04a19648d}{problem\+\_\+setting\+::\+Lx}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a8f915bf3e051df2a6685b59baa67481b}{problem\+\_\+setting\+::\+Ly}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_aab579aed581f2931423f0c68329ce993}{problem\+\_\+setting\+::\+Lz}} \{0.\+5\}
+\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_aa7f0103575ede89273ca8a5332216cfb}{problem\+\_\+setting\+::dt}} \{0.\+00625/2\}
+\begin{DoxyCompactList}\small\item\em Set time-\/step. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a73ffc9fc8c137f4ed82fa33754f5b991}{problem\+\_\+setting\+::iter}} \{32\}
+\begin{DoxyCompactList}\small\item\em Set final time. \end{DoxyCompactList}\item 
+Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_adf212673fa4a561c042ad3b31aa20f0c}{problem\+\_\+setting\+::theta}}
+\begin{DoxyCompactList}\small\item\em Set starting time. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_abb6dddfee64136113b4940b55044f29b}{problem\+\_\+setting\+::\+Re}} \{1\}
+\begin{DoxyCompactList}\small\item\em Set Reynolds number. For non advective problems, set mu = 1/\+Re (adimensional framework) \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a6465c0b80e73dcd25ac9ff1ff22e0d58}{problem\+\_\+setting\+::a}} = \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}} / 4
+\begin{DoxyCompactList}\small\item\em Set flow parameters. You can declare as many constexpr variables as you need. \end{DoxyCompactList}\item 
+constexpr Petsc\+Real \mbox{\hyperlink{namespaceproblem__setting_a4823318fb5aef382d87ccef348f64880}{problem\+\_\+setting\+::d}} = 1.\+5 $\ast$ \mbox{\hyperlink{macros_8hpp_a3a08619db02ea2328c620069ac598662}{pi}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Configuration file for setting up problem parameters. 
+
+This file defines the parameters for simulations. Before starting any simulation, careful consideration of the parameters is required. It is recommended to work in a dimensionless framework. 

@@ -1,0 +1,422 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}Finite Differences Navier-\/\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Stokes Solver}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}$<$strong$>$\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Requirements$<$/strong$>$}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}$<$strong$>$\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Installation$<$/strong$>$}{1}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Namespace Index}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Namespace List}{3}{section.2.1}%
+\contentsline {chapter}{\numberline {3}Class Index}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Class List}{5}{section.3.1}%
+\contentsline {chapter}{\numberline {4}File Index}{7}{chapter.4}%
+\contentsline {section}{\numberline {4.1}File List}{7}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Namespace Documentation}{9}{chapter.5}%
+\contentsline {section}{\numberline {5.1}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}setting Namespace Reference}{9}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Function Documentation}{10}{subsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.1.1}pRef()}{10}{subsubsection.5.1.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.1.2}uxRef()}{10}{subsubsection.5.1.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.1.3}uyRef()}{10}{subsubsection.5.1.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.1.4}uzRef()}{11}{subsubsection.5.1.1.4}%
+\contentsline {subsection}{\numberline {5.1.2}Variable Documentation}{11}{subsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.2.1}a}{11}{subsubsection.5.1.2.1}%
+\contentsline {subsubsection}{\numberline {5.1.2.2}base\_path}{11}{subsubsection.5.1.2.2}%
+\contentsline {subsubsection}{\numberline {5.1.2.3}brinkman}{12}{subsubsection.5.1.2.3}%
+\contentsline {subsubsection}{\numberline {5.1.2.4}check\_convergence}{12}{subsubsection.5.1.2.4}%
+\contentsline {subsubsection}{\numberline {5.1.2.5}d}{12}{subsubsection.5.1.2.5}%
+\contentsline {subsubsection}{\numberline {5.1.2.6}dt}{12}{subsubsection.5.1.2.6}%
+\contentsline {subsubsection}{\numberline {5.1.2.7}iter}{12}{subsubsection.5.1.2.7}%
+\contentsline {subsubsection}{\numberline {5.1.2.8}Lx}{12}{subsubsection.5.1.2.8}%
+\contentsline {subsubsection}{\numberline {5.1.2.9}Lx\_0}{12}{subsubsection.5.1.2.9}%
+\contentsline {subsubsection}{\numberline {5.1.2.10}Ly}{12}{subsubsection.5.1.2.10}%
+\contentsline {subsubsection}{\numberline {5.1.2.11}Ly\_0}{12}{subsubsection.5.1.2.11}%
+\contentsline {subsubsection}{\numberline {5.1.2.12}Lz}{12}{subsubsection.5.1.2.12}%
+\contentsline {subsubsection}{\numberline {5.1.2.13}Lz\_0}{12}{subsubsection.5.1.2.13}%
+\contentsline {subsubsection}{\numberline {5.1.2.14}monitor\_convergence}{13}{subsubsection.5.1.2.14}%
+\contentsline {subsubsection}{\numberline {5.1.2.15}nx}{13}{subsubsection.5.1.2.15}%
+\contentsline {subsubsection}{\numberline {5.1.2.16}ny}{13}{subsubsection.5.1.2.16}%
+\contentsline {subsubsection}{\numberline {5.1.2.17}nz}{13}{subsubsection.5.1.2.17}%
+\contentsline {subsubsection}{\numberline {5.1.2.18}problem\_type}{13}{subsubsection.5.1.2.18}%
+\contentsline {subsubsection}{\numberline {5.1.2.19}Re}{13}{subsubsection.5.1.2.19}%
+\contentsline {subsubsection}{\numberline {5.1.2.20}theta}{13}{subsubsection.5.1.2.20}%
+\contentsline {chapter}{\numberline {6}Class Documentation}{15}{chapter.6}%
+\contentsline {section}{\numberline {6.1}advection Class Reference}{15}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Detailed Description}{15}{subsection.6.1.1}%
+\contentsline {section}{\numberline {6.2}advection\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}diffusion\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem Class Reference}{15}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Constructor \& Destructor Documentation}{17}{subsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.1.1}advection\_diffusion\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{17}{subsubsection.6.2.1.1}%
+\contentsline {subsubsection}{\numberline {6.2.1.2}advection\_diffusion\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{18}{subsubsection.6.2.1.2}%
+\contentsline {subsubsection}{\numberline {6.2.1.3}$\sim $advection\_diffusion\_problem()}{18}{subsubsection.6.2.1.3}%
+\contentsline {subsection}{\numberline {6.2.2}Member Function Documentation}{18}{subsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.2.1}assemble\_magnitude()}{18}{subsubsection.6.2.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2.2}compute\_magnitude()}{18}{subsubsection.6.2.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.2.3}exodus()}{18}{subsubsection.6.2.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.2.4}solve()}{18}{subsubsection.6.2.2.4}%
+\contentsline {subsubsection}{\numberline {6.2.2.5}update\_velocity()}{19}{subsubsection.6.2.2.5}%
+\contentsline {subsection}{\numberline {6.2.3}Member Data Documentation}{19}{subsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.3.1}dmGrid\_cent\_rich}{19}{subsubsection.6.2.3.1}%
+\contentsline {subsubsection}{\numberline {6.2.3.2}dmGrid\_centered}{19}{subsubsection.6.2.3.2}%
+\contentsline {subsubsection}{\numberline {6.2.3.3}dmGrid\_shift\_transp}{19}{subsubsection.6.2.3.3}%
+\contentsline {subsubsection}{\numberline {6.2.3.4}dmGrid\_stag\_transp}{19}{subsubsection.6.2.3.4}%
+\contentsline {subsubsection}{\numberline {6.2.3.5}dmGrid\_staggered\_x}{19}{subsubsection.6.2.3.5}%
+\contentsline {subsubsection}{\numberline {6.2.3.6}dmGrid\_staggered\_y}{19}{subsubsection.6.2.3.6}%
+\contentsline {subsubsection}{\numberline {6.2.3.7}dmGrid\_staggered\_z}{19}{subsubsection.6.2.3.7}%
+\contentsline {subsubsection}{\numberline {6.2.3.8}Magnitude}{20}{subsubsection.6.2.3.8}%
+\contentsline {subsubsection}{\numberline {6.2.3.9}mask\_U}{20}{subsubsection.6.2.3.9}%
+\contentsline {subsubsection}{\numberline {6.2.3.10}mask\_V}{20}{subsubsection.6.2.3.10}%
+\contentsline {subsubsection}{\numberline {6.2.3.11}mask\_W}{20}{subsubsection.6.2.3.11}%
+\contentsline {subsubsection}{\numberline {6.2.3.12}U\_up}{20}{subsubsection.6.2.3.12}%
+\contentsline {subsubsection}{\numberline {6.2.3.13}V\_up}{20}{subsubsection.6.2.3.13}%
+\contentsline {subsubsection}{\numberline {6.2.3.14}W\_up}{20}{subsubsection.6.2.3.14}%
+\contentsline {section}{\numberline {6.3}euler\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem Class Reference}{20}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Detailed Description}{22}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Constructor \& Destructor Documentation}{23}{subsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.2.1}euler\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{23}{subsubsection.6.3.2.1}%
+\contentsline {subsubsection}{\numberline {6.3.2.2}euler\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{23}{subsubsection.6.3.2.2}%
+\contentsline {subsubsection}{\numberline {6.3.2.3}$\sim $euler\_problem()}{23}{subsubsection.6.3.2.3}%
+\contentsline {subsection}{\numberline {6.3.3}Member Function Documentation}{23}{subsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.3.1}assemble\_magnitude()}{23}{subsubsection.6.3.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.3.2}compute\_magnitude()}{23}{subsubsection.6.3.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3.3}exodus()}{24}{subsubsection.6.3.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.3.4}solve()}{24}{subsubsection.6.3.3.4}%
+\contentsline {subsubsection}{\numberline {6.3.3.5}update\_velocity()}{24}{subsubsection.6.3.3.5}%
+\contentsline {subsection}{\numberline {6.3.4}Member Data Documentation}{24}{subsection.6.3.4}%
+\contentsline {subsubsection}{\numberline {6.3.4.1}dmGrid\_cent\_rich}{24}{subsubsection.6.3.4.1}%
+\contentsline {subsubsection}{\numberline {6.3.4.2}dmGrid\_centered}{24}{subsubsection.6.3.4.2}%
+\contentsline {subsubsection}{\numberline {6.3.4.3}dmGrid\_shift\_transp}{24}{subsubsection.6.3.4.3}%
+\contentsline {subsubsection}{\numberline {6.3.4.4}dmGrid\_stag\_transp}{24}{subsubsection.6.3.4.4}%
+\contentsline {subsubsection}{\numberline {6.3.4.5}dmGrid\_staggered\_x}{24}{subsubsection.6.3.4.5}%
+\contentsline {subsubsection}{\numberline {6.3.4.6}dmGrid\_staggered\_y}{25}{subsubsection.6.3.4.6}%
+\contentsline {subsubsection}{\numberline {6.3.4.7}dmGrid\_staggered\_z}{25}{subsubsection.6.3.4.7}%
+\contentsline {subsubsection}{\numberline {6.3.4.8}Magnitude}{25}{subsubsection.6.3.4.8}%
+\contentsline {subsubsection}{\numberline {6.3.4.9}mask\_U}{25}{subsubsection.6.3.4.9}%
+\contentsline {subsubsection}{\numberline {6.3.4.10}mask\_V}{25}{subsubsection.6.3.4.10}%
+\contentsline {subsubsection}{\numberline {6.3.4.11}mask\_W}{25}{subsubsection.6.3.4.11}%
+\contentsline {subsubsection}{\numberline {6.3.4.12}P}{25}{subsubsection.6.3.4.12}%
+\contentsline {subsubsection}{\numberline {6.3.4.13}P\_x}{25}{subsubsection.6.3.4.13}%
+\contentsline {subsubsection}{\numberline {6.3.4.14}P\_y}{25}{subsubsection.6.3.4.14}%
+\contentsline {subsubsection}{\numberline {6.3.4.15}P\_z}{25}{subsubsection.6.3.4.15}%
+\contentsline {subsubsection}{\numberline {6.3.4.16}U\_up}{26}{subsubsection.6.3.4.16}%
+\contentsline {subsubsection}{\numberline {6.3.4.17}V\_up}{26}{subsubsection.6.3.4.17}%
+\contentsline {subsubsection}{\numberline {6.3.4.18}W\_up}{26}{subsubsection.6.3.4.18}%
+\contentsline {section}{\numberline {6.4}navier\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}stokes\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem Class Reference}{26}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Detailed Description}{28}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Constructor \& Destructor Documentation}{29}{subsection.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.2.1}navier\_stokes\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{29}{subsubsection.6.4.2.1}%
+\contentsline {subsubsection}{\numberline {6.4.2.2}navier\_stokes\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{29}{subsubsection.6.4.2.2}%
+\contentsline {subsubsection}{\numberline {6.4.2.3}$\sim $navier\_stokes\_problem()}{29}{subsubsection.6.4.2.3}%
+\contentsline {subsection}{\numberline {6.4.3}Member Function Documentation}{29}{subsection.6.4.3}%
+\contentsline {subsubsection}{\numberline {6.4.3.1}assemble\_magnitude()}{29}{subsubsection.6.4.3.1}%
+\contentsline {subsubsection}{\numberline {6.4.3.2}compute\_magnitude()}{29}{subsubsection.6.4.3.2}%
+\contentsline {subsubsection}{\numberline {6.4.3.3}exodus()}{30}{subsubsection.6.4.3.3}%
+\contentsline {subsubsection}{\numberline {6.4.3.4}solve()}{30}{subsubsection.6.4.3.4}%
+\contentsline {subsubsection}{\numberline {6.4.3.5}update\_velocity()}{30}{subsubsection.6.4.3.5}%
+\contentsline {subsection}{\numberline {6.4.4}Member Data Documentation}{30}{subsection.6.4.4}%
+\contentsline {subsubsection}{\numberline {6.4.4.1}dmGrid\_cent\_rich}{30}{subsubsection.6.4.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.4.2}dmGrid\_centered}{30}{subsubsection.6.4.4.2}%
+\contentsline {subsubsection}{\numberline {6.4.4.3}dmGrid\_shift\_transp}{30}{subsubsection.6.4.4.3}%
+\contentsline {subsubsection}{\numberline {6.4.4.4}dmGrid\_stag\_transp}{30}{subsubsection.6.4.4.4}%
+\contentsline {subsubsection}{\numberline {6.4.4.5}dmGrid\_staggered\_x}{30}{subsubsection.6.4.4.5}%
+\contentsline {subsubsection}{\numberline {6.4.4.6}dmGrid\_staggered\_y}{31}{subsubsection.6.4.4.6}%
+\contentsline {subsubsection}{\numberline {6.4.4.7}dmGrid\_staggered\_z}{31}{subsubsection.6.4.4.7}%
+\contentsline {subsubsection}{\numberline {6.4.4.8}Magnitude}{31}{subsubsection.6.4.4.8}%
+\contentsline {subsubsection}{\numberline {6.4.4.9}mask\_U}{31}{subsubsection.6.4.4.9}%
+\contentsline {subsubsection}{\numberline {6.4.4.10}mask\_V}{31}{subsubsection.6.4.4.10}%
+\contentsline {subsubsection}{\numberline {6.4.4.11}mask\_W}{31}{subsubsection.6.4.4.11}%
+\contentsline {subsubsection}{\numberline {6.4.4.12}P}{31}{subsubsection.6.4.4.12}%
+\contentsline {subsubsection}{\numberline {6.4.4.13}P\_x}{31}{subsubsection.6.4.4.13}%
+\contentsline {subsubsection}{\numberline {6.4.4.14}P\_y}{31}{subsubsection.6.4.4.14}%
+\contentsline {subsubsection}{\numberline {6.4.4.15}P\_z}{31}{subsubsection.6.4.4.15}%
+\contentsline {subsubsection}{\numberline {6.4.4.16}U\_up}{32}{subsubsection.6.4.4.16}%
+\contentsline {subsubsection}{\numberline {6.4.4.17}V\_up}{32}{subsubsection.6.4.4.17}%
+\contentsline {subsubsection}{\numberline {6.4.4.18}W\_up}{32}{subsubsection.6.4.4.18}%
+\contentsline {section}{\numberline {6.5}parabolic\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}x Class Reference}{32}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Detailed Description}{33}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Constructor \& Destructor Documentation}{33}{subsection.6.5.2}%
+\contentsline {subsubsection}{\numberline {6.5.2.1}parabolic\_problem\_x()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{34}{subsubsection.6.5.2.1}%
+\contentsline {subsubsection}{\numberline {6.5.2.2}parabolic\_problem\_x()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{34}{subsubsection.6.5.2.2}%
+\contentsline {subsubsection}{\numberline {6.5.2.3}$\sim $parabolic\_problem\_x()}{34}{subsubsection.6.5.2.3}%
+\contentsline {subsection}{\numberline {6.5.3}Member Function Documentation}{34}{subsection.6.5.3}%
+\contentsline {subsubsection}{\numberline {6.5.3.1}assemble\_lhs()}{34}{subsubsection.6.5.3.1}%
+\contentsline {subsubsection}{\numberline {6.5.3.2}assemble\_rhs()}{34}{subsubsection.6.5.3.2}%
+\contentsline {subsubsection}{\numberline {6.5.3.3}exodus()}{34}{subsubsection.6.5.3.3}%
+\contentsline {subsubsection}{\numberline {6.5.3.4}get\_U()}{34}{subsubsection.6.5.3.4}%
+\contentsline {subsubsection}{\numberline {6.5.3.5}set\_U()}{34}{subsubsection.6.5.3.5}%
+\contentsline {subsubsection}{\numberline {6.5.3.6}solve()}{35}{subsubsection.6.5.3.6}%
+\contentsline {subsubsection}{\numberline {6.5.3.7}solve\_step()}{35}{subsubsection.6.5.3.7}%
+\contentsline {subsection}{\numberline {6.5.4}Member Data Documentation}{35}{subsection.6.5.4}%
+\contentsline {subsubsection}{\numberline {6.5.4.1}A}{35}{subsubsection.6.5.4.1}%
+\contentsline {subsubsection}{\numberline {6.5.4.2}dmGrid}{35}{subsubsection.6.5.4.2}%
+\contentsline {subsubsection}{\numberline {6.5.4.3}mask\_U}{35}{subsubsection.6.5.4.3}%
+\contentsline {subsubsection}{\numberline {6.5.4.4}rhs}{35}{subsubsection.6.5.4.4}%
+\contentsline {subsubsection}{\numberline {6.5.4.5}U\_up}{35}{subsubsection.6.5.4.5}%
+\contentsline {section}{\numberline {6.6}parabolic\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}y Class Reference}{35}{section.6.6}%
+\contentsline {subsection}{\numberline {6.6.1}Detailed Description}{37}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.2}Constructor \& Destructor Documentation}{37}{subsection.6.6.2}%
+\contentsline {subsubsection}{\numberline {6.6.2.1}parabolic\_problem\_y()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{37}{subsubsection.6.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.6.2.2}parabolic\_problem\_y()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{37}{subsubsection.6.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.6.2.3}$\sim $parabolic\_problem\_y()}{37}{subsubsection.6.6.2.3}%
+\contentsline {subsection}{\numberline {6.6.3}Member Function Documentation}{38}{subsection.6.6.3}%
+\contentsline {subsubsection}{\numberline {6.6.3.1}assemble\_lhs()}{38}{subsubsection.6.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.6.3.2}assemble\_rhs()}{38}{subsubsection.6.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.6.3.3}exodus()}{38}{subsubsection.6.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.6.3.4}get\_V()}{38}{subsubsection.6.6.3.4}%
+\contentsline {subsubsection}{\numberline {6.6.3.5}set\_V()}{38}{subsubsection.6.6.3.5}%
+\contentsline {subsubsection}{\numberline {6.6.3.6}solve()}{38}{subsubsection.6.6.3.6}%
+\contentsline {subsubsection}{\numberline {6.6.3.7}solve\_step()}{38}{subsubsection.6.6.3.7}%
+\contentsline {subsection}{\numberline {6.6.4}Member Data Documentation}{38}{subsection.6.6.4}%
+\contentsline {subsubsection}{\numberline {6.6.4.1}A}{38}{subsubsection.6.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.6.4.2}dmGrid}{39}{subsubsection.6.6.4.2}%
+\contentsline {subsubsection}{\numberline {6.6.4.3}mask\_V}{39}{subsubsection.6.6.4.3}%
+\contentsline {subsubsection}{\numberline {6.6.4.4}rhs}{39}{subsubsection.6.6.4.4}%
+\contentsline {subsubsection}{\numberline {6.6.4.5}V\_up}{39}{subsubsection.6.6.4.5}%
+\contentsline {section}{\numberline {6.7}parabolic\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}z Class Reference}{39}{section.6.7}%
+\contentsline {subsection}{\numberline {6.7.1}Detailed Description}{41}{subsection.6.7.1}%
+\contentsline {subsection}{\numberline {6.7.2}Constructor \& Destructor Documentation}{41}{subsection.6.7.2}%
+\contentsline {subsubsection}{\numberline {6.7.2.1}parabolic\_problem\_z()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{41}{subsubsection.6.7.2.1}%
+\contentsline {subsubsection}{\numberline {6.7.2.2}parabolic\_problem\_z()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{41}{subsubsection.6.7.2.2}%
+\contentsline {subsubsection}{\numberline {6.7.2.3}$\sim $parabolic\_problem\_z()}{41}{subsubsection.6.7.2.3}%
+\contentsline {subsection}{\numberline {6.7.3}Member Function Documentation}{42}{subsection.6.7.3}%
+\contentsline {subsubsection}{\numberline {6.7.3.1}assemble\_lhs()}{42}{subsubsection.6.7.3.1}%
+\contentsline {subsubsection}{\numberline {6.7.3.2}assemble\_rhs()}{42}{subsubsection.6.7.3.2}%
+\contentsline {subsubsection}{\numberline {6.7.3.3}exodus()}{42}{subsubsection.6.7.3.3}%
+\contentsline {subsubsection}{\numberline {6.7.3.4}get\_W()}{42}{subsubsection.6.7.3.4}%
+\contentsline {subsubsection}{\numberline {6.7.3.5}set\_W()}{42}{subsubsection.6.7.3.5}%
+\contentsline {subsubsection}{\numberline {6.7.3.6}solve()}{42}{subsubsection.6.7.3.6}%
+\contentsline {subsubsection}{\numberline {6.7.3.7}solve\_step()}{42}{subsubsection.6.7.3.7}%
+\contentsline {subsection}{\numberline {6.7.4}Member Data Documentation}{42}{subsection.6.7.4}%
+\contentsline {subsubsection}{\numberline {6.7.4.1}A}{42}{subsubsection.6.7.4.1}%
+\contentsline {subsubsection}{\numberline {6.7.4.2}dmGrid}{43}{subsubsection.6.7.4.2}%
+\contentsline {subsubsection}{\numberline {6.7.4.3}mask\_W}{43}{subsubsection.6.7.4.3}%
+\contentsline {subsubsection}{\numberline {6.7.4.4}rhs}{43}{subsubsection.6.7.4.4}%
+\contentsline {subsubsection}{\numberline {6.7.4.5}W\_up}{43}{subsubsection.6.7.4.5}%
+\contentsline {section}{\numberline {6.8}poisson\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem Class Reference}{43}{section.6.8}%
+\contentsline {subsection}{\numberline {6.8.1}Detailed Description}{46}{subsection.6.8.1}%
+\contentsline {subsection}{\numberline {6.8.2}Constructor \& Destructor Documentation}{46}{subsection.6.8.2}%
+\contentsline {subsubsection}{\numberline {6.8.2.1}poisson\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{46}{subsubsection.6.8.2.1}%
+\contentsline {subsubsection}{\numberline {6.8.2.2}poisson\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{46}{subsubsection.6.8.2.2}%
+\contentsline {subsubsection}{\numberline {6.8.2.3}$\sim $poisson\_problem()}{46}{subsubsection.6.8.2.3}%
+\contentsline {subsection}{\numberline {6.8.3}Member Function Documentation}{46}{subsection.6.8.3}%
+\contentsline {subsubsection}{\numberline {6.8.3.1}assemble\_divergence()}{46}{subsubsection.6.8.3.1}%
+\contentsline {subsubsection}{\numberline {6.8.3.2}assemble\_lhs()}{47}{subsubsection.6.8.3.2}%
+\contentsline {subsubsection}{\numberline {6.8.3.3}compute\_divergence()}{47}{subsubsection.6.8.3.3}%
+\contentsline {subsubsection}{\numberline {6.8.3.4}derive\_x\_P()}{47}{subsubsection.6.8.3.4}%
+\contentsline {subsubsection}{\numberline {6.8.3.5}derive\_y\_P()}{47}{subsubsection.6.8.3.5}%
+\contentsline {subsubsection}{\numberline {6.8.3.6}derive\_z\_P()}{48}{subsubsection.6.8.3.6}%
+\contentsline {subsubsection}{\numberline {6.8.3.7}exodus()}{48}{subsubsection.6.8.3.7}%
+\contentsline {subsubsection}{\numberline {6.8.3.8}manage\_pressure()}{48}{subsubsection.6.8.3.8}%
+\contentsline {subsubsection}{\numberline {6.8.3.9}manage\_pressure\_x()}{48}{subsubsection.6.8.3.9}%
+\contentsline {subsubsection}{\numberline {6.8.3.10}manage\_pressure\_y()}{49}{subsubsection.6.8.3.10}%
+\contentsline {subsubsection}{\numberline {6.8.3.11}manage\_pressure\_z()}{49}{subsubsection.6.8.3.11}%
+\contentsline {subsection}{\numberline {6.8.4}Member Data Documentation}{49}{subsection.6.8.4}%
+\contentsline {subsubsection}{\numberline {6.8.4.1}A}{49}{subsubsection.6.8.4.1}%
+\contentsline {subsubsection}{\numberline {6.8.4.2}dmGrid\_cent\_rich}{49}{subsubsection.6.8.4.2}%
+\contentsline {subsubsection}{\numberline {6.8.4.3}dmGrid\_centered}{49}{subsubsection.6.8.4.3}%
+\contentsline {subsubsection}{\numberline {6.8.4.4}dmGrid\_staggered\_x}{49}{subsubsection.6.8.4.4}%
+\contentsline {subsubsection}{\numberline {6.8.4.5}dmGrid\_staggered\_y}{50}{subsubsection.6.8.4.5}%
+\contentsline {subsubsection}{\numberline {6.8.4.6}dmGrid\_staggered\_z}{50}{subsubsection.6.8.4.6}%
+\contentsline {subsubsection}{\numberline {6.8.4.7}P}{50}{subsubsection.6.8.4.7}%
+\contentsline {subsubsection}{\numberline {6.8.4.8}P\_x}{50}{subsubsection.6.8.4.8}%
+\contentsline {subsubsection}{\numberline {6.8.4.9}P\_y}{50}{subsubsection.6.8.4.9}%
+\contentsline {subsubsection}{\numberline {6.8.4.10}P\_z}{50}{subsubsection.6.8.4.10}%
+\contentsline {subsubsection}{\numberline {6.8.4.11}U\_up}{50}{subsubsection.6.8.4.11}%
+\contentsline {subsubsection}{\numberline {6.8.4.12}V\_up}{50}{subsubsection.6.8.4.12}%
+\contentsline {subsubsection}{\numberline {6.8.4.13}W\_up}{50}{subsubsection.6.8.4.13}%
+\contentsline {section}{\numberline {6.9}stokes\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem Class Reference}{51}{section.6.9}%
+\contentsline {subsection}{\numberline {6.9.1}Detailed Description}{52}{subsection.6.9.1}%
+\contentsline {subsection}{\numberline {6.9.2}Constructor \& Destructor Documentation}{53}{subsection.6.9.2}%
+\contentsline {subsubsection}{\numberline {6.9.2.1}stokes\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{53}{subsubsection.6.9.2.1}%
+\contentsline {subsubsection}{\numberline {6.9.2.2}stokes\_problem()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{53}{subsubsection.6.9.2.2}%
+\contentsline {subsubsection}{\numberline {6.9.2.3}$\sim $stokes\_problem()}{53}{subsubsection.6.9.2.3}%
+\contentsline {subsection}{\numberline {6.9.3}Member Function Documentation}{53}{subsection.6.9.3}%
+\contentsline {subsubsection}{\numberline {6.9.3.1}assemble\_magnitude()}{53}{subsubsection.6.9.3.1}%
+\contentsline {subsubsection}{\numberline {6.9.3.2}compute\_magnitude()}{53}{subsubsection.6.9.3.2}%
+\contentsline {subsubsection}{\numberline {6.9.3.3}exodus()}{54}{subsubsection.6.9.3.3}%
+\contentsline {subsubsection}{\numberline {6.9.3.4}solve()}{54}{subsubsection.6.9.3.4}%
+\contentsline {subsubsection}{\numberline {6.9.3.5}update\_velocity()}{54}{subsubsection.6.9.3.5}%
+\contentsline {subsection}{\numberline {6.9.4}Member Data Documentation}{54}{subsection.6.9.4}%
+\contentsline {subsubsection}{\numberline {6.9.4.1}dmGrid\_cent\_rich}{54}{subsubsection.6.9.4.1}%
+\contentsline {subsubsection}{\numberline {6.9.4.2}dmGrid\_centered}{54}{subsubsection.6.9.4.2}%
+\contentsline {subsubsection}{\numberline {6.9.4.3}dmGrid\_staggered\_x}{54}{subsubsection.6.9.4.3}%
+\contentsline {subsubsection}{\numberline {6.9.4.4}dmGrid\_staggered\_y}{54}{subsubsection.6.9.4.4}%
+\contentsline {subsubsection}{\numberline {6.9.4.5}dmGrid\_staggered\_z}{54}{subsubsection.6.9.4.5}%
+\contentsline {subsubsection}{\numberline {6.9.4.6}Magnitude}{54}{subsubsection.6.9.4.6}%
+\contentsline {subsubsection}{\numberline {6.9.4.7}mask\_U}{55}{subsubsection.6.9.4.7}%
+\contentsline {subsubsection}{\numberline {6.9.4.8}mask\_V}{55}{subsubsection.6.9.4.8}%
+\contentsline {subsubsection}{\numberline {6.9.4.9}mask\_W}{55}{subsubsection.6.9.4.9}%
+\contentsline {subsubsection}{\numberline {6.9.4.10}P}{55}{subsubsection.6.9.4.10}%
+\contentsline {subsubsection}{\numberline {6.9.4.11}P\_x}{55}{subsubsection.6.9.4.11}%
+\contentsline {subsubsection}{\numberline {6.9.4.12}P\_y}{55}{subsubsection.6.9.4.12}%
+\contentsline {subsubsection}{\numberline {6.9.4.13}P\_z}{55}{subsubsection.6.9.4.13}%
+\contentsline {subsubsection}{\numberline {6.9.4.14}U\_up}{55}{subsubsection.6.9.4.14}%
+\contentsline {subsubsection}{\numberline {6.9.4.15}V\_up}{55}{subsubsection.6.9.4.15}%
+\contentsline {subsubsection}{\numberline {6.9.4.16}W\_up}{55}{subsubsection.6.9.4.16}%
+\contentsline {section}{\numberline {6.10}transport\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}x Class Reference}{56}{section.6.10}%
+\contentsline {subsection}{\numberline {6.10.1}Detailed Description}{57}{subsection.6.10.1}%
+\contentsline {subsection}{\numberline {6.10.2}Constructor \& Destructor Documentation}{57}{subsection.6.10.2}%
+\contentsline {subsubsection}{\numberline {6.10.2.1}transport\_problem\_x()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{58}{subsubsection.6.10.2.1}%
+\contentsline {subsubsection}{\numberline {6.10.2.2}transport\_problem\_x()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{58}{subsubsection.6.10.2.2}%
+\contentsline {subsubsection}{\numberline {6.10.2.3}$\sim $transport\_problem\_x()}{58}{subsubsection.6.10.2.3}%
+\contentsline {subsection}{\numberline {6.10.3}Member Function Documentation}{58}{subsection.6.10.3}%
+\contentsline {subsubsection}{\numberline {6.10.3.1}CenterU()}{58}{subsubsection.6.10.3.1}%
+\contentsline {subsubsection}{\numberline {6.10.3.2}Derive\_x()}{58}{subsubsection.6.10.3.2}%
+\contentsline {subsubsection}{\numberline {6.10.3.3}FirstDerive\_y()}{58}{subsubsection.6.10.3.3}%
+\contentsline {subsubsection}{\numberline {6.10.3.4}FirstDerive\_z()}{58}{subsubsection.6.10.3.4}%
+\contentsline {subsubsection}{\numberline {6.10.3.5}FirstShiftU\_y()}{59}{subsubsection.6.10.3.5}%
+\contentsline {subsubsection}{\numberline {6.10.3.6}FirstShiftU\_z()}{59}{subsubsection.6.10.3.6}%
+\contentsline {subsubsection}{\numberline {6.10.3.7}FirstShiftV\_y()}{59}{subsubsection.6.10.3.7}%
+\contentsline {subsubsection}{\numberline {6.10.3.8}FirstShiftW\_z()}{59}{subsubsection.6.10.3.8}%
+\contentsline {subsubsection}{\numberline {6.10.3.9}solve\_step\_x()}{59}{subsubsection.6.10.3.9}%
+\contentsline {subsection}{\numberline {6.10.4}Member Data Documentation}{59}{subsection.6.10.4}%
+\contentsline {subsubsection}{\numberline {6.10.4.1}dmGrid\_Centered}{59}{subsubsection.6.10.4.1}%
+\contentsline {subsubsection}{\numberline {6.10.4.2}dmGrid\_Shifted}{60}{subsubsection.6.10.4.2}%
+\contentsline {subsubsection}{\numberline {6.10.4.3}dmGrid\_Staggered}{60}{subsubsection.6.10.4.3}%
+\contentsline {subsubsection}{\numberline {6.10.4.4}mask\_U}{60}{subsubsection.6.10.4.4}%
+\contentsline {subsubsection}{\numberline {6.10.4.5}mask\_V}{60}{subsubsection.6.10.4.5}%
+\contentsline {subsubsection}{\numberline {6.10.4.6}mask\_W}{60}{subsubsection.6.10.4.6}%
+\contentsline {subsubsection}{\numberline {6.10.4.7}U\_n}{60}{subsubsection.6.10.4.7}%
+\contentsline {subsubsection}{\numberline {6.10.4.8}V\_n}{60}{subsubsection.6.10.4.8}%
+\contentsline {subsubsection}{\numberline {6.10.4.9}W\_n}{60}{subsubsection.6.10.4.9}%
+\contentsline {section}{\numberline {6.11}transport\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}y Class Reference}{60}{section.6.11}%
+\contentsline {subsection}{\numberline {6.11.1}Detailed Description}{62}{subsection.6.11.1}%
+\contentsline {subsection}{\numberline {6.11.2}Constructor \& Destructor Documentation}{62}{subsection.6.11.2}%
+\contentsline {subsubsection}{\numberline {6.11.2.1}transport\_problem\_y()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{62}{subsubsection.6.11.2.1}%
+\contentsline {subsubsection}{\numberline {6.11.2.2}transport\_problem\_y()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{63}{subsubsection.6.11.2.2}%
+\contentsline {subsubsection}{\numberline {6.11.2.3}$\sim $transport\_problem\_y()}{63}{subsubsection.6.11.2.3}%
+\contentsline {subsection}{\numberline {6.11.3}Member Function Documentation}{63}{subsection.6.11.3}%
+\contentsline {subsubsection}{\numberline {6.11.3.1}CenterV()}{63}{subsubsection.6.11.3.1}%
+\contentsline {subsubsection}{\numberline {6.11.3.2}Derive\_y()}{63}{subsubsection.6.11.3.2}%
+\contentsline {subsubsection}{\numberline {6.11.3.3}FirstShiftU\_y()}{63}{subsubsection.6.11.3.3}%
+\contentsline {subsubsection}{\numberline {6.11.3.4}FirstShiftV\_y()}{63}{subsubsection.6.11.3.4}%
+\contentsline {subsubsection}{\numberline {6.11.3.5}SecondDerive\_x()}{63}{subsubsection.6.11.3.5}%
+\contentsline {subsubsection}{\numberline {6.11.3.6}SecondDerive\_z()}{64}{subsubsection.6.11.3.6}%
+\contentsline {subsubsection}{\numberline {6.11.3.7}SecondShiftV\_z()}{64}{subsubsection.6.11.3.7}%
+\contentsline {subsubsection}{\numberline {6.11.3.8}SecondShiftW\_z()}{64}{subsubsection.6.11.3.8}%
+\contentsline {subsubsection}{\numberline {6.11.3.9}solve\_step\_y()}{64}{subsubsection.6.11.3.9}%
+\contentsline {subsection}{\numberline {6.11.4}Member Data Documentation}{64}{subsection.6.11.4}%
+\contentsline {subsubsection}{\numberline {6.11.4.1}dmGrid\_Centered}{64}{subsubsection.6.11.4.1}%
+\contentsline {subsubsection}{\numberline {6.11.4.2}dmGrid\_Shifted}{64}{subsubsection.6.11.4.2}%
+\contentsline {subsubsection}{\numberline {6.11.4.3}dmGrid\_Staggered}{64}{subsubsection.6.11.4.3}%
+\contentsline {subsubsection}{\numberline {6.11.4.4}mask\_U}{65}{subsubsection.6.11.4.4}%
+\contentsline {subsubsection}{\numberline {6.11.4.5}mask\_V}{65}{subsubsection.6.11.4.5}%
+\contentsline {subsubsection}{\numberline {6.11.4.6}mask\_W}{65}{subsubsection.6.11.4.6}%
+\contentsline {subsubsection}{\numberline {6.11.4.7}U\_n}{65}{subsubsection.6.11.4.7}%
+\contentsline {subsubsection}{\numberline {6.11.4.8}V\_n}{65}{subsubsection.6.11.4.8}%
+\contentsline {subsubsection}{\numberline {6.11.4.9}W\_n}{65}{subsubsection.6.11.4.9}%
+\contentsline {section}{\numberline {6.12}transport\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}z Class Reference}{65}{section.6.12}%
+\contentsline {subsection}{\numberline {6.12.1}Detailed Description}{67}{subsection.6.12.1}%
+\contentsline {subsection}{\numberline {6.12.2}Constructor \& Destructor Documentation}{67}{subsection.6.12.2}%
+\contentsline {subsubsection}{\numberline {6.12.2.1}transport\_problem\_z()\hspace {0.1cm}{\footnotesize \ttfamily [1/2]}}{67}{subsubsection.6.12.2.1}%
+\contentsline {subsubsection}{\numberline {6.12.2.2}transport\_problem\_z()\hspace {0.1cm}{\footnotesize \ttfamily [2/2]}}{68}{subsubsection.6.12.2.2}%
+\contentsline {subsubsection}{\numberline {6.12.2.3}$\sim $transport\_problem\_z()}{68}{subsubsection.6.12.2.3}%
+\contentsline {subsection}{\numberline {6.12.3}Member Function Documentation}{68}{subsection.6.12.3}%
+\contentsline {subsubsection}{\numberline {6.12.3.1}CenterW()}{68}{subsubsection.6.12.3.1}%
+\contentsline {subsubsection}{\numberline {6.12.3.2}Derive\_z()}{68}{subsubsection.6.12.3.2}%
+\contentsline {subsubsection}{\numberline {6.12.3.3}FirstShiftU\_z()}{68}{subsubsection.6.12.3.3}%
+\contentsline {subsubsection}{\numberline {6.12.3.4}FirstShiftW\_z()}{68}{subsubsection.6.12.3.4}%
+\contentsline {subsubsection}{\numberline {6.12.3.5}SecondShiftV\_z()}{68}{subsubsection.6.12.3.5}%
+\contentsline {subsubsection}{\numberline {6.12.3.6}SecondShiftW\_z()}{69}{subsubsection.6.12.3.6}%
+\contentsline {subsubsection}{\numberline {6.12.3.7}solve\_step\_z()}{69}{subsubsection.6.12.3.7}%
+\contentsline {subsubsection}{\numberline {6.12.3.8}ThirdDerive\_x()}{69}{subsubsection.6.12.3.8}%
+\contentsline {subsubsection}{\numberline {6.12.3.9}ThirdDerive\_y()}{69}{subsubsection.6.12.3.9}%
+\contentsline {subsection}{\numberline {6.12.4}Member Data Documentation}{69}{subsection.6.12.4}%
+\contentsline {subsubsection}{\numberline {6.12.4.1}dmGrid\_Centered}{69}{subsubsection.6.12.4.1}%
+\contentsline {subsubsection}{\numberline {6.12.4.2}dmGrid\_Shifted}{69}{subsubsection.6.12.4.2}%
+\contentsline {subsubsection}{\numberline {6.12.4.3}dmGrid\_Staggered}{69}{subsubsection.6.12.4.3}%
+\contentsline {subsubsection}{\numberline {6.12.4.4}mask\_U}{70}{subsubsection.6.12.4.4}%
+\contentsline {subsubsection}{\numberline {6.12.4.5}mask\_V}{70}{subsubsection.6.12.4.5}%
+\contentsline {subsubsection}{\numberline {6.12.4.6}mask\_W}{70}{subsubsection.6.12.4.6}%
+\contentsline {subsubsection}{\numberline {6.12.4.7}U\_n}{70}{subsubsection.6.12.4.7}%
+\contentsline {subsubsection}{\numberline {6.12.4.8}V\_n}{70}{subsubsection.6.12.4.8}%
+\contentsline {subsubsection}{\numberline {6.12.4.9}W\_n}{70}{subsubsection.6.12.4.9}%
+\contentsline {chapter}{\numberline {7}File Documentation}{71}{chapter.7}%
+\contentsline {section}{\numberline {7.1}config\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}problem.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}hpp File Reference}{71}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Detailed Description}{72}{subsection.7.1.1}%
+\contentsline {section}{\numberline {7.2}include/advection\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}diffusion.hpp File Reference}{73}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Macro Definition Documentation}{73}{subsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.1.1}ADVECTION\_DIFFUSION\_PROBLEM\_HPP}{73}{subsubsection.7.2.1.1}%
+\contentsline {section}{\numberline {7.3}include/inviscid\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}euler.hpp File Reference}{74}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Macro Definition Documentation}{74}{subsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.1.1}EULER\_PROBLEM\_HPP}{74}{subsubsection.7.3.1.1}%
+\contentsline {section}{\numberline {7.4}include/macros.hpp File Reference}{75}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Macro Definition Documentation}{76}{subsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.1.1}BACK}{76}{subsubsection.7.4.1.1}%
+\contentsline {subsubsection}{\numberline {7.4.1.2}BACK\_DOWN}{76}{subsubsection.7.4.1.2}%
+\contentsline {subsubsection}{\numberline {7.4.1.3}BACK\_LEFT}{76}{subsubsection.7.4.1.3}%
+\contentsline {subsubsection}{\numberline {7.4.1.4}BACK\_RIGHT}{76}{subsubsection.7.4.1.4}%
+\contentsline {subsubsection}{\numberline {7.4.1.5}BACK\_UP}{76}{subsubsection.7.4.1.5}%
+\contentsline {subsubsection}{\numberline {7.4.1.6}DOWN}{76}{subsubsection.7.4.1.6}%
+\contentsline {subsubsection}{\numberline {7.4.1.7}DOWN\_LEFT}{76}{subsubsection.7.4.1.7}%
+\contentsline {subsubsection}{\numberline {7.4.1.8}DOWN\_RIGHT}{76}{subsubsection.7.4.1.8}%
+\contentsline {subsubsection}{\numberline {7.4.1.9}ELEMENT}{76}{subsubsection.7.4.1.9}%
+\contentsline {subsubsection}{\numberline {7.4.1.10}FRONT}{76}{subsubsection.7.4.1.10}%
+\contentsline {subsubsection}{\numberline {7.4.1.11}FRONT\_DOWN}{77}{subsubsection.7.4.1.11}%
+\contentsline {subsubsection}{\numberline {7.4.1.12}FRONT\_LEFT}{77}{subsubsection.7.4.1.12}%
+\contentsline {subsubsection}{\numberline {7.4.1.13}FRONT\_RIGHT}{77}{subsubsection.7.4.1.13}%
+\contentsline {subsubsection}{\numberline {7.4.1.14}FRONT\_UP}{77}{subsubsection.7.4.1.14}%
+\contentsline {subsubsection}{\numberline {7.4.1.15}LEFT}{77}{subsubsection.7.4.1.15}%
+\contentsline {subsubsection}{\numberline {7.4.1.16}RIGHT}{77}{subsubsection.7.4.1.16}%
+\contentsline {subsubsection}{\numberline {7.4.1.17}UP}{77}{subsubsection.7.4.1.17}%
+\contentsline {subsubsection}{\numberline {7.4.1.18}UP\_LEFT}{77}{subsubsection.7.4.1.18}%
+\contentsline {subsubsection}{\numberline {7.4.1.19}UP\_RIGHT}{77}{subsubsection.7.4.1.19}%
+\contentsline {subsection}{\numberline {7.4.2}Variable Documentation}{77}{subsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.2.1}eps}{77}{subsubsection.7.4.2.1}%
+\contentsline {subsubsection}{\numberline {7.4.2.2}pi}{77}{subsubsection.7.4.2.2}%
+\contentsline {section}{\numberline {7.5}include/navier\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}stokes.hpp File Reference}{78}{section.7.5}%
+\contentsline {section}{\numberline {7.6}include/parabolic.hpp File Reference}{78}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Macro Definition Documentation}{79}{subsection.7.6.1}%
+\contentsline {subsubsection}{\numberline {7.6.1.1}PARABOLIC\_PROBLEM\_Y\_HPP}{79}{subsubsection.7.6.1.1}%
+\contentsline {subsubsection}{\numberline {7.6.1.2}PARABOLIC\_PROBLEM\_Z\_HPP}{79}{subsubsection.7.6.1.2}%
+\contentsline {section}{\numberline {7.7}include/poisson.hpp File Reference}{80}{section.7.7}%
+\contentsline {section}{\numberline {7.8}include/stokes.hpp File Reference}{80}{section.7.8}%
+\contentsline {section}{\numberline {7.9}include/transport.hpp File Reference}{81}{section.7.9}%
+\contentsline {subsection}{\numberline {7.9.1}Macro Definition Documentation}{82}{subsection.7.9.1}%
+\contentsline {subsubsection}{\numberline {7.9.1.1}TRANSPORT\_PROBLEM\_Y\_HPP}{82}{subsubsection.7.9.1.1}%
+\contentsline {subsubsection}{\numberline {7.9.1.2}TRANSPORT\_PROBLEM\_Z\_HPP}{82}{subsubsection.7.9.1.2}%
+\contentsline {section}{\numberline {7.10}include/utils.hpp File Reference}{83}{section.7.10}%
+\contentsline {subsection}{\numberline {7.10.1}Detailed Description}{84}{subsection.7.10.1}%
+\contentsline {subsection}{\numberline {7.10.2}Function Documentation}{84}{subsection.7.10.2}%
+\contentsline {subsubsection}{\numberline {7.10.2.1}CheckSolution()}{84}{subsubsection.7.10.2.1}%
+\contentsline {subsubsection}{\numberline {7.10.2.2}CreateAnalyticalP()}{85}{subsubsection.7.10.2.2}%
+\contentsline {subsubsection}{\numberline {7.10.2.3}CreateAnalyticalU()}{85}{subsubsection.7.10.2.3}%
+\contentsline {subsubsection}{\numberline {7.10.2.4}CreateAnalyticalV()}{85}{subsubsection.7.10.2.4}%
+\contentsline {subsubsection}{\numberline {7.10.2.5}CreateAnalyticalW()}{85}{subsubsection.7.10.2.5}%
+\contentsline {subsubsection}{\numberline {7.10.2.6}CreateGrid()}{85}{subsubsection.7.10.2.6}%
+\contentsline {subsubsection}{\numberline {7.10.2.7}createMaskU()}{86}{subsubsection.7.10.2.7}%
+\contentsline {subsubsection}{\numberline {7.10.2.8}createMaskV()}{86}{subsubsection.7.10.2.8}%
+\contentsline {subsubsection}{\numberline {7.10.2.9}createMaskW()}{86}{subsubsection.7.10.2.9}%
+\contentsline {subsubsection}{\numberline {7.10.2.10}isPointInsideMesh()}{87}{subsubsection.7.10.2.10}%
+\contentsline {subsubsection}{\numberline {7.10.2.11}PrintSimulationParameters()}{87}{subsubsection.7.10.2.11}%
+\contentsline {subsubsection}{\numberline {7.10.2.12}rayIntersectsTriangle()}{87}{subsubsection.7.10.2.12}%
+\contentsline {subsubsection}{\numberline {7.10.2.13}reader()}{88}{subsubsection.7.10.2.13}%
+\contentsline {subsection}{\numberline {7.10.3}Variable Documentation}{88}{subsection.7.10.3}%
+\contentsline {subsubsection}{\numberline {7.10.3.1}D\_x}{88}{subsubsection.7.10.3.1}%
+\contentsline {subsubsection}{\numberline {7.10.3.2}D\_y}{88}{subsubsection.7.10.3.2}%
+\contentsline {subsubsection}{\numberline {7.10.3.3}D\_z}{88}{subsubsection.7.10.3.3}%
+\contentsline {subsubsection}{\numberline {7.10.3.4}faces}{88}{subsubsection.7.10.3.4}%
+\contentsline {subsubsection}{\numberline {7.10.3.5}filename}{88}{subsubsection.7.10.3.5}%
+\contentsline {subsubsection}{\numberline {7.10.3.6}vertices}{88}{subsubsection.7.10.3.6}%
+\contentsline {section}{\numberline {7.11}README.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}md File Reference}{89}{section.7.11}%
+\contentsline {section}{\numberline {7.12}src/advection\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}diffusion.cpp File Reference}{89}{section.7.12}%
+\contentsline {section}{\numberline {7.13}src/inviscid\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}euler.cpp File Reference}{89}{section.7.13}%
+\contentsline {section}{\numberline {7.14}src/main.cpp File Reference}{89}{section.7.14}%
+\contentsline {subsection}{\numberline {7.14.1}Function Documentation}{90}{subsection.7.14.1}%
+\contentsline {subsubsection}{\numberline {7.14.1.1}main()}{90}{subsubsection.7.14.1.1}%
+\contentsline {section}{\numberline {7.15}src/navier\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}stokes.cpp File Reference}{91}{section.7.15}%
+\contentsline {section}{\numberline {7.16}src/parabolic.cpp File Reference}{91}{section.7.16}%
+\contentsline {section}{\numberline {7.17}src/poisson.cpp File Reference}{92}{section.7.17}%
+\contentsline {section}{\numberline {7.18}src/stokes.cpp File Reference}{92}{section.7.18}%
+\contentsline {section}{\numberline {7.19}src/transport.cpp File Reference}{93}{section.7.19}%
+\contentsline {section}{\numberline {7.20}src/utils.cpp File Reference}{93}{section.7.20}%
+\contentsline {subsection}{\numberline {7.20.1}Function Documentation}{94}{subsection.7.20.1}%
+\contentsline {subsubsection}{\numberline {7.20.1.1}CheckSolution()}{94}{subsubsection.7.20.1.1}%
+\contentsline {subsubsection}{\numberline {7.20.1.2}CreateAnalyticalP()}{94}{subsubsection.7.20.1.2}%
+\contentsline {subsubsection}{\numberline {7.20.1.3}CreateAnalyticalU()}{94}{subsubsection.7.20.1.3}%
+\contentsline {subsubsection}{\numberline {7.20.1.4}CreateAnalyticalV()}{95}{subsubsection.7.20.1.4}%
+\contentsline {subsubsection}{\numberline {7.20.1.5}CreateAnalyticalW()}{95}{subsubsection.7.20.1.5}%
+\contentsline {subsubsection}{\numberline {7.20.1.6}CreateGrid()}{95}{subsubsection.7.20.1.6}%
+\contentsline {subsubsection}{\numberline {7.20.1.7}createMaskU()}{96}{subsubsection.7.20.1.7}%
+\contentsline {subsubsection}{\numberline {7.20.1.8}createMaskV()}{96}{subsubsection.7.20.1.8}%
+\contentsline {subsubsection}{\numberline {7.20.1.9}createMaskW()}{96}{subsubsection.7.20.1.9}%
+\contentsline {subsubsection}{\numberline {7.20.1.10}isPointInsideMesh()}{96}{subsubsection.7.20.1.10}%
+\contentsline {subsubsection}{\numberline {7.20.1.11}PrintSimulationParameters()}{97}{subsubsection.7.20.1.11}%
+\contentsline {subsubsection}{\numberline {7.20.1.12}rayIntersectsTriangle()}{97}{subsubsection.7.20.1.12}%
+\contentsline {subsubsection}{\numberline {7.20.1.13}reader()}{97}{subsubsection.7.20.1.13}%
+\contentsline {chapter}{Index}{99}{section*.97}%

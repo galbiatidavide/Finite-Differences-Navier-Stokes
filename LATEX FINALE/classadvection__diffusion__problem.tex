@@ -1,0 +1,299 @@
+\hypertarget{classadvection__diffusion__problem}{}\doxysection{advection\+\_\+diffusion\+\_\+problem Class Reference}
+\label{classadvection__diffusion__problem}\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+
+
+{\ttfamily \#include $<$advection\+\_\+diffusion.\+hpp$>$}
+
+
+
+Collaboration diagram for advection\+\_\+diffusion\+\_\+problem\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{classadvection__diffusion__problem__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classadvection__diffusion__problem_a9780a67e6e6f0fa61d027f571f43388e}{advection\+\_\+diffusion\+\_\+problem}} (DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_a0165a4f31938ac9ae9ee00d5a4e1fd8f}{dm\+Grid\+\_\+staggered\+\_\+x}}, DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_afeaa0c2c3a71571690b5e52fd64791d6}{dm\+Grid\+\_\+staggered\+\_\+y}}, DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_a96154562dd421b53a85d3fd46c25e339}{dm\+Grid\+\_\+staggered\+\_\+z}}, DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_ad995da34bc03b4ece8631779b63e42a6}{dm\+Grid\+\_\+centered}}, DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_a580855fa216acf32719b528d2d7a8b0c}{dm\+Grid\+\_\+cent\+\_\+rich}}, DM const \&\mbox{\hyperlink{classadvection__diffusion__problem_ae845403c536f8e0bf890548096253871}{dm\+Grid\+\_\+stag\+\_\+transp}}, DM const \mbox{\hyperlink{classadvection__diffusion__problem_a0d9f04055638806f00b26355f5734bb4}{dm\+Grid\+\_\+shift\+\_\+transp}}, Vec const \&\mbox{\hyperlink{classadvection__diffusion__problem_a470a00f89853a4840700b4b3881e3798}{U\+\_\+up}}, Vec const \&\mbox{\hyperlink{classadvection__diffusion__problem_a1bac212648d5bf42adccf9102fe913ba}{V\+\_\+up}}, Vec const \mbox{\hyperlink{classadvection__diffusion__problem_a96cd6d17ceb66926be59ff83c01c742a}{W\+\_\+up}})
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the Advection-\/\+Diffusion problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Advection-\/\+Diffusion in a broader context. For our applications only a stand-\/alone constructor is used. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classadvection__diffusion__problem_a8ff6c823ea31f8df1eec4ef15c5063a2}{advection\+\_\+diffusion\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes stand-\/alone Advection-\/\+Diffusion problem with automatically created grids. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classadvection__diffusion__problem_a8abe500251a8709880444cfa09dd717d}{exodus}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classadvection__diffusion__problem_a4764489de664af6941cf7d305193059b}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Advection-\/\+Diffusion equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classadvection__diffusion__problem_a4729a74971efe8b4edbd0215cbd74984}{$\sim$advection\+\_\+diffusion\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classadvection__diffusion__problem_ab55aa5160b0c8e90a94fdc972a994390}{update\+\_\+velocity}} (Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Updates the velocity field, opearating final pressure correction for CT scheme. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classadvection__diffusion__problem_a0cd7caa76e34aba6b565a691908920bc}{assemble\+\_\+magnitude}} (Vec \&Magnitude\+\_\+\+Shifted, Vec const \&U, Vec const \&V, Vec const \&W)
+\begin{DoxyCompactList}\small\item\em Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classadvection__diffusion__problem_a60488b5e90673d91bdda7293a0959003}{compute\+\_\+magnitude}} ()
+\begin{DoxyCompactList}\small\item\em Final assembly of magnitude vector on cell-\/centers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_a0165a4f31938ac9ae9ee00d5a4e1fd8f}{dm\+Grid\+\_\+staggered\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered x-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_afeaa0c2c3a71571690b5e52fd64791d6}{dm\+Grid\+\_\+staggered\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered y-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_a96154562dd421b53a85d3fd46c25e339}{dm\+Grid\+\_\+staggered\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered z-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_ad995da34bc03b4ece8631779b63e42a6}{dm\+Grid\+\_\+centered}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for magnitude. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_a580855fa216acf32719b528d2d7a8b0c}{dm\+Grid\+\_\+cent\+\_\+rich}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for shifted quantities. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_ae845403c536f8e0bf890548096253871}{dm\+Grid\+\_\+stag\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Staggered grid for transport equations. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classadvection__diffusion__problem_a0d9f04055638806f00b26355f5734bb4}{dm\+Grid\+\_\+shift\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Shifted grid for transport computations. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a1a39ccc6fe9d230f96313c45d7ba150f}{Magnitude}}
+\begin{DoxyCompactList}\small\item\em Magnitude of velocity vectors. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a470a00f89853a4840700b4b3881e3798}{U\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a1bac212648d5bf42adccf9102fe913ba}{V\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a96cd6d17ceb66926be59ff83c01c742a}{W\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity fields in the x, y, and z directions. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a32de68aa5ee0cc456f047e948f91d8d4}{mask\+\_\+U}}
+\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a9f9b566ec9d0812bd5cdaaee433d8fda}{mask\+\_\+V}}
+\item 
+Vec \mbox{\hyperlink{classadvection__diffusion__problem_a2052fafa3d92284badc29cee06c995f2}{mask\+\_\+W}}
+\begin{DoxyCompactList}\small\item\em Mask vectors for boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classadvection__diffusion__problem_a9780a67e6e6f0fa61d027f571f43388e}\label{classadvection__diffusion__problem_a9780a67e6e6f0fa61d027f571f43388e}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{advection\_diffusion\_problem()}{advection\_diffusion\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily advection\+\_\+diffusion\+\_\+problem\+::advection\+\_\+diffusion\+\_\+problem (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+x,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+y,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+z,  }\item[{DM const \&}]{dm\+Grid\+\_\+centered,  }\item[{DM const \&}]{dm\+Grid\+\_\+cent\+\_\+rich,  }\item[{DM const \&}]{dm\+Grid\+\_\+stag\+\_\+transp,  }\item[{DM const}]{dm\+Grid\+\_\+shift\+\_\+transp,  }\item[{Vec const \&}]{U\+\_\+up,  }\item[{Vec const \&}]{V\+\_\+up,  }\item[{Vec const}]{W\+\_\+up }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the Advection-\/\+Diffusion problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Advection-\/\+Diffusion in a broader context. For our applications only a stand-\/alone constructor is used. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a8ff6c823ea31f8df1eec4ef15c5063a2}\label{classadvection__diffusion__problem_a8ff6c823ea31f8df1eec4ef15c5063a2}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{advection\_diffusion\_problem()}{advection\_diffusion\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily advection\+\_\+diffusion\+\_\+problem\+::advection\+\_\+diffusion\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor that initializes stand-\/alone Advection-\/\+Diffusion problem with automatically created grids. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a4729a74971efe8b4edbd0215cbd74984}\label{classadvection__diffusion__problem_a4729a74971efe8b4edbd0215cbd74984}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!````~advection\_diffusion\_problem@{$\sim$advection\_diffusion\_problem}}
+\index{````~advection\_diffusion\_problem@{$\sim$advection\_diffusion\_problem}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{$\sim$advection\_diffusion\_problem()}{~advection\_diffusion\_problem()}}
+{\footnotesize\ttfamily advection\+\_\+diffusion\+\_\+problem\+::$\sim$advection\+\_\+diffusion\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classadvection__diffusion__problem_a0cd7caa76e34aba6b565a691908920bc}\label{classadvection__diffusion__problem_a0cd7caa76e34aba6b565a691908920bc}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!assemble\_magnitude@{assemble\_magnitude}}
+\index{assemble\_magnitude@{assemble\_magnitude}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_magnitude()}{assemble\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const advection\+\_\+diffusion\+\_\+problem\+::assemble\+\_\+magnitude (\begin{DoxyParamCaption}\item[{Vec \&}]{Magnitude\+\_\+\+Shifted,  }\item[{Vec const \&}]{U,  }\item[{Vec const \&}]{V,  }\item[{Vec const \&}]{W }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Magnitude\+\_\+\+Shifted} & Output shifted magnitude vector on dm\+Grid\+\_\+cent\+\_\+rich (dofs on faces and cell=centers.) \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classadvection__diffusion__problem_a60488b5e90673d91bdda7293a0959003}\label{classadvection__diffusion__problem_a60488b5e90673d91bdda7293a0959003}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!compute\_magnitude@{compute\_magnitude}}
+\index{compute\_magnitude@{compute\_magnitude}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{compute\_magnitude()}{compute\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const advection\+\_\+diffusion\+\_\+problem\+::compute\+\_\+magnitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Final assembly of magnitude vector on cell-\/centers. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a8abe500251a8709880444cfa09dd717d}\label{classadvection__diffusion__problem_a8abe500251a8709880444cfa09dd717d}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!exodus@{exodus}}
+\index{exodus@{exodus}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code advection\+\_\+diffusion\+\_\+problem\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})}
+
+
+
+Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a4764489de664af6941cf7d305193059b}\label{classadvection__diffusion__problem_a4764489de664af6941cf7d305193059b}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!solve@{solve}}
+\index{solve@{solve}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const advection\+\_\+diffusion\+\_\+problem\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the Advection-\/\+Diffusion equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_ab55aa5160b0c8e90a94fdc972a994390}\label{classadvection__diffusion__problem_ab55aa5160b0c8e90a94fdc972a994390}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!update\_velocity@{update\_velocity}}
+\index{update\_velocity@{update\_velocity}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{update\_velocity()}{update\_velocity()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const advection\+\_\+diffusion\+\_\+problem\+::update\+\_\+velocity (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates the velocity field, opearating final pressure correction for CT scheme. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classadvection__diffusion__problem_a580855fa216acf32719b528d2d7a8b0c}\label{classadvection__diffusion__problem_a580855fa216acf32719b528d2d7a8b0c}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_cent\_rich@{dmGrid\_cent\_rich}}
+\index{dmGrid\_cent\_rich@{dmGrid\_cent\_rich}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_cent\_rich}{dmGrid\_cent\_rich}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+cent\+\_\+rich\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for shifted quantities. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_ad995da34bc03b4ece8631779b63e42a6}\label{classadvection__diffusion__problem_ad995da34bc03b4ece8631779b63e42a6}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_centered@{dmGrid\_centered}}
+\index{dmGrid\_centered@{dmGrid\_centered}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_centered}{dmGrid\_centered}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+centered\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for magnitude. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a0d9f04055638806f00b26355f5734bb4}\label{classadvection__diffusion__problem_a0d9f04055638806f00b26355f5734bb4}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_shift\_transp@{dmGrid\_shift\_transp}}
+\index{dmGrid\_shift\_transp@{dmGrid\_shift\_transp}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_shift\_transp}{dmGrid\_shift\_transp}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+shift\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Shifted grid for transport computations. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_ae845403c536f8e0bf890548096253871}\label{classadvection__diffusion__problem_ae845403c536f8e0bf890548096253871}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_stag\_transp@{dmGrid\_stag\_transp}}
+\index{dmGrid\_stag\_transp@{dmGrid\_stag\_transp}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_stag\_transp}{dmGrid\_stag\_transp}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+stag\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Staggered grid for transport equations. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a0165a4f31938ac9ae9ee00d5a4e1fd8f}\label{classadvection__diffusion__problem_a0165a4f31938ac9ae9ee00d5a4e1fd8f}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_staggered\_x@{dmGrid\_staggered\_x}}
+\index{dmGrid\_staggered\_x@{dmGrid\_staggered\_x}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_x}{dmGrid\_staggered\_x}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered x-\/direction. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_afeaa0c2c3a71571690b5e52fd64791d6}\label{classadvection__diffusion__problem_afeaa0c2c3a71571690b5e52fd64791d6}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_staggered\_y@{dmGrid\_staggered\_y}}
+\index{dmGrid\_staggered\_y@{dmGrid\_staggered\_y}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_y}{dmGrid\_staggered\_y}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered y-\/direction. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a96154562dd421b53a85d3fd46c25e339}\label{classadvection__diffusion__problem_a96154562dd421b53a85d3fd46c25e339}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!dmGrid\_staggered\_z@{dmGrid\_staggered\_z}}
+\index{dmGrid\_staggered\_z@{dmGrid\_staggered\_z}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_z}{dmGrid\_staggered\_z}}
+{\footnotesize\ttfamily DM advection\+\_\+diffusion\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered z-\/direction. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a1a39ccc6fe9d230f96313c45d7ba150f}\label{classadvection__diffusion__problem_a1a39ccc6fe9d230f96313c45d7ba150f}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!Magnitude@{Magnitude}}
+\index{Magnitude@{Magnitude}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{Magnitude}{Magnitude}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::\+Magnitude\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Magnitude of velocity vectors. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a32de68aa5ee0cc456f047e948f91d8d4}\label{classadvection__diffusion__problem_a32de68aa5ee0cc456f047e948f91d8d4}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!mask\_U@{mask\_U}}
+\index{mask\_U@{mask\_U}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_U}{mask\_U}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::mask\+\_\+U\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a9f9b566ec9d0812bd5cdaaee433d8fda}\label{classadvection__diffusion__problem_a9f9b566ec9d0812bd5cdaaee433d8fda}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a2052fafa3d92284badc29cee06c995f2}\label{classadvection__diffusion__problem_a2052fafa3d92284badc29cee06c995f2}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!mask\_W@{mask\_W}}
+\index{mask\_W@{mask\_W}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_W}{mask\_W}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::mask\+\_\+W\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mask vectors for boundary conditions. 
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a470a00f89853a4840700b4b3881e3798}\label{classadvection__diffusion__problem_a470a00f89853a4840700b4b3881e3798}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!U\_up@{U\_up}}
+\index{U\_up@{U\_up}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{U\_up}{U\_up}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::\+U\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a1bac212648d5bf42adccf9102fe913ba}\label{classadvection__diffusion__problem_a1bac212648d5bf42adccf9102fe913ba}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classadvection__diffusion__problem_a96cd6d17ceb66926be59ff83c01c742a}\label{classadvection__diffusion__problem_a96cd6d17ceb66926be59ff83c01c742a}} 
+\index{advection\_diffusion\_problem@{advection\_diffusion\_problem}!W\_up@{W\_up}}
+\index{W\_up@{W\_up}!advection\_diffusion\_problem@{advection\_diffusion\_problem}}
+\doxysubsubsection{\texorpdfstring{W\_up}{W\_up}}
+{\footnotesize\ttfamily Vec advection\+\_\+diffusion\+\_\+problem\+::\+W\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity fields in the x, y, and z directions. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{advection__diffusion_8hpp}{advection\+\_\+diffusion.\+hpp}}\item 
+src/\mbox{\hyperlink{advection__diffusion_8cpp}{advection\+\_\+diffusion.\+cpp}}\end{DoxyCompactItemize}

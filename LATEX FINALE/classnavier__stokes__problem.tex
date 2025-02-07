@@ -1,0 +1,355 @@
+\hypertarget{classnavier__stokes__problem}{}\doxysection{navier\+\_\+stokes\+\_\+problem Class Reference}
+\label{classnavier__stokes__problem}\index{navier\_stokes\_problem@{navier\_stokes\_problem}}
+
+
+Solves the Navier-\/\+Stokes evolutionary incompressible Navier-\/\+Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component, a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method.  
+
+
+
+
+{\ttfamily \#include $<$navier\+\_\+stokes.\+hpp$>$}
+
+
+
+Collaboration diagram for navier\+\_\+stokes\+\_\+problem\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classnavier__stokes__problem__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classnavier__stokes__problem_afd38a20e894e12e48f249262d86b3e9a}{navier\+\_\+stokes\+\_\+problem}} (DM const \&\mbox{\hyperlink{classnavier__stokes__problem_a6f969575263cf01f6fc2c76dc03fedc6}{dm\+Grid\+\_\+staggered\+\_\+x}}, DM const \&\mbox{\hyperlink{classnavier__stokes__problem_ab41e41d596fd4c32a3a85cc67fd95ad5}{dm\+Grid\+\_\+staggered\+\_\+y}}, DM const \&\mbox{\hyperlink{classnavier__stokes__problem_a45778aaed54802da4de9c0e591b424f3}{dm\+Grid\+\_\+staggered\+\_\+z}}, DM const \&\mbox{\hyperlink{classnavier__stokes__problem_a3eb87ad3395262302121017f422f4535}{dm\+Grid\+\_\+centered}}, DM const \&\mbox{\hyperlink{classnavier__stokes__problem_ab0290f06ce7a1ec60208ca9eace3cdc2}{dm\+Grid\+\_\+cent\+\_\+rich}}, DM const \&\mbox{\hyperlink{classnavier__stokes__problem_a0f5403d0c42d3e331dc521ef00e4e82c}{dm\+Grid\+\_\+stag\+\_\+transp}}, DM const \mbox{\hyperlink{classnavier__stokes__problem_abc9540fd507ab461daadf053a4985fbb}{dm\+Grid\+\_\+shift\+\_\+transp}}, Vec const \&\mbox{\hyperlink{classnavier__stokes__problem_ad4f674342822247e04d6e077b5d94d9b}{U\+\_\+up}}, Vec const \&\mbox{\hyperlink{classnavier__stokes__problem_a82b72c576735381243b51012949b3da0}{V\+\_\+up}}, Vec const \mbox{\hyperlink{classnavier__stokes__problem_a5f59ed7d7e97673d258c757fd0fb8ed7}{W\+\_\+up}})
+\begin{DoxyCompactList}\small\item\em Constructor that initializes the Navier-\/\+Stokes problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Navier-\/\+Stokes in a broader context. For our applications only a stand-\/alone constructor is used. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnavier__stokes__problem_ac3c275681807e907ea8da343ec6b4538}{navier\+\_\+stokes\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Default constructor that initializes stand-\/alone Navier-\/\+Stokes problem with automatically created grids. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code \mbox{\hyperlink{classnavier__stokes__problem_a5d6caa34833da8a8ac50a5bd8a64667a}{exodus}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classnavier__stokes__problem_a5856df744596b26c216a837beb9253c5}{solve}} ()
+\begin{DoxyCompactList}\small\item\em Solves the Navier-\/\+Stokes equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classnavier__stokes__problem_a91395f0aaf96b1252a82affe418a41c7}{$\sim$navier\+\_\+stokes\+\_\+problem}} ()
+\begin{DoxyCompactList}\small\item\em Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classnavier__stokes__problem_af6229cae45875483238fe903479726d1}{update\+\_\+velocity}} (Petsc\+Real const \&theta)
+\begin{DoxyCompactList}\small\item\em Updates the velocity field, opearating final pressure correction for CT scheme. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classnavier__stokes__problem_aef4fc7b010b97354b8c5bcb453d67484}{assemble\+\_\+magnitude}} (Vec \&Magnitude\+\_\+\+Shifted, Vec const \&U, Vec const \&V, Vec const \&W)
+\begin{DoxyCompactList}\small\item\em Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. \end{DoxyCompactList}\item 
+Petsc\+Error\+Code const \mbox{\hyperlink{classnavier__stokes__problem_a7270cfb9c48771c70b9540bf1ca775de}{compute\+\_\+magnitude}} ()
+\begin{DoxyCompactList}\small\item\em Final assembly of magnitude vector on cell-\/centers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_a6f969575263cf01f6fc2c76dc03fedc6}{dm\+Grid\+\_\+staggered\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered x-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_ab41e41d596fd4c32a3a85cc67fd95ad5}{dm\+Grid\+\_\+staggered\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered y-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_a45778aaed54802da4de9c0e591b424f3}{dm\+Grid\+\_\+staggered\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the staggered z-\/direction. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_a3eb87ad3395262302121017f422f4535}{dm\+Grid\+\_\+centered}}
+\begin{DoxyCompactList}\small\item\em Discretized grid for the centered formulation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_ab0290f06ce7a1ec60208ca9eace3cdc2}{dm\+Grid\+\_\+cent\+\_\+rich}}
+\begin{DoxyCompactList}\small\item\em Refined centered grid for pressure computation. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_a0f5403d0c42d3e331dc521ef00e4e82c}{dm\+Grid\+\_\+stag\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Staggered grid for transport equations. \end{DoxyCompactList}\item 
+DM \mbox{\hyperlink{classnavier__stokes__problem_abc9540fd507ab461daadf053a4985fbb}{dm\+Grid\+\_\+shift\+\_\+transp}}
+\begin{DoxyCompactList}\small\item\em Shifted grid for transport computations. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_ab6178f46d33320414f7a20601c3a7dbd}{P}}
+\begin{DoxyCompactList}\small\item\em Pressure field. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a822b60e76f56a75aca101d5fa5a431fc}{P\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the x-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_aefb219e936d91c537f1589b8867b48d2}{P\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the y-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a619652c471a078d5800ba2d119b5e559}{P\+\_\+z}}
+\begin{DoxyCompactList}\small\item\em Pressure derivative in the z-\/direction. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_ad7640bd034c216ed2c9e2d7b00ec7efb}{Magnitude}}
+\begin{DoxyCompactList}\small\item\em Magnitude of velocity vectors. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_ad4f674342822247e04d6e077b5d94d9b}{U\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a82b72c576735381243b51012949b3da0}{V\+\_\+up}}
+\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a5f59ed7d7e97673d258c757fd0fb8ed7}{W\+\_\+up}}
+\begin{DoxyCompactList}\small\item\em Velocity fields in the x, y, and z directions. \end{DoxyCompactList}\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a526c5610d974282043995acab99344d2}{mask\+\_\+U}}
+\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_abe1bd6817887c702f4fbf9d026b679b1}{mask\+\_\+V}}
+\item 
+Vec \mbox{\hyperlink{classnavier__stokes__problem_a7764b74e6a57978e3898473f31531ab4}{mask\+\_\+W}}
+\begin{DoxyCompactList}\small\item\em Mask vectors for boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Solves the Navier-\/\+Stokes evolutionary incompressible Navier-\/\+Stokes equations, applying a first order Chorin-\/\+Temam algorithm. It consists of a transport problem for each velocity component, a parabolic problem for each velocity component, and a Poisson problem for the pressure. Current implementation allows Dirichlet bc\textquotesingle{}s only. Boundary conditions are accessed from reference solution, which is a function of space and time. Current implementation allows for Brinkamn penalty method. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classnavier__stokes__problem_afd38a20e894e12e48f249262d86b3e9a}\label{classnavier__stokes__problem_afd38a20e894e12e48f249262d86b3e9a}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{navier\_stokes\_problem()}{navier\_stokes\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily navier\+\_\+stokes\+\_\+problem\+::navier\+\_\+stokes\+\_\+problem (\begin{DoxyParamCaption}\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+x,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+y,  }\item[{DM const \&}]{dm\+Grid\+\_\+staggered\+\_\+z,  }\item[{DM const \&}]{dm\+Grid\+\_\+centered,  }\item[{DM const \&}]{dm\+Grid\+\_\+cent\+\_\+rich,  }\item[{DM const \&}]{dm\+Grid\+\_\+stag\+\_\+transp,  }\item[{DM const}]{dm\+Grid\+\_\+shift\+\_\+transp,  }\item[{Vec const \&}]{U\+\_\+up,  }\item[{Vec const \&}]{V\+\_\+up,  }\item[{Vec const}]{W\+\_\+up }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor that initializes the Navier-\/\+Stokes problem with given grids and velocity fields. This costructor has been defined for consistency and if future implementations will require solving Navier-\/\+Stokes in a broader context. For our applications only a stand-\/alone constructor is used. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_ac3c275681807e907ea8da343ec6b4538}\label{classnavier__stokes__problem_ac3c275681807e907ea8da343ec6b4538}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{navier\_stokes\_problem()}{navier\_stokes\_problem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily navier\+\_\+stokes\+\_\+problem\+::navier\+\_\+stokes\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default constructor that initializes stand-\/alone Navier-\/\+Stokes problem with automatically created grids. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a91395f0aaf96b1252a82affe418a41c7}\label{classnavier__stokes__problem_a91395f0aaf96b1252a82affe418a41c7}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!````~navier\_stokes\_problem@{$\sim$navier\_stokes\_problem}}
+\index{````~navier\_stokes\_problem@{$\sim$navier\_stokes\_problem}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{$\sim$navier\_stokes\_problem()}{~navier\_stokes\_problem()}}
+{\footnotesize\ttfamily navier\+\_\+stokes\+\_\+problem\+::$\sim$navier\+\_\+stokes\+\_\+problem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor to clean up allocated resources. Automatically calls sub-\/problems destructors. After destruction, a message is printed. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classnavier__stokes__problem_aef4fc7b010b97354b8c5bcb453d67484}\label{classnavier__stokes__problem_aef4fc7b010b97354b8c5bcb453d67484}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!assemble\_magnitude@{assemble\_magnitude}}
+\index{assemble\_magnitude@{assemble\_magnitude}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{assemble\_magnitude()}{assemble\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const navier\+\_\+stokes\+\_\+problem\+::assemble\+\_\+magnitude (\begin{DoxyParamCaption}\item[{Vec \&}]{Magnitude\+\_\+\+Shifted,  }\item[{Vec const \&}]{U,  }\item[{Vec const \&}]{V,  }\item[{Vec const \&}]{W }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Post-\/processing function\+: assembles the magnitude of velocity vectors, locating a new vector in the cell-\/centers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Magnitude\+\_\+\+Shifted} & Output shifted magnitude vector on dm\+Grid\+\_\+cent\+\_\+rich (dofs on faces and cell=centers.) \\
+\hline
+{\em U} & Velocity component in the x-\/direction. \\
+\hline
+{\em V} & Velocity component in the y-\/direction. \\
+\hline
+{\em W} & Velocity component in the z-\/direction. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnavier__stokes__problem_a7270cfb9c48771c70b9540bf1ca775de}\label{classnavier__stokes__problem_a7270cfb9c48771c70b9540bf1ca775de}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!compute\_magnitude@{compute\_magnitude}}
+\index{compute\_magnitude@{compute\_magnitude}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{compute\_magnitude()}{compute\_magnitude()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const navier\+\_\+stokes\+\_\+problem\+::compute\+\_\+magnitude (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Final assembly of magnitude vector on cell-\/centers. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a5d6caa34833da8a8ac50a5bd8a64667a}\label{classnavier__stokes__problem_a5d6caa34833da8a8ac50a5bd8a64667a}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!exodus@{exodus}}
+\index{exodus@{exodus}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{exodus()}{exodus()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code navier\+\_\+stokes\+\_\+problem\+::exodus (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})}
+
+
+
+Exports simulation in .vtk format format for visualization of x,y,z-\/componets, pressure and magnitude. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a5856df744596b26c216a837beb9253c5}\label{classnavier__stokes__problem_a5856df744596b26c216a837beb9253c5}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!solve@{solve}}
+\index{solve@{solve}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const navier\+\_\+stokes\+\_\+problem\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the Navier-\/\+Stokes equations leveraging \mbox{\hyperlink{classparabolic__problem__x}{parabolic\+\_\+problem\+\_\+x}}, y, z, \mbox{\hyperlink{classtransport__problem__x}{transport\+\_\+problem\+\_\+x}}, y, z, and \mbox{\hyperlink{classpoisson__problem}{poisson\+\_\+problem}} classes. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_af6229cae45875483238fe903479726d1}\label{classnavier__stokes__problem_af6229cae45875483238fe903479726d1}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!update\_velocity@{update\_velocity}}
+\index{update\_velocity@{update\_velocity}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{update\_velocity()}{update\_velocity()}}
+{\footnotesize\ttfamily Petsc\+Error\+Code const navier\+\_\+stokes\+\_\+problem\+::update\+\_\+velocity (\begin{DoxyParamCaption}\item[{Petsc\+Real const \&}]{theta }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates the velocity field, opearating final pressure correction for CT scheme. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classnavier__stokes__problem_ab0290f06ce7a1ec60208ca9eace3cdc2}\label{classnavier__stokes__problem_ab0290f06ce7a1ec60208ca9eace3cdc2}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_cent\_rich@{dmGrid\_cent\_rich}}
+\index{dmGrid\_cent\_rich@{dmGrid\_cent\_rich}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_cent\_rich}{dmGrid\_cent\_rich}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+cent\+\_\+rich\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Refined centered grid for pressure computation. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a3eb87ad3395262302121017f422f4535}\label{classnavier__stokes__problem_a3eb87ad3395262302121017f422f4535}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_centered@{dmGrid\_centered}}
+\index{dmGrid\_centered@{dmGrid\_centered}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_centered}{dmGrid\_centered}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+centered\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the centered formulation. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_abc9540fd507ab461daadf053a4985fbb}\label{classnavier__stokes__problem_abc9540fd507ab461daadf053a4985fbb}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_shift\_transp@{dmGrid\_shift\_transp}}
+\index{dmGrid\_shift\_transp@{dmGrid\_shift\_transp}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_shift\_transp}{dmGrid\_shift\_transp}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+shift\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Shifted grid for transport computations. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a0f5403d0c42d3e331dc521ef00e4e82c}\label{classnavier__stokes__problem_a0f5403d0c42d3e331dc521ef00e4e82c}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_stag\_transp@{dmGrid\_stag\_transp}}
+\index{dmGrid\_stag\_transp@{dmGrid\_stag\_transp}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_stag\_transp}{dmGrid\_stag\_transp}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+stag\+\_\+transp\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Staggered grid for transport equations. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a6f969575263cf01f6fc2c76dc03fedc6}\label{classnavier__stokes__problem_a6f969575263cf01f6fc2c76dc03fedc6}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_staggered\_x@{dmGrid\_staggered\_x}}
+\index{dmGrid\_staggered\_x@{dmGrid\_staggered\_x}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_x}{dmGrid\_staggered\_x}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered x-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_ab41e41d596fd4c32a3a85cc67fd95ad5}\label{classnavier__stokes__problem_ab41e41d596fd4c32a3a85cc67fd95ad5}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_staggered\_y@{dmGrid\_staggered\_y}}
+\index{dmGrid\_staggered\_y@{dmGrid\_staggered\_y}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_y}{dmGrid\_staggered\_y}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered y-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a45778aaed54802da4de9c0e591b424f3}\label{classnavier__stokes__problem_a45778aaed54802da4de9c0e591b424f3}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!dmGrid\_staggered\_z@{dmGrid\_staggered\_z}}
+\index{dmGrid\_staggered\_z@{dmGrid\_staggered\_z}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{dmGrid\_staggered\_z}{dmGrid\_staggered\_z}}
+{\footnotesize\ttfamily DM navier\+\_\+stokes\+\_\+problem\+::dm\+Grid\+\_\+staggered\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discretized grid for the staggered z-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_ad7640bd034c216ed2c9e2d7b00ec7efb}\label{classnavier__stokes__problem_ad7640bd034c216ed2c9e2d7b00ec7efb}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!Magnitude@{Magnitude}}
+\index{Magnitude@{Magnitude}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{Magnitude}{Magnitude}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+Magnitude\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Magnitude of velocity vectors. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a526c5610d974282043995acab99344d2}\label{classnavier__stokes__problem_a526c5610d974282043995acab99344d2}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!mask\_U@{mask\_U}}
+\index{mask\_U@{mask\_U}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_U}{mask\_U}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::mask\+\_\+U\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classnavier__stokes__problem_abe1bd6817887c702f4fbf9d026b679b1}\label{classnavier__stokes__problem_abe1bd6817887c702f4fbf9d026b679b1}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!mask\_V@{mask\_V}}
+\index{mask\_V@{mask\_V}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_V}{mask\_V}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::mask\+\_\+V\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a7764b74e6a57978e3898473f31531ab4}\label{classnavier__stokes__problem_a7764b74e6a57978e3898473f31531ab4}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!mask\_W@{mask\_W}}
+\index{mask\_W@{mask\_W}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{mask\_W}{mask\_W}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::mask\+\_\+W\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mask vectors for boundary conditions. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_ab6178f46d33320414f7a20601c3a7dbd}\label{classnavier__stokes__problem_ab6178f46d33320414f7a20601c3a7dbd}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!P@{P}}
+\index{P@{P}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::P\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure field. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a822b60e76f56a75aca101d5fa5a431fc}\label{classnavier__stokes__problem_a822b60e76f56a75aca101d5fa5a431fc}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!P\_x@{P\_x}}
+\index{P\_x@{P\_x}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_x}{P\_x}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+P\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the x-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_aefb219e936d91c537f1589b8867b48d2}\label{classnavier__stokes__problem_aefb219e936d91c537f1589b8867b48d2}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!P\_y@{P\_y}}
+\index{P\_y@{P\_y}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_y}{P\_y}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+P\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the y-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a619652c471a078d5800ba2d119b5e559}\label{classnavier__stokes__problem_a619652c471a078d5800ba2d119b5e559}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!P\_z@{P\_z}}
+\index{P\_z@{P\_z}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{P\_z}{P\_z}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+P\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pressure derivative in the z-\/direction. 
+
+\mbox{\Hypertarget{classnavier__stokes__problem_ad4f674342822247e04d6e077b5d94d9b}\label{classnavier__stokes__problem_ad4f674342822247e04d6e077b5d94d9b}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!U\_up@{U\_up}}
+\index{U\_up@{U\_up}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{U\_up}{U\_up}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+U\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a82b72c576735381243b51012949b3da0}\label{classnavier__stokes__problem_a82b72c576735381243b51012949b3da0}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!V\_up@{V\_up}}
+\index{V\_up@{V\_up}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{V\_up}{V\_up}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+V\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classnavier__stokes__problem_a5f59ed7d7e97673d258c757fd0fb8ed7}\label{classnavier__stokes__problem_a5f59ed7d7e97673d258c757fd0fb8ed7}} 
+\index{navier\_stokes\_problem@{navier\_stokes\_problem}!W\_up@{W\_up}}
+\index{W\_up@{W\_up}!navier\_stokes\_problem@{navier\_stokes\_problem}}
+\doxysubsubsection{\texorpdfstring{W\_up}{W\_up}}
+{\footnotesize\ttfamily Vec navier\+\_\+stokes\+\_\+problem\+::\+W\+\_\+up\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Velocity fields in the x, y, and z directions. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{navier__stokes_8hpp}{navier\+\_\+stokes.\+hpp}}\item 
+src/\mbox{\hyperlink{navier__stokes_8cpp}{navier\+\_\+stokes.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,853 @@
+\begin{theindex}
+
+  \item {$\sim$advection\_diffusion\_problem}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{18}
+  \item {$\sim$euler\_problem}
+    \subitem {euler\_problem}, \hyperpage{23}
+  \item {$\sim$navier\_stokes\_problem}
+    \subitem {navier\_stokes\_problem}, \hyperpage{29}
+  \item {$\sim$parabolic\_problem\_x}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+  \item {$\sim$parabolic\_problem\_y}
+    \subitem {parabolic\_problem\_y}, \hyperpage{37}
+  \item {$\sim$parabolic\_problem\_z}
+    \subitem {parabolic\_problem\_z}, \hyperpage{41}
+  \item {$\sim$poisson\_problem}
+    \subitem {poisson\_problem}, \hyperpage{46}
+  \item {$\sim$stokes\_problem}
+    \subitem {stokes\_problem}, \hyperpage{53}
+  \item {$\sim$transport\_problem\_x}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+  \item {$\sim$transport\_problem\_y}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {$\sim$transport\_problem\_z}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+
+  \indexspace
+
+  \item {A}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+    \subitem {poisson\_problem}, \hyperpage{49}
+  \item {a}
+    \subitem {problem\_setting}, \hyperpage{11}
+  \item {advection}, \hyperpage{15}
+  \item {advection\_diffusion.hpp}
+    \subitem {ADVECTION\_DIFFUSION\_PROBLEM\_HPP}, \hyperpage{73}
+  \item {advection\_diffusion\_problem}, \hyperpage{15}
+    \subitem {$\sim$advection\_diffusion\_problem}, \hyperpage{18}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{17, 18}
+    \subitem {assemble\_magnitude}, \hyperpage{18}
+    \subitem {compute\_magnitude}, \hyperpage{18}
+    \subitem {dmGrid\_cent\_rich}, \hyperpage{19}
+    \subitem {dmGrid\_centered}, \hyperpage{19}
+    \subitem {dmGrid\_shift\_transp}, \hyperpage{19}
+    \subitem {dmGrid\_stag\_transp}, \hyperpage{19}
+    \subitem {dmGrid\_staggered\_x}, \hyperpage{19}
+    \subitem {dmGrid\_staggered\_y}, \hyperpage{19}
+    \subitem {dmGrid\_staggered\_z}, \hyperpage{19}
+    \subitem {exodus}, \hyperpage{18}
+    \subitem {Magnitude}, \hyperpage{19}
+    \subitem {mask\_U}, \hyperpage{20}
+    \subitem {mask\_V}, \hyperpage{20}
+    \subitem {mask\_W}, \hyperpage{20}
+    \subitem {solve}, \hyperpage{18}
+    \subitem {U\_up}, \hyperpage{20}
+    \subitem {update\_velocity}, \hyperpage{19}
+    \subitem {V\_up}, \hyperpage{20}
+    \subitem {W\_up}, \hyperpage{20}
+  \item {ADVECTION\_DIFFUSION\_PROBLEM\_HPP}
+    \subitem {advection\_diffusion.hpp}, \hyperpage{73}
+  \item {assemble\_divergence}
+    \subitem {poisson\_problem}, \hyperpage{46}
+  \item {assemble\_lhs}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+    \subitem {poisson\_problem}, \hyperpage{47}
+  \item {assemble\_magnitude}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{18}
+    \subitem {euler\_problem}, \hyperpage{23}
+    \subitem {navier\_stokes\_problem}, \hyperpage{29}
+    \subitem {stokes\_problem}, \hyperpage{53}
+  \item {assemble\_rhs}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+
+  \indexspace
+
+  \item {BACK}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {BACK\_DOWN}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {BACK\_LEFT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {BACK\_RIGHT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {BACK\_UP}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {base\_path}
+    \subitem {problem\_setting}, \hyperpage{11}
+  \item {brinkman}
+    \subitem {problem\_setting}, \hyperpage{11}
+
+  \indexspace
+
+  \item {CenterU}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+  \item {CenterV}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {CenterW}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+  \item {check\_convergence}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {CheckSolution}
+    \subitem {utils.cpp}, \hyperpage{94}
+    \subitem {utils.hpp}, \hyperpage{84}
+  \item {compute\_divergence}
+    \subitem {poisson\_problem}, \hyperpage{47}
+  \item {compute\_magnitude}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{18}
+    \subitem {euler\_problem}, \hyperpage{23}
+    \subitem {navier\_stokes\_problem}, \hyperpage{29}
+    \subitem {stokes\_problem}, \hyperpage{53}
+  \item {config\_problem.hpp}, \hyperpage{71}
+  \item {CreateAnalyticalP}
+    \subitem {utils.cpp}, \hyperpage{94}
+    \subitem {utils.hpp}, \hyperpage{84}
+  \item {CreateAnalyticalU}
+    \subitem {utils.cpp}, \hyperpage{94}
+    \subitem {utils.hpp}, \hyperpage{85}
+  \item {CreateAnalyticalV}
+    \subitem {utils.cpp}, \hyperpage{95}
+    \subitem {utils.hpp}, \hyperpage{85}
+  \item {CreateAnalyticalW}
+    \subitem {utils.cpp}, \hyperpage{95}
+    \subitem {utils.hpp}, \hyperpage{85}
+  \item {CreateGrid}
+    \subitem {utils.cpp}, \hyperpage{95}
+    \subitem {utils.hpp}, \hyperpage{85}
+  \item {createMaskU}
+    \subitem {utils.cpp}, \hyperpage{95}
+    \subitem {utils.hpp}, \hyperpage{86}
+  \item {createMaskV}
+    \subitem {utils.cpp}, \hyperpage{96}
+    \subitem {utils.hpp}, \hyperpage{86}
+  \item {createMaskW}
+    \subitem {utils.cpp}, \hyperpage{96}
+    \subitem {utils.hpp}, \hyperpage{86}
+
+  \indexspace
+
+  \item {d}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {D\_x}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {D\_y}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {D\_z}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {Derive\_x}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+  \item {derive\_x\_P}
+    \subitem {poisson\_problem}, \hyperpage{47}
+  \item {Derive\_y}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {derive\_y\_P}
+    \subitem {poisson\_problem}, \hyperpage{47}
+  \item {Derive\_z}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+  \item {derive\_z\_P}
+    \subitem {poisson\_problem}, \hyperpage{48}
+  \item {dmGrid}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+  \item {dmGrid\_cent\_rich}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {poisson\_problem}, \hyperpage{49}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {dmGrid\_Centered}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {dmGrid\_centered}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {poisson\_problem}, \hyperpage{49}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {dmGrid\_shift\_transp}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+  \item {dmGrid\_Shifted}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {dmGrid\_stag\_transp}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+  \item {dmGrid\_Staggered}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {dmGrid\_staggered\_x}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {poisson\_problem}, \hyperpage{49}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {dmGrid\_staggered\_y}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {poisson\_problem}, \hyperpage{49}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {dmGrid\_staggered\_z}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {DOWN}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {DOWN\_LEFT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {DOWN\_RIGHT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {dt}
+    \subitem {problem\_setting}, \hyperpage{12}
+
+  \indexspace
+
+  \item {ELEMENT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {eps}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {euler\_problem}, \hyperpage{20}
+    \subitem {$\sim$euler\_problem}, \hyperpage{23}
+    \subitem {assemble\_magnitude}, \hyperpage{23}
+    \subitem {compute\_magnitude}, \hyperpage{23}
+    \subitem {dmGrid\_cent\_rich}, \hyperpage{24}
+    \subitem {dmGrid\_centered}, \hyperpage{24}
+    \subitem {dmGrid\_shift\_transp}, \hyperpage{24}
+    \subitem {dmGrid\_stag\_transp}, \hyperpage{24}
+    \subitem {dmGrid\_staggered\_x}, \hyperpage{24}
+    \subitem {dmGrid\_staggered\_y}, \hyperpage{24}
+    \subitem {dmGrid\_staggered\_z}, \hyperpage{25}
+    \subitem {euler\_problem}, \hyperpage{23}
+    \subitem {exodus}, \hyperpage{24}
+    \subitem {Magnitude}, \hyperpage{25}
+    \subitem {mask\_U}, \hyperpage{25}
+    \subitem {mask\_V}, \hyperpage{25}
+    \subitem {mask\_W}, \hyperpage{25}
+    \subitem {P}, \hyperpage{25}
+    \subitem {P\_x}, \hyperpage{25}
+    \subitem {P\_y}, \hyperpage{25}
+    \subitem {P\_z}, \hyperpage{25}
+    \subitem {solve}, \hyperpage{24}
+    \subitem {U\_up}, \hyperpage{25}
+    \subitem {update\_velocity}, \hyperpage{24}
+    \subitem {V\_up}, \hyperpage{26}
+    \subitem {W\_up}, \hyperpage{26}
+  \item {EULER\_PROBLEM\_HPP}
+    \subitem {inviscid\_euler.hpp}, \hyperpage{74}
+  \item {exodus}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{18}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+    \subitem {poisson\_problem}, \hyperpage{48}
+    \subitem {stokes\_problem}, \hyperpage{53}
+
+  \indexspace
+
+  \item {faces}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {filename}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {FirstDerive\_y}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+  \item {FirstDerive\_z}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+  \item {FirstShiftU\_y}
+    \subitem {transport\_problem\_x}, \hyperpage{58}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {FirstShiftU\_z}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+  \item {FirstShiftV\_y}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {FirstShiftW\_z}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+  \item {FRONT}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {FRONT\_DOWN}
+    \subitem {macros.hpp}, \hyperpage{76}
+  \item {FRONT\_LEFT}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {FRONT\_RIGHT}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {FRONT\_UP}
+    \subitem {macros.hpp}, \hyperpage{77}
+
+  \indexspace
+
+  \item {get\_U}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+  \item {get\_V}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+  \item {get\_W}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+
+  \indexspace
+
+  \item {include/advection\_diffusion.hpp}, \hyperpage{73}
+  \item {include/inviscid\_euler.hpp}, \hyperpage{74}
+  \item {include/macros.hpp}, \hyperpage{75}
+  \item {include/navier\_stokes.hpp}, \hyperpage{78}
+  \item {include/parabolic.hpp}, \hyperpage{78}
+  \item {include/poisson.hpp}, \hyperpage{80}
+  \item {include/stokes.hpp}, \hyperpage{80}
+  \item {include/transport.hpp}, \hyperpage{81}
+  \item {include/utils.hpp}, \hyperpage{83}
+  \item {inviscid\_euler.hpp}
+    \subitem {EULER\_PROBLEM\_HPP}, \hyperpage{74}
+  \item {isPointInsideMesh}
+    \subitem {utils.cpp}, \hyperpage{96}
+    \subitem {utils.hpp}, \hyperpage{87}
+  \item {iter}
+    \subitem {problem\_setting}, \hyperpage{12}
+
+  \indexspace
+
+  \item {LEFT}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {Lx}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {Lx\_0}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {Ly}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {Ly\_0}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {Lz}
+    \subitem {problem\_setting}, \hyperpage{12}
+  \item {Lz\_0}
+    \subitem {problem\_setting}, \hyperpage{12}
+
+  \indexspace
+
+  \item {macros.hpp}
+    \subitem {BACK}, \hyperpage{76}
+    \subitem {BACK\_DOWN}, \hyperpage{76}
+    \subitem {BACK\_LEFT}, \hyperpage{76}
+    \subitem {BACK\_RIGHT}, \hyperpage{76}
+    \subitem {BACK\_UP}, \hyperpage{76}
+    \subitem {DOWN}, \hyperpage{76}
+    \subitem {DOWN\_LEFT}, \hyperpage{76}
+    \subitem {DOWN\_RIGHT}, \hyperpage{76}
+    \subitem {ELEMENT}, \hyperpage{76}
+    \subitem {eps}, \hyperpage{77}
+    \subitem {FRONT}, \hyperpage{76}
+    \subitem {FRONT\_DOWN}, \hyperpage{76}
+    \subitem {FRONT\_LEFT}, \hyperpage{77}
+    \subitem {FRONT\_RIGHT}, \hyperpage{77}
+    \subitem {FRONT\_UP}, \hyperpage{77}
+    \subitem {LEFT}, \hyperpage{77}
+    \subitem {pi}, \hyperpage{77}
+    \subitem {RIGHT}, \hyperpage{77}
+    \subitem {UP}, \hyperpage{77}
+    \subitem {UP\_LEFT}, \hyperpage{77}
+    \subitem {UP\_RIGHT}, \hyperpage{77}
+  \item {Magnitude}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {main}
+    \subitem {main.cpp}, \hyperpage{90}
+  \item {main.cpp}
+    \subitem {main}, \hyperpage{90}
+  \item {manage\_pressure}
+    \subitem {poisson\_problem}, \hyperpage{48}
+  \item {manage\_pressure\_x}
+    \subitem {poisson\_problem}, \hyperpage{48}
+  \item {manage\_pressure\_y}
+    \subitem {poisson\_problem}, \hyperpage{49}
+  \item {manage\_pressure\_z}
+    \subitem {poisson\_problem}, \hyperpage{49}
+  \item {mask\_U}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {stokes\_problem}, \hyperpage{54}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {mask\_V}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {parabolic\_problem\_y}, \hyperpage{39}
+    \subitem {stokes\_problem}, \hyperpage{55}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{65}
+    \subitem {transport\_problem\_z}, \hyperpage{70}
+  \item {mask\_W}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {parabolic\_problem\_z}, \hyperpage{43}
+    \subitem {stokes\_problem}, \hyperpage{55}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{65}
+    \subitem {transport\_problem\_z}, \hyperpage{70}
+  \item {monitor\_convergence}
+    \subitem {problem\_setting}, \hyperpage{12}
+
+  \indexspace
+
+  \item {navier\_stokes\_problem}, \hyperpage{26}
+    \subitem {$\sim$navier\_stokes\_problem}, \hyperpage{29}
+    \subitem {assemble\_magnitude}, \hyperpage{29}
+    \subitem {compute\_magnitude}, \hyperpage{29}
+    \subitem {dmGrid\_cent\_rich}, \hyperpage{30}
+    \subitem {dmGrid\_centered}, \hyperpage{30}
+    \subitem {dmGrid\_shift\_transp}, \hyperpage{30}
+    \subitem {dmGrid\_stag\_transp}, \hyperpage{30}
+    \subitem {dmGrid\_staggered\_x}, \hyperpage{30}
+    \subitem {dmGrid\_staggered\_y}, \hyperpage{30}
+    \subitem {dmGrid\_staggered\_z}, \hyperpage{31}
+    \subitem {exodus}, \hyperpage{30}
+    \subitem {Magnitude}, \hyperpage{31}
+    \subitem {mask\_U}, \hyperpage{31}
+    \subitem {mask\_V}, \hyperpage{31}
+    \subitem {mask\_W}, \hyperpage{31}
+    \subitem {navier\_stokes\_problem}, \hyperpage{29}
+    \subitem {P}, \hyperpage{31}
+    \subitem {P\_x}, \hyperpage{31}
+    \subitem {P\_y}, \hyperpage{31}
+    \subitem {P\_z}, \hyperpage{31}
+    \subitem {solve}, \hyperpage{30}
+    \subitem {U\_up}, \hyperpage{31}
+    \subitem {update\_velocity}, \hyperpage{30}
+    \subitem {V\_up}, \hyperpage{32}
+    \subitem {W\_up}, \hyperpage{32}
+  \item {nx}
+    \subitem {problem\_setting}, \hyperpage{13}
+  \item {ny}
+    \subitem {problem\_setting}, \hyperpage{13}
+  \item {nz}
+    \subitem {problem\_setting}, \hyperpage{13}
+
+  \indexspace
+
+  \item {P}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {P\_x}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {P\_y}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {P\_z}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {parabolic.hpp}
+    \subitem {PARABOLIC\_PROBLEM\_Y\_HPP}, \hyperpage{79}
+    \subitem {PARABOLIC\_PROBLEM\_Z\_HPP}, \hyperpage{79}
+  \item {parabolic\_problem\_x}, \hyperpage{32}
+    \subitem {$\sim$parabolic\_problem\_x}, \hyperpage{34}
+    \subitem {A}, \hyperpage{35}
+    \subitem {assemble\_lhs}, \hyperpage{34}
+    \subitem {assemble\_rhs}, \hyperpage{34}
+    \subitem {dmGrid}, \hyperpage{35}
+    \subitem {exodus}, \hyperpage{34}
+    \subitem {get\_U}, \hyperpage{34}
+    \subitem {mask\_U}, \hyperpage{35}
+    \subitem {parabolic\_problem\_x}, \hyperpage{33, 34}
+    \subitem {rhs}, \hyperpage{35}
+    \subitem {set\_U}, \hyperpage{34}
+    \subitem {solve}, \hyperpage{34}
+    \subitem {solve\_step}, \hyperpage{35}
+    \subitem {U\_up}, \hyperpage{35}
+  \item {parabolic\_problem\_y}, \hyperpage{35}
+    \subitem {$\sim$parabolic\_problem\_y}, \hyperpage{37}
+    \subitem {A}, \hyperpage{38}
+    \subitem {assemble\_lhs}, \hyperpage{38}
+    \subitem {assemble\_rhs}, \hyperpage{38}
+    \subitem {dmGrid}, \hyperpage{38}
+    \subitem {exodus}, \hyperpage{38}
+    \subitem {get\_V}, \hyperpage{38}
+    \subitem {mask\_V}, \hyperpage{39}
+    \subitem {parabolic\_problem\_y}, \hyperpage{37}
+    \subitem {rhs}, \hyperpage{39}
+    \subitem {set\_V}, \hyperpage{38}
+    \subitem {solve}, \hyperpage{38}
+    \subitem {solve\_step}, \hyperpage{38}
+    \subitem {V\_up}, \hyperpage{39}
+  \item {PARABOLIC\_PROBLEM\_Y\_HPP}
+    \subitem {parabolic.hpp}, \hyperpage{79}
+  \item {parabolic\_problem\_z}, \hyperpage{39}
+    \subitem {$\sim$parabolic\_problem\_z}, \hyperpage{41}
+    \subitem {A}, \hyperpage{42}
+    \subitem {assemble\_lhs}, \hyperpage{42}
+    \subitem {assemble\_rhs}, \hyperpage{42}
+    \subitem {dmGrid}, \hyperpage{42}
+    \subitem {exodus}, \hyperpage{42}
+    \subitem {get\_W}, \hyperpage{42}
+    \subitem {mask\_W}, \hyperpage{43}
+    \subitem {parabolic\_problem\_z}, \hyperpage{41}
+    \subitem {rhs}, \hyperpage{43}
+    \subitem {set\_W}, \hyperpage{42}
+    \subitem {solve}, \hyperpage{42}
+    \subitem {solve\_step}, \hyperpage{42}
+    \subitem {W\_up}, \hyperpage{43}
+  \item {PARABOLIC\_PROBLEM\_Z\_HPP}
+    \subitem {parabolic.hpp}, \hyperpage{79}
+  \item {pi}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {poisson\_problem}, \hyperpage{43}
+    \subitem {$\sim$poisson\_problem}, \hyperpage{46}
+    \subitem {A}, \hyperpage{49}
+    \subitem {assemble\_divergence}, \hyperpage{46}
+    \subitem {assemble\_lhs}, \hyperpage{47}
+    \subitem {compute\_divergence}, \hyperpage{47}
+    \subitem {derive\_x\_P}, \hyperpage{47}
+    \subitem {derive\_y\_P}, \hyperpage{47}
+    \subitem {derive\_z\_P}, \hyperpage{48}
+    \subitem {dmGrid\_cent\_rich}, \hyperpage{49}
+    \subitem {dmGrid\_centered}, \hyperpage{49}
+    \subitem {dmGrid\_staggered\_x}, \hyperpage{49}
+    \subitem {dmGrid\_staggered\_y}, \hyperpage{49}
+    \subitem {dmGrid\_staggered\_z}, \hyperpage{50}
+    \subitem {exodus}, \hyperpage{48}
+    \subitem {manage\_pressure}, \hyperpage{48}
+    \subitem {manage\_pressure\_x}, \hyperpage{48}
+    \subitem {manage\_pressure\_y}, \hyperpage{49}
+    \subitem {manage\_pressure\_z}, \hyperpage{49}
+    \subitem {P}, \hyperpage{50}
+    \subitem {P\_x}, \hyperpage{50}
+    \subitem {P\_y}, \hyperpage{50}
+    \subitem {P\_z}, \hyperpage{50}
+    \subitem {poisson\_problem}, \hyperpage{46}
+    \subitem {U\_up}, \hyperpage{50}
+    \subitem {V\_up}, \hyperpage{50}
+    \subitem {W\_up}, \hyperpage{50}
+  \item {pRef}
+    \subitem {problem\_setting}, \hyperpage{10}
+  \item {PrintSimulationParameters}
+    \subitem {utils.cpp}, \hyperpage{97}
+    \subitem {utils.hpp}, \hyperpage{87}
+  \item {problem\_setting}, \hyperpage{9}
+    \subitem {a}, \hyperpage{11}
+    \subitem {base\_path}, \hyperpage{11}
+    \subitem {brinkman}, \hyperpage{11}
+    \subitem {check\_convergence}, \hyperpage{12}
+    \subitem {d}, \hyperpage{12}
+    \subitem {dt}, \hyperpage{12}
+    \subitem {iter}, \hyperpage{12}
+    \subitem {Lx}, \hyperpage{12}
+    \subitem {Lx\_0}, \hyperpage{12}
+    \subitem {Ly}, \hyperpage{12}
+    \subitem {Ly\_0}, \hyperpage{12}
+    \subitem {Lz}, \hyperpage{12}
+    \subitem {Lz\_0}, \hyperpage{12}
+    \subitem {monitor\_convergence}, \hyperpage{12}
+    \subitem {nx}, \hyperpage{13}
+    \subitem {ny}, \hyperpage{13}
+    \subitem {nz}, \hyperpage{13}
+    \subitem {pRef}, \hyperpage{10}
+    \subitem {problem\_type}, \hyperpage{13}
+    \subitem {Re}, \hyperpage{13}
+    \subitem {theta}, \hyperpage{13}
+    \subitem {uxRef}, \hyperpage{10}
+    \subitem {uyRef}, \hyperpage{10}
+    \subitem {uzRef}, \hyperpage{11}
+  \item {problem\_type}
+    \subitem {problem\_setting}, \hyperpage{13}
+
+  \indexspace
+
+  \item {rayIntersectsTriangle}
+    \subitem {utils.cpp}, \hyperpage{97}
+    \subitem {utils.hpp}, \hyperpage{87}
+  \item {Re}
+    \subitem {problem\_setting}, \hyperpage{13}
+  \item {reader}
+    \subitem {utils.cpp}, \hyperpage{97}
+    \subitem {utils.hpp}, \hyperpage{88}
+  \item {README.md}, \hyperpage{89}
+  \item {rhs}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {parabolic\_problem\_y}, \hyperpage{39}
+    \subitem {parabolic\_problem\_z}, \hyperpage{43}
+  \item {RIGHT}
+    \subitem {macros.hpp}, \hyperpage{77}
+
+  \indexspace
+
+  \item {SecondDerive\_x}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {SecondDerive\_z}
+    \subitem {transport\_problem\_y}, \hyperpage{63}
+  \item {SecondShiftV\_z}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{68}
+  \item {SecondShiftW\_z}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {set\_U}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+  \item {set\_V}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+  \item {set\_W}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+  \item {solve}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{18}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {parabolic\_problem\_x}, \hyperpage{34}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {solve\_step}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {parabolic\_problem\_y}, \hyperpage{38}
+    \subitem {parabolic\_problem\_z}, \hyperpage{42}
+  \item {solve\_step\_x}
+    \subitem {transport\_problem\_x}, \hyperpage{59}
+  \item {solve\_step\_y}
+    \subitem {transport\_problem\_y}, \hyperpage{64}
+  \item {solve\_step\_z}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {src/advection\_diffusion.cpp}, \hyperpage{89}
+  \item {src/inviscid\_euler.cpp}, \hyperpage{89}
+  \item {src/main.cpp}, \hyperpage{89}
+  \item {src/navier\_stokes.cpp}, \hyperpage{91}
+  \item {src/parabolic.cpp}, \hyperpage{91}
+  \item {src/poisson.cpp}, \hyperpage{92}
+  \item {src/stokes.cpp}, \hyperpage{92}
+  \item {src/transport.cpp}, \hyperpage{93}
+  \item {src/utils.cpp}, \hyperpage{93}
+  \item {stokes\_problem}, \hyperpage{51}
+    \subitem {$\sim$stokes\_problem}, \hyperpage{53}
+    \subitem {assemble\_magnitude}, \hyperpage{53}
+    \subitem {compute\_magnitude}, \hyperpage{53}
+    \subitem {dmGrid\_cent\_rich}, \hyperpage{54}
+    \subitem {dmGrid\_centered}, \hyperpage{54}
+    \subitem {dmGrid\_staggered\_x}, \hyperpage{54}
+    \subitem {dmGrid\_staggered\_y}, \hyperpage{54}
+    \subitem {dmGrid\_staggered\_z}, \hyperpage{54}
+    \subitem {exodus}, \hyperpage{53}
+    \subitem {Magnitude}, \hyperpage{54}
+    \subitem {mask\_U}, \hyperpage{54}
+    \subitem {mask\_V}, \hyperpage{55}
+    \subitem {mask\_W}, \hyperpage{55}
+    \subitem {P}, \hyperpage{55}
+    \subitem {P\_x}, \hyperpage{55}
+    \subitem {P\_y}, \hyperpage{55}
+    \subitem {P\_z}, \hyperpage{55}
+    \subitem {solve}, \hyperpage{54}
+    \subitem {stokes\_problem}, \hyperpage{53}
+    \subitem {U\_up}, \hyperpage{55}
+    \subitem {update\_velocity}, \hyperpage{54}
+    \subitem {V\_up}, \hyperpage{55}
+    \subitem {W\_up}, \hyperpage{55}
+
+  \indexspace
+
+  \item {theta}
+    \subitem {problem\_setting}, \hyperpage{13}
+  \item {ThirdDerive\_x}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {ThirdDerive\_y}
+    \subitem {transport\_problem\_z}, \hyperpage{69}
+  \item {transport.hpp}
+    \subitem {TRANSPORT\_PROBLEM\_Y\_HPP}, \hyperpage{82}
+    \subitem {TRANSPORT\_PROBLEM\_Z\_HPP}, \hyperpage{82}
+  \item {transport\_problem\_x}, \hyperpage{56}
+    \subitem {$\sim$transport\_problem\_x}, \hyperpage{58}
+    \subitem {CenterU}, \hyperpage{58}
+    \subitem {Derive\_x}, \hyperpage{58}
+    \subitem {dmGrid\_Centered}, \hyperpage{59}
+    \subitem {dmGrid\_Shifted}, \hyperpage{59}
+    \subitem {dmGrid\_Staggered}, \hyperpage{60}
+    \subitem {FirstDerive\_y}, \hyperpage{58}
+    \subitem {FirstDerive\_z}, \hyperpage{58}
+    \subitem {FirstShiftU\_y}, \hyperpage{58}
+    \subitem {FirstShiftU\_z}, \hyperpage{59}
+    \subitem {FirstShiftV\_y}, \hyperpage{59}
+    \subitem {FirstShiftW\_z}, \hyperpage{59}
+    \subitem {mask\_U}, \hyperpage{60}
+    \subitem {mask\_V}, \hyperpage{60}
+    \subitem {mask\_W}, \hyperpage{60}
+    \subitem {solve\_step\_x}, \hyperpage{59}
+    \subitem {transport\_problem\_x}, \hyperpage{57, 58}
+    \subitem {U\_n}, \hyperpage{60}
+    \subitem {V\_n}, \hyperpage{60}
+    \subitem {W\_n}, \hyperpage{60}
+  \item {transport\_problem\_y}, \hyperpage{60}
+    \subitem {$\sim$transport\_problem\_y}, \hyperpage{63}
+    \subitem {CenterV}, \hyperpage{63}
+    \subitem {Derive\_y}, \hyperpage{63}
+    \subitem {dmGrid\_Centered}, \hyperpage{64}
+    \subitem {dmGrid\_Shifted}, \hyperpage{64}
+    \subitem {dmGrid\_Staggered}, \hyperpage{64}
+    \subitem {FirstShiftU\_y}, \hyperpage{63}
+    \subitem {FirstShiftV\_y}, \hyperpage{63}
+    \subitem {mask\_U}, \hyperpage{64}
+    \subitem {mask\_V}, \hyperpage{65}
+    \subitem {mask\_W}, \hyperpage{65}
+    \subitem {SecondDerive\_x}, \hyperpage{63}
+    \subitem {SecondDerive\_z}, \hyperpage{63}
+    \subitem {SecondShiftV\_z}, \hyperpage{64}
+    \subitem {SecondShiftW\_z}, \hyperpage{64}
+    \subitem {solve\_step\_y}, \hyperpage{64}
+    \subitem {transport\_problem\_y}, \hyperpage{62}
+    \subitem {U\_n}, \hyperpage{65}
+    \subitem {V\_n}, \hyperpage{65}
+    \subitem {W\_n}, \hyperpage{65}
+  \item {TRANSPORT\_PROBLEM\_Y\_HPP}
+    \subitem {transport.hpp}, \hyperpage{82}
+  \item {transport\_problem\_z}, \hyperpage{65}
+    \subitem {$\sim$transport\_problem\_z}, \hyperpage{68}
+    \subitem {CenterW}, \hyperpage{68}
+    \subitem {Derive\_z}, \hyperpage{68}
+    \subitem {dmGrid\_Centered}, \hyperpage{69}
+    \subitem {dmGrid\_Shifted}, \hyperpage{69}
+    \subitem {dmGrid\_Staggered}, \hyperpage{69}
+    \subitem {FirstShiftU\_z}, \hyperpage{68}
+    \subitem {FirstShiftW\_z}, \hyperpage{68}
+    \subitem {mask\_U}, \hyperpage{69}
+    \subitem {mask\_V}, \hyperpage{70}
+    \subitem {mask\_W}, \hyperpage{70}
+    \subitem {SecondShiftV\_z}, \hyperpage{68}
+    \subitem {SecondShiftW\_z}, \hyperpage{69}
+    \subitem {solve\_step\_z}, \hyperpage{69}
+    \subitem {ThirdDerive\_x}, \hyperpage{69}
+    \subitem {ThirdDerive\_y}, \hyperpage{69}
+    \subitem {transport\_problem\_z}, \hyperpage{67}
+    \subitem {U\_n}, \hyperpage{70}
+    \subitem {V\_n}, \hyperpage{70}
+    \subitem {W\_n}, \hyperpage{70}
+  \item {TRANSPORT\_PROBLEM\_Z\_HPP}
+    \subitem {transport.hpp}, \hyperpage{82}
+
+  \indexspace
+
+  \item {U\_n}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{65}
+    \subitem {transport\_problem\_z}, \hyperpage{70}
+  \item {U\_up}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{25}
+    \subitem {navier\_stokes\_problem}, \hyperpage{31}
+    \subitem {parabolic\_problem\_x}, \hyperpage{35}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {UP}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {UP\_LEFT}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {UP\_RIGHT}
+    \subitem {macros.hpp}, \hyperpage{77}
+  \item {update\_velocity}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{19}
+    \subitem {euler\_problem}, \hyperpage{24}
+    \subitem {navier\_stokes\_problem}, \hyperpage{30}
+    \subitem {stokes\_problem}, \hyperpage{54}
+  \item {utils.cpp}
+    \subitem {CheckSolution}, \hyperpage{94}
+    \subitem {CreateAnalyticalP}, \hyperpage{94}
+    \subitem {CreateAnalyticalU}, \hyperpage{94}
+    \subitem {CreateAnalyticalV}, \hyperpage{95}
+    \subitem {CreateAnalyticalW}, \hyperpage{95}
+    \subitem {CreateGrid}, \hyperpage{95}
+    \subitem {createMaskU}, \hyperpage{95}
+    \subitem {createMaskV}, \hyperpage{96}
+    \subitem {createMaskW}, \hyperpage{96}
+    \subitem {isPointInsideMesh}, \hyperpage{96}
+    \subitem {PrintSimulationParameters}, \hyperpage{97}
+    \subitem {rayIntersectsTriangle}, \hyperpage{97}
+    \subitem {reader}, \hyperpage{97}
+  \item {utils.hpp}
+    \subitem {CheckSolution}, \hyperpage{84}
+    \subitem {CreateAnalyticalP}, \hyperpage{84}
+    \subitem {CreateAnalyticalU}, \hyperpage{85}
+    \subitem {CreateAnalyticalV}, \hyperpage{85}
+    \subitem {CreateAnalyticalW}, \hyperpage{85}
+    \subitem {CreateGrid}, \hyperpage{85}
+    \subitem {createMaskU}, \hyperpage{86}
+    \subitem {createMaskV}, \hyperpage{86}
+    \subitem {createMaskW}, \hyperpage{86}
+    \subitem {D\_x}, \hyperpage{88}
+    \subitem {D\_y}, \hyperpage{88}
+    \subitem {D\_z}, \hyperpage{88}
+    \subitem {faces}, \hyperpage{88}
+    \subitem {filename}, \hyperpage{88}
+    \subitem {isPointInsideMesh}, \hyperpage{87}
+    \subitem {PrintSimulationParameters}, \hyperpage{87}
+    \subitem {rayIntersectsTriangle}, \hyperpage{87}
+    \subitem {reader}, \hyperpage{88}
+    \subitem {vertices}, \hyperpage{88}
+  \item {uxRef}
+    \subitem {problem\_setting}, \hyperpage{10}
+  \item {uyRef}
+    \subitem {problem\_setting}, \hyperpage{10}
+  \item {uzRef}
+    \subitem {problem\_setting}, \hyperpage{11}
+
+  \indexspace
+
+  \item {V\_n}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{65}
+    \subitem {transport\_problem\_z}, \hyperpage{70}
+  \item {V\_up}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{26}
+    \subitem {navier\_stokes\_problem}, \hyperpage{32}
+    \subitem {parabolic\_problem\_y}, \hyperpage{39}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+  \item {vertices}
+    \subitem {utils.hpp}, \hyperpage{88}
+
+  \indexspace
+
+  \item {W\_n}
+    \subitem {transport\_problem\_x}, \hyperpage{60}
+    \subitem {transport\_problem\_y}, \hyperpage{65}
+    \subitem {transport\_problem\_z}, \hyperpage{70}
+  \item {W\_up}
+    \subitem {advection\_diffusion\_problem}, \hyperpage{20}
+    \subitem {euler\_problem}, \hyperpage{26}
+    \subitem {navier\_stokes\_problem}, \hyperpage{32}
+    \subitem {parabolic\_problem\_z}, \hyperpage{43}
+    \subitem {poisson\_problem}, \hyperpage{50}
+    \subitem {stokes\_problem}, \hyperpage{55}
+
+\end{theindex}
