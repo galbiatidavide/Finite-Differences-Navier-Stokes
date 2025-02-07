@@ -13,6 +13,7 @@ To compile and run the project, make sure you have the following tools and libra
   - PETSc
   - VTK
   - Eigen
+- **Environment modules:** https://github.com/pcafrica/mk
 
 ---
 
