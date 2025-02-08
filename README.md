@@ -34,7 +34,7 @@ To compile and run the project, make sure you have the following tools and libra
 
 
 3. **Compile the project**:
-    After loading the modules, compile the project according to the chosen by running:
+    After loading the modules and properly set flow and domain parameters, compile the project according to the chosen solver by running:
     ```bash
     make clean
     make FILES="navier_stokes.cpp" #for Navier-Stokes and Brinkman problem
