@@ -71,7 +71,7 @@ To compile and run the project, make sure you have the following tools and libra
   </tr>
   <tr>
     <td align="center">
-      <strong>Parabolic Flow with μ=10</strong><br>
+      <strong>Parabolic Flow with mu=10</strong><br>
       <img src="graphic_examples/parabolic_mu_10.gif" width="300">
     </td>
     <td align="center">
