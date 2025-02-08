@@ -62,7 +62,7 @@ To compile and run the project, make sure you have the following tools and libra
   <tr>
     <td align="center">
       <strong>Velocity Magnitude for Navier-Stokes incompressible flow at Re=1</strong><br>
-      <img src="graphic_examples/magnitude_Re_1.gif" width="300">
+      <img src="https://raw.githubusercontent.com/galbiatidavide/Finite-Differences-Navier-Stokes/dave/graphic_examples/magnitude_Re_1.gif" width="300">
     </td>
     <td align="center">
       <strong>Velocity Magnitude for Navier-Stokes incompressible flow at Re=2000</strong><br>
@@ -72,11 +72,11 @@ To compile and run the project, make sure you have the following tools and libra
   <tr>
     <td align="center">
       <strong>Parabolic Flow with mu=10</strong><br>
-      <img src="graphic_examples/parabolic_mu_10.gif" width="300">
+      <img src="https://raw.githubusercontent.com/galbiatidavide/Finite-Differences-Navier-Stokes/dave/graphic_examples/parabolic_mu_10.gif" width="300">
     </td>
     <td align="center">
       <strong>Brinkman Flow Simulation Re=200</strong><br>
-      <img src="graphic_examples/brinkman_Re_200_dt_1e-3.gif" width="300">
+      <img src="https://raw.githubusercontent.com/galbiatidavide/Finite-Differences-Navier-Stokes/dave/graphic_examples/brinkman_Re_200_dt_1e-3.gif" width="300">
     </td>
   </tr>
 </table>
