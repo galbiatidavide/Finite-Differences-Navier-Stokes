@@ -30,7 +30,7 @@ To compile and run the project, make sure you have the following tools and libra
    ```
    
 2. **Set config_problem.hpp**: This file contains the configuration for the problem to solve. User can set their parameters and set more flow variables if needed. This file is well documented and should receive careful consideration by the user. Current configuration is set for an analytical solution of of 3D Navier-Stokes Equations with no Brinkman Penalization (cfr. Doxygen)
-    After loading the modules, compile the project according to the chosen by running:
+
 
 
 3. **Compile the project**:
