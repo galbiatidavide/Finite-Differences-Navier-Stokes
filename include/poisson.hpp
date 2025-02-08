@@ -37,6 +37,8 @@ using namespace problem_setting;
  * It manages the assembly of matrices, calculation of divergence. In our framework, it is used to solve the pressure correction in the Navier-Stokes equations.
  * For our purposes, enforcing compatibility condition was not required. Beware that for a stand-alone problem, compatible-to-null-bc's source must be provided.
  */
+
+
 class poisson_problem
 {
 private:
