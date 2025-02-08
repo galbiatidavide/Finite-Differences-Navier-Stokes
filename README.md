@@ -29,7 +29,7 @@ To compile and run the project, make sure you have the following tools and libra
    module load petsc
    ```
    
-2. **Set config_problem.hpp**: This file contains the configuration for the problem to solve. User can set their parameters and set more flow variables if needed. This file is well documented and should receive careful consideration by the user. Current configuration is set for an analytical solution of of 3D Navier-Stokes Equations with no Brinkman Penalization (cfr. Doxygen)
+2. **Set config_problem.hpp**: This file contains the configuration for the problem to solve. User can set their parameters and set more flow variables if needed. This file is well documented and should receive careful consideration by the user. Current configuration is set for an analytical solution of of 3D Navier-Stokes Equations with no Brinkman Penalization (cfr. Documentation.pdf)
 
 
 
