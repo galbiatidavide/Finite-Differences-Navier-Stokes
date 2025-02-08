@@ -16,6 +16,7 @@ PetscErrorCode CheckSolution(Vec const & sol, Vec const & solRef, std::string co
     errRel = errAbs / normsolRef;
     PetscPrintf(PETSC_COMM_WORLD, "Error %s: Absolute = %.6g, Relative = %.6g\n", comp.c_str(), (double)errAbs, (double)errRel);
     VecDestroy(&diff);
+    
     PetscFunctionReturn(0);
 
 
