@@ -1407,7 +1407,7 @@ std::optional<std::reference_wrapper<Vec>> P_opt)
     KSPSetType(ksp, KSPGMRES);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
-    PCSetType(pc, PCMG);
+    PCSetType(pc, PCGAMG);
     //PCHYPRESetType(pc, "euclid");
     //KSPSetTolerances(ksp, PETSC_DEFAULT, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
