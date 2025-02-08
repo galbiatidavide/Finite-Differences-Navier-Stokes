@@ -66,7 +66,7 @@ To compile and run the project, make sure you have the following tools and libra
     </td>
     <td align="center">
       <strong>Velocity Magnitude for Navier-Stokes incompressible flow at Re=2000</strong><br>
-      <img src=Finite-Differences-Navier-Stokes/tree/dave/graphic_examples/magnitude_Re_2000.gif" width="300">
+      <img src="https://raw.githubusercontent.com/galbiatidavide/Finite-Differences-Navier-Stokes/dave/graphic_examples/magnitude_Re_2000.gif" width="300">
     </td>
   </tr>
   <tr>
