@@ -39,7 +39,7 @@ constexpr bool check_convergence{true};
 /**
  * @brief Set the number of elements in x-direction.
  */
-constexpr PetscInt nx{32};
+constexpr PetscInt  nx{32};
 /**
  * @brief Set the number of elements in y-direction.
  */
