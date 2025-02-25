@@ -153,6 +153,9 @@ PetscErrorCode const manage_pressure_z(std::optional<std::reference_wrapper<Vec>
  */
 ~poisson_problem();
 
+PetscErrorCode AttachNullspace(DM dmSol, Mat A);
+
+
 };
 
 #endif // POISSON_PROBLEM_HPP

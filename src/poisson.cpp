@@ -49,7 +49,7 @@ PetscErrorCode const poisson_problem::assemble_lhs()
     PetscInt startx, starty, startz, N[3], nx, ny, nz, ex, ey, ez;
 
     PetscFunctionBegin;
-
+    MatSetOption(A, MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_FALSE);
     DMStagGetCorners(dmGrid_centered, &startx, &starty, &startz, &nx, &ny, &nz, NULL, NULL, NULL);
     DMStagGetGlobalSizes(dmGrid_centered, &N[0], &N[1], &N[2]);
     PetscReal const hx = D_x/ N[0];
@@ -77,9 +77,8 @@ PetscErrorCode const poisson_problem::assemble_lhs()
                             col[0].k = ez;
                             col[0].loc = ELEMENT;
                             col[0].c = 0;
-                            //valA[0] = -1.0 / (hx * hx) + -1.0 / (hy * hy) - 1.0 / (hz * hz);
-                            valA[0] = 1.0;
-                            /*col[1].i = ex;
+                            valA[0] = -1.0 / (hx * hx) + -1.0 / (hy * hy) - 1.0 / (hz * hz);
+                            col[1].i = ex;
                             col[1].j = ey + 1;
                             col[1].k = ez;
                             col[1].loc = ELEMENT;
@@ -96,7 +95,7 @@ PetscErrorCode const poisson_problem::assemble_lhs()
                             col[3].k = ez + 1;
                             col[3].loc = ELEMENT;
                             col[3].c = 0;
-                            valA[3] = 1.0 / (hz * hz);*/
+                            valA[3] = 1.0 / (hz * hz);
                         } else if (ez == N[2] - 1) {
                             nEntries = 4;
                             col[0].i = ex;
@@ -1402,14 +1401,14 @@ std::optional<std::reference_wrapper<Vec>> P_opt)
     VecGetSize(div, &size);
     mean = mean / size;
     VecShift(div, -mean);*/
-
+    AttachNullspace(dmGrid_centered, A);
     KSPCreate(PETSC_COMM_WORLD, &ksp);
-    KSPSetType(ksp, KSPGMRES);
+    KSPSetType(ksp, KSPCG);
     KSPSetOperators(ksp, A, A);
     KSPGetPC(ksp, &pc);
     PCSetType(pc, PCGAMG);
     //PCHYPRESetType(pc, "euclid");
-    //KSPSetTolerances(ksp, PETSC_DEFAULT, 1e-6, PETSC_DEFAULT, PETSC_DEFAULT);
+    KSPSetTolerances(ksp, 1e-12, PETSC_DEFAULT, PETSC_DEFAULT, PETSC_DEFAULT);
     KSPSetFromOptions(ksp);
     KSPSolve(ksp, div, P);
 
@@ -1459,6 +1458,7 @@ PetscErrorCode const poisson_problem::exodus(size_t i){
         PetscFunctionReturn(0);
 }
 
+
 poisson_problem::~poisson_problem()
 {
     VecDestroy(&P);
@@ -1475,4 +1475,27 @@ poisson_problem::~poisson_problem()
     DMDestroy(&dmGrid_centered);
     DMDestroy(&dmGrid_cent_rich);
     std::cout << "Poisson Destructor Called" << std::endl;
+}
+
+PetscErrorCode poisson_problem::AttachNullspace(DM dmSol, Mat A)
+{
+    DM           dmPressure;
+    Vec          constantPressure, basis;
+    PetscReal    nrm;
+    MatNullSpace matNullSpace;
+
+    PetscFunctionBeginUser;
+    DMStagCreateCompatibleDMStag(dmSol, 0, 0, 1, 0, &dmPressure);
+    DMGetGlobalVector(dmPressure, &constantPressure);
+    VecSet(constantPressure, 1.0);
+    VecNorm(constantPressure, NORM_2, &nrm);
+    VecScale(constantPressure, 1.0 / nrm);
+    DMCreateGlobalVector(dmSol, &basis);
+    DMStagMigrateVec(dmPressure, constantPressure, dmSol, basis);
+    MatNullSpaceCreate(PetscObjectComm((PetscObject)dmSol), PETSC_FALSE, 1, &basis, &matNullSpace);
+    VecDestroy(&basis);
+    VecDestroy(&constantPressure);
+    MatSetNullSpace(A, matNullSpace);
+    MatNullSpaceDestroy(&matNullSpace);
+    PetscFunctionReturn(0);
 }

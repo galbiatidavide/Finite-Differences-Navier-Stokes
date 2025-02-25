@@ -303,7 +303,14 @@ PetscErrorCode const navier_stokes_problem::solve()
         parabolic_y.solve_step(theta, V_up);
         parabolic_z.solve_step(theta, W_up);
 
+        auto start = std::chrono::high_resolution_clock::now();
+
         poisson.manage_pressure(U_up, V_up, W_up, P);
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
         poisson.manage_pressure_x(P, P_x);
         poisson.manage_pressure_y(P, P_y);
         poisson.manage_pressure_z(P, P_z);
@@ -374,8 +381,6 @@ PetscErrorCode const navier_stokes_problem::solve()
     
 
     }
-
-
 
 
     PetscFunctionReturn(0);

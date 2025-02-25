@@ -162,6 +162,9 @@ public:
      */
     ~parabolic_problem_y();
 
+    static PetscErrorCode MonitorResidual(KSP ksp, PetscInt iter, PetscReal rnorm, void *ctx);
+
+
 };
 
 #endif // PARABOLIC_PROBLEM_Y_HPP
@@ -225,6 +228,7 @@ public:
      * @brief Destructor to clean up allocated resources. Fundamental in PETSc implementation lo avoid leaks and unexpected RAM overhead.
      */
     ~parabolic_problem_z();
+
 
 };
 

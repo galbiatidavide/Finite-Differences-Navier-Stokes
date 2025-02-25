@@ -33,6 +33,7 @@
 #include <petscdmstag.h>
 #include <petscksp.h>
 #include <petscmat.h>
+#include <cstdio>
 //VTK
 #include <vtkSTLReader.h>
 

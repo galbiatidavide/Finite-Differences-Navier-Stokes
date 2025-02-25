@@ -35,11 +35,13 @@ int main(int argc, char **argv)
 
     using namespace problem_setting;
     PetscInitialize(&argc, &argv, (char*)0, (char*)0);
+    //std::freopen("output.txt", "w", stdout);
+
 
     /**
      * @brief Filename for the geometry.
      */
-    if(argc == 2 and std::string(argv[1]) != "-objects_dump" and brinkman)
+    /*if(argc == 2 and std::string(argv[1]) != "-objects_dump" and brinkman)
     {
         filename = argv[1];
         std::cout << "Reading geometry from " << argv[1] << std::endl;
@@ -49,10 +51,9 @@ int main(int argc, char **argv)
     {
         std::cout<<"Error!. Set brinkman flag = TRUE"<<std::endl;
         exit(1);
-    }
+    }*/
     
     
-    auto start = std::chrono::high_resolution_clock::now();
 
     #ifdef COMPILE_PARABOLIC
     #ifndef COMPILE_NAVIER_STOKES
@@ -97,8 +98,23 @@ int main(int argc, char **argv)
 
     #ifdef COMPILE_NAVIER_STOKES
     {
+        //poisson_problem poisson;
+        //poisson.manage_pressure();
         navier_stokes_problem navier_stokes;
         navier_stokes.solve();
+
+    }
+    #endif
+
+    #ifdef COMPILE_POISSON
+    {
+        auto start = std::chrono::high_resolution_clock::now();
+        poisson_problem poisson;
+        poisson.manage_pressure();
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
     }
     #endif
 
@@ -123,10 +139,10 @@ int main(int argc, char **argv)
     }
     #endif
 
+
     PetscFinalize();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
     std::cout << "Test successfully completed. Ad maiora!" << std::endl;
+    //std::fclose(stdout);
+
     PetscFunctionReturn(0); 
 }
